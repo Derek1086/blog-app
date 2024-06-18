@@ -1,9 +1,54 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { BsSearch } from "react-icons/bs";
-import { FaBars } from "react-icons/fa";
+import MenuIcon from "@mui/icons-material/Menu";
 import { useContext, useState } from "react";
 import Menu from "./Menu";
 import { UserContext } from "../context/UserContext";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import SearchIcon from "@mui/icons-material/Search";
+import InputBase from "@mui/material/InputBase";
+import Button from "@mui/material/Button";
+import { styled, alpha } from "@mui/material/styles";
+
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(2),
+    width: "auto",
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
+    },
+  },
+}));
 
 const Navbar = () => {
   const [prompt, setPrompt] = useState("");
@@ -20,58 +65,71 @@ const Navbar = () => {
   const { user } = useContext(UserContext);
 
   return (
-    <div className="flex items-center justify-between px-6 md:px-[200px] py-4">
-      <h1 className="text-lg md:text-xl font-extrabold">
-        <Link to="/">Blog Market</Link>
-      </h1>
-      {path === "/" && (
-        <div className="flex justify-center items-center space-x-0">
-          <p
-            onClick={() =>
-              navigate(prompt ? "?search=" + prompt : navigate("/"))
-            }
-            className="cursor-pointer"
-          >
-            <BsSearch />
-          </p>
-          <input
-            onChange={(e) => setPrompt(e.target.value)}
-            className="outline-none px-3 "
-            placeholder="Search a post"
-            type="text"
-          />
-        </div>
-      )}
-      <div className="hidden md:flex items-center justify-center space-x-2 md:space-x-4">
-        {user ? (
-          <h3>
-            <Link to="/write">Write</Link>
-          </h3>
-        ) : (
-          <h3>
-            <Link to="/login">Login</Link>
-          </h3>
-        )}
-        {user ? (
-          <div onClick={showMenu}>
-            <p className="cursor-pointer relative">
-              <FaBars />
-            </p>
-            {menu && <Menu />}
+    <Box>
+      <AppBar position="static">
+        <Toolbar>
+          <div className="flex items-center justify-between px-6 md:px-[200px] py-4">
+            <h1 className="text-lg md:text-xl font-extrabold">
+              <Link to="/">Blog</Link>
+            </h1>
+            {path === "/" && (
+              <div className="flex justify-center items-center space-x-0">
+                <Search>
+                  <SearchIconWrapper>
+                    <SearchIcon />
+                  </SearchIconWrapper>
+                  <StyledInputBase
+                    placeholder="Search…"
+                    inputProps={{ "aria-label": "search" }}
+                  />
+                </Search>
+              </div>
+            )}
+            <div className="hidden md:flex items-center justify-center space-x-2 md:space-x-4">
+              {user ? (
+                <Button
+                  variant="text"
+                  color="secondary"
+                  onClick={() => navigate("/write")}
+                >
+                  Write
+                </Button>
+              ) : (
+                <Button
+                  variant="text"
+                  color="secondary"
+                  onClick={() => navigate("/login")}
+                >
+                  Login
+                </Button>
+              )}
+              {user ? (
+                <div onClick={showMenu}>
+                  <p className="cursor-pointer relative">
+                    <MenuIcon />
+                  </p>
+                  {menu && <Menu />}
+                </div>
+              ) : (
+                <Button
+                  variant="text"
+                  color="secondary"
+                  onClick={() => navigate("/register")}
+                >
+                  Register
+                </Button>
+              )}
+            </div>
+            <div onClick={showMenu} className="md:hidden text-lg">
+              <p className="cursor-pointer relative">
+                <MenuIcon />
+              </p>
+              {menu && <Menu />}
+            </div>
           </div>
-        ) : (
-          <h3>
-            <Link to="/register">Register</Link>
-          </h3>
-        )}
-      </div>
-      <div onClick={showMenu} className="md:hidden text-lg">
-        <p className="cursor-pointer relative">
-          <FaBars />
-        </p>
-        {menu && <Menu />}
-      </div>
-    </div>
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 };
 
