@@ -7,21 +7,30 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Loader from "../components/Loader";
 import { UserContext } from "../context/UserContext";
+import Pagination from "@mui/material/Pagination";
 
 const Home = () => {
   const { search } = useLocation();
-  // console.log(search)
   const [posts, setPosts] = useState([]);
   const [noResults, setNoResults] = useState(false);
   const [loader, setLoader] = useState(false);
   const { user } = useContext(UserContext);
-  // console.log(user)
+  const [page, setPage] = useState(1);
+  const postsPerPage = 1;
+
+  const handleChange = (event, value) => {
+    console.log(event);
+    setPage(value);
+  };
+
+  const indexOfLastPost = page * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
   const fetchPosts = async () => {
     setLoader(true);
     try {
       const res = await axios.get(URL + "/api/posts/" + search);
-      // console.log(res.data)
       setPosts(res.data);
       if (res.data.length === 0) {
         setNoResults(true);
@@ -50,9 +59,10 @@ const Home = () => {
             <Loader />
           </div>
         ) : !noResults ? (
-          posts.map((post) => (
+          currentPosts.map((post) => (
             <Link
-              to={user ? `/posts/post/${post._id}` : "/login"}
+              // to={user ? `/posts/post/${post._id}` : "/login"}
+              to={`/posts/post/${post._id}`}
               key={post.id}
             >
               <HomePosts key={post._id} post={post} />
@@ -62,7 +72,33 @@ const Home = () => {
           <h3 className="text-center font-bold mt-16">No posts available</h3>
         )}
       </div>
-      <Footer />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "10px",
+          width: "100%",
+        }}
+      >
+        <Pagination
+          size="medium"
+          shape="rounded"
+          count={Math.ceil(posts.length / postsPerPage)}
+          page={page}
+          onChange={handleChange}
+          sx={{
+            "& .MuiPaginationItem-root": {
+              marginX: 1,
+            },
+            "@media screen and (max-width: 768px)": {
+              "& .MuiPaginationItem-root": {
+                marginX: 0,
+              },
+            },
+          }}
+        />
+      </div>
     </>
   );
 };

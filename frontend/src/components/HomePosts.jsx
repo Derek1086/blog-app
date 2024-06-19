@@ -1,33 +1,46 @@
-/* eslint-disable react/prop-types */
 import { IF } from "../url";
+import Card from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
+import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
+
+import classes from "./HomePosts.module.css";
 
 const HomePosts = ({ post }) => {
   return (
-    <div className="w-full flex mt-8 space-x-4">
-      {/* left */}
-      <div className="w-[35%] h-[200px] flex justify-center items-center">
-        <img
-          src={IF + post.photo}
+    <div className={classes.container}>
+      <Card className={classes.card}>
+        <CardMedia
+          component="img"
+          sx={{ width: "35%", height: "200px" }}
+          image={IF + post.photo}
           alt=""
-          className="h-full w-full object-cover"
         />
-      </div>
-      {/* right */}
-      <div className="flex flex-col w-[65%]">
-        <h1 className="text-xl font-bold md:mb-2 mb-1 md:text-2xl">
-          {post.title}
-        </h1>
-        <div className="flex mb-2 text-sm font-semibold text-gray-500 items-center justify-between md:mb-4">
-          <p>@{post.username}</p>
-          <div className="flex space-x-2 text-sm">
-            <p>{new Date(post.updatedAt).toString().slice(0, 15)}</p>
-            <p>{new Date(post.updatedAt).toString().slice(16, 24)}</p>
+        <div className={classes.content}>
+          <div style={{ height: "70%" }}>
+            <h1 className="text-xl font-bold md:mb-2 mb-1 md:text-2xl">
+              {post.title}
+            </h1>
+            <div className="flex mb-2 text-sm font-semibold text-gray-500 items-center justify-between md:mb-4">
+              <p>@{post.username}</p>
+              <div className="flex space-x-2 text-sm">
+                <p>{new Date(post.updatedAt).toString().slice(0, 15)}</p>
+                <p>{new Date(post.updatedAt).toString().slice(16, 24)}</p>
+              </div>
+            </div>
+            <p className="text-sm md:text-lg">
+              {post.desc.slice(0, 200) + " ..."}
+            </p>
           </div>
+          <Button
+            variant="contained"
+            color="secondary"
+            sx={{ backgroundColor: "gray", width: "20%", marginTop: "10px" }}
+          >
+            Read More
+          </Button>
         </div>
-        <p className="text-sm md:text-lg">
-          {post.desc.slice(0, 200) + " ...Read more"}
-        </p>
-      </div>
+      </Card>
     </div>
   );
 };
