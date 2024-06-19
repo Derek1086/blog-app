@@ -9,11 +9,32 @@ import Button from "@mui/material/Button";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState({
+    open: false,
+    message: "",
+    type: "",
+  });
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    if (email.trim() === "") {
+      setError({
+        open: true,
+        message: "Email cannot be empty",
+        type: "email",
+      });
+      return;
+    }
+    if (password.trim() === "") {
+      setError({
+        open: true,
+        message: "Password cannot be empty",
+        type: "password",
+      });
+      return;
+    }
+
     try {
       const res = await axios.post(
         URL + "/api/auth/login",
@@ -21,9 +42,18 @@ const Login = () => {
         { withCredentials: true }
       );
       setUser(res.data);
+      setError({
+        open: false,
+        message: "",
+        type: "",
+      });
       navigate("/");
     } catch (err) {
-      setError(true);
+      setError({
+        open: true,
+        message: "Invalid login",
+        type: "login",
+      });
       console.log(err);
     }
   };
@@ -34,6 +64,9 @@ const Login = () => {
           <h1 className="text-xl font-bold text-left">
             Log in to your account
           </h1>
+          {error.open === true && (
+            <h3 className="text-red-500 text-sm ">{error.message}</h3>
+          )}
           <TextField
             onChange={(e) => setEmail(e.target.value)}
             id="standard-basic"
@@ -41,6 +74,7 @@ const Login = () => {
             variant="standard"
             color="secondary"
             style={{ width: "100%" }}
+            error={error.type === "email" && error.open === true}
           />
           <TextField
             onChange={(e) => setPassword(e.target.value)}
@@ -50,6 +84,7 @@ const Login = () => {
             variant="standard"
             color="secondary"
             style={{ width: "100%" }}
+            error={error.type === "password" && error.open === true}
           />
           <Button
             onClick={handleLogin}
@@ -59,9 +94,6 @@ const Login = () => {
           >
             Log in
           </Button>
-          {error && (
-            <h3 className="text-red-500 text-sm ">Something went wrong</h3>
-          )}
           <div className="flex justify-center items-center space-x-3">
             <p>New here?</p>
             <p className="text-gray-500 hover:text-white">

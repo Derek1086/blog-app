@@ -9,6 +9,7 @@ import Toolbar from "@mui/material/Toolbar";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import { styled, alpha } from "@mui/material/styles";
 
 import classes from "./NavBar.module.css";
@@ -53,12 +54,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Navbar = () => {
-  const [prompt, setPrompt] = useState("");
   const [menu, setMenu] = useState(false);
   const navigate = useNavigate();
   const path = useLocation().pathname;
 
   // console.log(prompt)
+
+  const filterPrompt = (e) => {
+    let prompt = e.target.value;
+    console.log(prompt);
+    if (prompt.trim() === "") {
+      return;
+    }
+    //navigate(`/search?q=${prompt}`);
+  };
 
   const showMenu = () => {
     setMenu(!menu);
@@ -85,6 +94,7 @@ const Navbar = () => {
                   <StyledInputBase
                     placeholder="Search…"
                     inputProps={{ "aria-label": "search" }}
+                    onChange={filterPrompt}
                   />
                 </Search>
               </div>
@@ -109,9 +119,9 @@ const Navbar = () => {
               )}
               {user ? (
                 <div onClick={showMenu}>
-                  <p className="cursor-pointer relative">
+                  <IconButton>
                     <MenuIcon />
-                  </p>
+                  </IconButton>
                   {menu && <Menu />}
                 </div>
               ) : (
@@ -125,9 +135,9 @@ const Navbar = () => {
               )}
             </div>
             <div onClick={showMenu} className="md:hidden text-lg">
-              <p className="cursor-pointer relative">
+              <IconButton>
                 <MenuIcon />
-              </p>
+              </IconButton>
               {menu && <Menu />}
             </div>
           </div>
