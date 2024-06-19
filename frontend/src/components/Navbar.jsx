@@ -11,6 +11,8 @@ import InputBase from "@mui/material/InputBase";
 import Button from "@mui/material/Button";
 import { styled, alpha } from "@mui/material/styles";
 
+import classes from "./NavBar.module.css";
+
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -68,12 +70,14 @@ const Navbar = () => {
     <Box>
       <AppBar position="static">
         <Toolbar>
-          <div className="flex items-center justify-between px-6 md:px-[200px] py-4">
-            <h1 className="text-lg md:text-xl font-extrabold">
+          <div className={classes.container}>
+            <h1
+              className={`text-lg md:text-xl font-extrabold ${classes.title}`}
+            >
               <Link to="/">Blog</Link>
             </h1>
             {path === "/" && (
-              <div className="flex justify-center items-center space-x-0">
+              <div className={classes.search}>
                 <Search>
                   <SearchIconWrapper>
                     <SearchIcon />
@@ -85,7 +89,7 @@ const Navbar = () => {
                 </Search>
               </div>
             )}
-            <div className="hidden md:flex items-center justify-center space-x-2 md:space-x-4">
+            <div className={classes.actions}>
               {user ? (
                 <Button
                   variant="text"
