@@ -115,7 +115,6 @@ const PostDetails = () => {
               <p>{new Date(post.updatedAt).toString().slice(16, 24)}</p>
             </div>
           </div>
-
           <div className="flex items-center mt-8 space-x-4 font-semibold">
             <p>Categories:</p>
             <div className="flex justify-center items-center space-x-2">
@@ -146,31 +145,54 @@ const PostDetails = () => {
               {comments.length} Comments
             </h3>
           </div>
-          <div className="w-full flex flex-col md:flex-row">
-            <TextField
-              onChange={(e) => setComment(e.target.value)}
-              id="standard-basic"
-              label="Write a comment"
-              variant="standard"
-              color="secondary"
-              style={{ width: "100%" }}
-            />
-          </div>
-          <div className="mt-4">
-            <Button
-              onClick={postComment}
-              variant="contained"
-              color="secondary"
-              sx={{ padding: "10px" }}
-            >
-              Add Comment
-            </Button>
+          <>
+            {user ? (
+              <>
+                <div className="w-full flex flex-col md:flex-row">
+                  <TextField
+                    onChange={(e) => setComment(e.target.value)}
+                    id="standard-basic"
+                    label="Write a comment"
+                    variant="standard"
+                    color="secondary"
+                    style={{ width: "100%" }}
+                  />
+                </div>
+                <div className="mt-4">
+                  <Button
+                    onClick={postComment}
+                    variant="contained"
+                    color="secondary"
+                    sx={{ padding: "10px" }}
+                  >
+                    Add Comment
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  padding: "20px",
+                }}
+              >
+                <Button
+                  onClick={() => navigate("/login")}
+                  variant="contained"
+                  color="secondary"
+                  sx={{ padding: "10px" }}
+                >
+                  Login to comment
+                </Button>
+              </div>
+            )}
             <div className="mt-4 mb-20">
               {comments?.map((c) => (
                 <Comment key={c._id} c={c} post={post} />
               ))}
             </div>
-          </div>
+          </>
         </div>
       )}
     </div>
