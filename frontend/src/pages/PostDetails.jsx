@@ -2,13 +2,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import Comment from "../components/Comment";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-import { BiEdit } from "react-icons/bi";
-import { MdDelete } from "react-icons/md";
 import axios from "axios";
 import { URL, IF } from "../url";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import Loader from "../components/Loader";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
 
 const PostDetails = () => {
   const postId = useParams().id;
@@ -93,64 +97,80 @@ const PostDetails = () => {
       ) : (
         <div className="px-8 md:px-[200px] mt-8">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-black md:text-3xl">
-              {post.title}
-            </h1>
+            <h1 className="text-2xl font-bold md:text-3xl">{post.title}</h1>
             {user?._id === post?.userId && (
               <div className="flex items-center justify-center space-x-2">
-                <p
-                  className="cursor-pointer"
-                  onClick={() => navigate("/edit/" + postId)}
-                >
-                  <BiEdit />
-                </p>
-                <p className="cursor-pointer" onClick={handleDeletePost}>
-                  <MdDelete />
-                </p>
+                <IconButton onClick={() => navigate("/edit/" + postId)}>
+                  <EditIcon />
+                </IconButton>
+                <IconButton onClick={handleDeletePost}>
+                  <DeleteIcon />
+                </IconButton>
               </div>
             )}
           </div>
-          <div className="flex items-center justify-between mt-2 md:mt-4">
+          <div className="flex items-center text-gray-500 justify-between mt-2 md:mt-4">
             <p>@{post.username}</p>
             <div className="flex space-x-2">
               <p>{new Date(post.updatedAt).toString().slice(0, 15)}</p>
               <p>{new Date(post.updatedAt).toString().slice(16, 24)}</p>
             </div>
           </div>
-          <img src={IF + post.photo} className="w-full  mx-auto mt-8" alt="" />
-          <p className="mx-auto mt-8">{post.desc}</p>
+
           <div className="flex items-center mt-8 space-x-4 font-semibold">
             <p>Categories:</p>
             <div className="flex justify-center items-center space-x-2">
-              {post.categories?.map((c, i) => (
-                <>
-                  <div key={i} className="bg-gray-300 rounded-lg px-3 py-1">
+              {post.categories && post.categories.length > 0 ? (
+                post.categories.map((c, i) => (
+                  <Card sx={{ padding: "10px" }} key={i}>
                     {c}
-                  </div>
-                </>
-              ))}
+                  </Card>
+                ))
+              ) : (
+                <p>None</p>
+              )}
             </div>
           </div>
-          <div className="flex flex-col mt-4">
-            <h3 className="mt-6 mb-4 font-semibold">Comments:</h3>
-            {comments?.map((c) => (
-              <Comment key={c._id} c={c} post={post} />
-            ))}
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <img src={IF + post.photo} className="w-3/4  mx-auto mt-8" alt="" />
           </div>
-          {/* write a comment */}
-          <div className="w-full flex flex-col mt-4 md:flex-row">
-            <input
+          <p className="mx-auto mt-8">{post.desc}</p>
+          <div className="flex flex-col mt-4">
+            <h3 className="mt-6 mb-4 font-semibold">
+              {comments.length} Comments
+            </h3>
+          </div>
+          <div className="w-full flex flex-col md:flex-row">
+            <TextField
               onChange={(e) => setComment(e.target.value)}
-              type="text"
-              placeholder="Write a comment"
-              className="md:w-[80%] outline-none py-2 px-4 mt-4 md:mt-0"
+              id="standard-basic"
+              label="Write a comment"
+              variant="standard"
+              color="secondary"
+              style={{ width: "100%" }}
             />
-            <button
+          </div>
+          <div className="mt-4">
+            <Button
               onClick={postComment}
-              className="bg-black text-sm text-white px-2 py-2 md:w-[20%] mt-4 md:mt-0"
+              variant="contained"
+              color="secondary"
+              sx={{ padding: "10px" }}
             >
               Add Comment
-            </button>
+            </Button>
+            <div className="mt-4">
+              {comments?.map((c) => (
+                <Comment key={c._id} c={c} post={post} />
+              ))}
+            </div>
           </div>
         </div>
       )}

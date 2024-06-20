@@ -16,7 +16,7 @@ const Home = () => {
   const [loader, setLoader] = useState(false);
   //const { user } = useContext(UserContext);
   const [page, setPage] = useState(1);
-  const postsPerPage = 1;
+  const postsPerPage = 5;
 
   const handleChange = (event, value) => {
     console.log(event);
@@ -49,8 +49,6 @@ const Home = () => {
     fetchPosts();
   }, [search]);
 
-  console.log(posts);
-
   return (
     <>
       <Navbar />
@@ -65,7 +63,7 @@ const Home = () => {
             <Link
               // to={user ? `/posts/post/${post._id}` : "/login"}
               to={`/posts/post/${post._id}`}
-              key={post.id}
+              key={post._id}
             >
               <HomePosts key={post._id} post={post} />
             </Link>
@@ -82,6 +80,7 @@ const Home = () => {
           height: "10px",
           width: "100%",
           marginTop: "20px",
+          marginBottom: "100px",
         }}
       >
         <Pagination

@@ -13,7 +13,7 @@ const HomePosts = ({ post }) => {
         <div className={classes.image}>
           <CardMedia
             component="img"
-            sx={{ width: "100%", height: "200px" }}
+            sx={{ height: "100%" }}
             image={IF + post.photo}
             alt=""
           />
@@ -31,17 +31,21 @@ const HomePosts = ({ post }) => {
               </div>
             </div>
             <p className="text-sm md:text-lg">
-              {post.desc.slice(0, 200) + "..."}
+              {post.desc.slice(0, 100) + "..."}
             </p>
-          </div>
-          <div className={classes.actions}>
-            <Button
-              variant="contained"
-              color="secondary"
-              sx={{ backgroundColor: "gray", width: "30%", marginTop: "10px" }}
-            >
-              Read More
-            </Button>
+            <div className={classes.actions}>
+              <Button
+                variant="contained"
+                color="secondary"
+                sx={{
+                  backgroundColor: "gray",
+                  width: "30%",
+                  marginTop: "10px",
+                }}
+              >
+                Read More
+              </Button>
+            </div>
           </div>
         </div>
       </Card>

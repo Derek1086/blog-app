@@ -40,11 +40,6 @@ const Menu = () => {
       )}
       {user && (
         <h3 className="text-white text-sm hover:text-gray-500 cursor-pointer">
-          <Link to="/write">Write</Link>
-        </h3>
-      )}
-      {user && (
-        <h3 className="text-white text-sm hover:text-gray-500 cursor-pointer">
           <Link to={"/myblogs/" + user._id}>My blogs</Link>
         </h3>
       )}
