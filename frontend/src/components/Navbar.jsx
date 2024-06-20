@@ -85,7 +85,7 @@ const Navbar = () => {
             >
               <Link to="/">Blog</Link>
             </h1>
-            {path === "/" && (
+            {
               <div className={classes.search}>
                 <Search>
                   <SearchIconWrapper>
@@ -98,7 +98,7 @@ const Navbar = () => {
                   />
                 </Search>
               </div>
-            )}
+            }
             <div className={classes.actions}>
               {user ? (
                 <Button

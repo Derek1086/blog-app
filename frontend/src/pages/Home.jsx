@@ -14,7 +14,7 @@ const Home = () => {
   const [posts, setPosts] = useState([]);
   const [noResults, setNoResults] = useState(false);
   const [loader, setLoader] = useState(false);
-  const { user } = useContext(UserContext);
+  //const { user } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const postsPerPage = 1;
 
@@ -31,8 +31,9 @@ const Home = () => {
     setLoader(true);
     try {
       const res = await axios.get(URL + "/api/posts/" + search);
-      setPosts(res.data);
-      if (res.data.length === 0) {
+      const sortedPosts = res.data.reverse();
+      setPosts(sortedPosts);
+      if (sortedPosts.length === 0) {
         setNoResults(true);
       } else {
         setNoResults(false);
@@ -53,7 +54,8 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <div className="px-8 md:px-[200px] min-h-[80vh]">
+      <div className="px-8 md:px-[200px]">
+        <h1 className="font-bold mb-5 mt-5">Recent Posts</h1>
         {loader ? (
           <div className="h-[40vh] flex justify-center items-center">
             <Loader />
@@ -79,6 +81,7 @@ const Home = () => {
           alignItems: "center",
           height: "10px",
           width: "100%",
+          marginTop: "20px",
         }}
       >
         <Pagination
