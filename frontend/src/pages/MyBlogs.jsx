@@ -1,5 +1,4 @@
 import { Link, useLocation } from "react-router-dom";
-import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
@@ -59,7 +58,6 @@ const MyBlogs = () => {
           <h3 className="text-center font-bold mt-16">No posts available</h3>
         )}
       </div>
-      <Footer />
     </div>
   );
 };

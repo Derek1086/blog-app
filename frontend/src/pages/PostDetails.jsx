@@ -1,6 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Comment from "../components/Comment";
-import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import { URL, IF } from "../url";
@@ -166,7 +165,7 @@ const PostDetails = () => {
             >
               Add Comment
             </Button>
-            <div className="mt-4">
+            <div className="mt-4 mb-20">
               {comments?.map((c) => (
                 <Comment key={c._id} c={c} post={post} />
               ))}
@@ -174,7 +173,6 @@ const PostDetails = () => {
           </div>
         </div>
       )}
-      <Footer />
     </div>
   );
 };

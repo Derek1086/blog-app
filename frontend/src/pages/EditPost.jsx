@@ -1,11 +1,28 @@
 import { useContext, useEffect, useState } from "react";
-import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-import { ImCross } from "react-icons/im";
 import axios from "axios";
 import { URL } from "../url";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { styled } from "@mui/material/styles";
+
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
 
 const EditPost = () => {
   const postId = useParams().id;
@@ -16,6 +33,15 @@ const EditPost = () => {
   const [file, setFile] = useState(null);
   const [cat, setCat] = useState("");
   const [cats, setCats] = useState([]);
+  const [filename, setFilename] = useState("");
+
+  const handleFileChange = (event) => {
+    if (event.target.files.length > 0) {
+      setFile(event.target.files[0]);
+      setFilename(event.target.files[0].name);
+      console.log(event.target.files[0].name);
+    }
+  };
 
   const fetchPost = async () => {
     try {
@@ -87,72 +113,103 @@ const EditPost = () => {
     <div>
       <Navbar />
       <div className="px-6 md:px-[200px] mt-8">
-        <h1 className="font-bold md:text-2xl text-xl ">Update a post</h1>
+        <h1 className="font-bold md:text-2xl text-xl ">Update {title}</h1>
         <form className="w-full flex flex-col space-y-4 md:space-y-8 mt-4">
-          <input
+          <TextField
             onChange={(e) => setTitle(e.target.value)}
+            id="standard-basic"
+            label="Title"
+            variant="standard"
+            color="secondary"
+            style={{ width: "100%" }}
             value={title}
-            type="text"
-            placeholder="Enter post title"
-            className="px-4 py-2 outline-none"
           />
-          <input
-            onChange={(e) => setFile(e.target.files[0])}
-            type="file"
-            className="px-4"
-          />
+          <div>
+            <Button
+              color="secondary"
+              component="label"
+              role={undefined}
+              variant="contained"
+              tabIndex={-1}
+              startIcon={<CloudUploadIcon />}
+            >
+              Upload file
+              <VisuallyHiddenInput onChange={handleFileChange} type="file" />
+            </Button>
+            <TextField
+              value={filename}
+              variant="standard"
+              color="secondary"
+              fullWidth
+              disabled
+              sx={{ mt: 2 }}
+            />
+          </div>
           <div className="flex flex-col">
             <div className="flex items-center space-x-4 md:space-x-8">
-              <input
-                value={cat}
+              <TextField
                 onChange={(e) => setCat(e.target.value)}
-                className="px-4 py-2 outline-none"
-                placeholder="Enter post category"
-                type="text"
+                id="standard-basic"
+                label="Enter post category"
+                variant="standard"
+                color="secondary"
+                style={{ width: "100%" }}
+                value={cat}
               />
-              <div
+              <Button
                 onClick={addCategory}
-                className="bg-black text-white px-4 py-2 font-semibold cursor-pointer"
+                variant="contained"
+                color="secondary"
+                style={{ padding: "10px" }}
               >
                 Add
-              </div>
+              </Button>
             </div>
-
             {/* categories */}
-            <div className="flex px-4 mt-3">
+            <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
               {cats?.map((c, i) => (
-                <div
+                <Card
+                  sx={{
+                    padding: "10px",
+                    display: "flex",
+                    gap: "10px",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
                   key={i}
-                  className="flex justify-center items-center space-x-2 mr-4 bg-gray-200 px-2 py-1 rounded-md"
                 >
-                  <p>{c}</p>
-                  <p
-                    onClick={() => deleteCategory(i)}
-                    className="text-white bg-black rounded-full cursor-pointer p-1 text-sm"
-                  >
-                    <ImCross />
-                  </p>
-                </div>
+                  {c}
+                  <IconButton onClick={() => deleteCategory(i)}>
+                    <CloseIcon />
+                  </IconButton>
+                </Card>
               ))}
             </div>
           </div>
-          <textarea
+          <TextField
             onChange={(e) => setDesc(e.target.value)}
             value={desc}
-            rows={15}
+            id="standard-basic"
+            label="Description"
+            variant="standard"
+            color="secondary"
+            style={{ width: "100%" }}
+            multiline
+            minRows={15}
             cols={30}
-            className="px-4 py-2 outline-none"
-            placeholder="Enter post description"
           />
-          <button
-            onClick={handleUpdate}
-            className="bg-black w-full md:w-[20%] mx-auto text-white font-semibold px-4 py-2 md:text-xl text-lg"
-          >
-            Update
-          </button>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              onClick={handleUpdate}
+              variant="contained"
+              color="secondary"
+              style={{ width: "50%", padding: "10px" }}
+            >
+              Update
+            </Button>
+          </div>
         </form>
       </div>
-      <Footer />
     </div>
   );
 };

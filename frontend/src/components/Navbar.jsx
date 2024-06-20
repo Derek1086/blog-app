@@ -10,6 +10,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { styled, alpha } from "@mui/material/styles";
 
 import classes from "./NavBar.module.css";
@@ -87,16 +88,21 @@ const Navbar = () => {
             </h1>
             {
               <div className={classes.search}>
-                <Search>
-                  <SearchIconWrapper>
-                    <SearchIcon />
-                  </SearchIconWrapper>
-                  <StyledInputBase
-                    placeholder="Search…"
-                    inputProps={{ "aria-label": "search" }}
-                    onChange={filterPrompt}
-                  />
-                </Search>
+                <div style={{ width: "100%" }}>
+                  <Search>
+                    <SearchIconWrapper>
+                      <SearchIcon />
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                      placeholder="Search…"
+                      inputProps={{ "aria-label": "search" }}
+                      onChange={filterPrompt}
+                    />
+                  </Search>
+                </div>
+                <IconButton>
+                  <FilterAltIcon />
+                </IconButton>
               </div>
             }
             <div className={classes.actions}>
