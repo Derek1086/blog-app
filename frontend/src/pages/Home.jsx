@@ -1,19 +1,18 @@
 import axios from "axios";
 import HomePosts from "../components/HomePosts";
 import Navbar from "../components/Navbar";
-import { IF, URL } from "../url";
-import { useContext, useEffect, useState } from "react";
+import { URL } from "../url";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Loader from "../components/Loader";
-import { UserContext } from "../context/UserContext";
 import Pagination from "@mui/material/Pagination";
 
 const Home = () => {
   const { search } = useLocation();
   const [posts, setPosts] = useState([]);
   const [noResults, setNoResults] = useState(false);
+  const [filteredPosts, setFilteredPosts] = useState(posts || []);
   const [loader, setLoader] = useState(false);
-  //const { user } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const postsPerPage = 5;
 
@@ -24,7 +23,7 @@ const Home = () => {
 
   const indexOfLastPost = page * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const fetchPosts = async () => {
     setLoader(true);
@@ -48,9 +47,24 @@ const Home = () => {
     fetchPosts();
   }, [search]);
 
+  useEffect(() => {
+    setFilteredPosts(posts);
+  }, [posts]);
+
+  const searchHandler = (prompt) => {
+    if (prompt.trim() === "") {
+      setFilteredPosts(posts);
+      return;
+    }
+    const searchResults = currentPosts.filter((post) =>
+      post.title.toLowerCase().includes(prompt)
+    );
+    setFilteredPosts(searchResults);
+  };
+
   return (
     <>
-      <Navbar />
+      <Navbar searchHandler={searchHandler} />
       <div className="px-8 md:px-[200px]">
         <h1 className="font-bold mb-5 mt-5">Recent Posts</h1>
         {loader ? (

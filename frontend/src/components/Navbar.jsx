@@ -54,20 +54,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const Navbar = () => {
+const Navbar = ({ searchHandler }) => {
   const [menu, setMenu] = useState(false);
   const navigate = useNavigate();
   const path = useLocation().pathname;
 
-  // console.log(prompt)
-
   const filterPrompt = (e) => {
     let prompt = e.target.value;
-    console.log(prompt);
-    if (prompt.trim() === "") {
-      return;
-    }
-    //navigate(`/search?q=${prompt}`);
+    searchHandler(prompt);
   };
 
   const showMenu = () => {
@@ -86,25 +80,24 @@ const Navbar = () => {
             >
               <Link to="/">Blog</Link>
             </h1>
-            {
-              <div className={classes.search}>
-                <div style={{ width: "100%" }}>
-                  <Search>
-                    <SearchIconWrapper>
-                      <SearchIcon />
-                    </SearchIconWrapper>
-                    <StyledInputBase
-                      placeholder="Search…"
-                      inputProps={{ "aria-label": "search" }}
-                      onChange={filterPrompt}
-                    />
-                  </Search>
-                </div>
-                <IconButton>
-                  <FilterAltIcon />
-                </IconButton>
+            <div className={classes.search}>
+              <div style={{ width: "100%" }}>
+                <Search>
+                  <SearchIconWrapper>
+                    <SearchIcon />
+                  </SearchIconWrapper>
+                  <StyledInputBase
+                    placeholder="Search…"
+                    inputProps={{ "aria-label": "search" }}
+                    onChange={filterPrompt}
+                    disabled={path !== "/"}
+                  />
+                </Search>
               </div>
-            }
+              <IconButton disabled={path !== "/"}>
+                <FilterAltIcon />
+              </IconButton>
+            </div>
             <div className={classes.actions}>
               {user ? (
                 <Button
