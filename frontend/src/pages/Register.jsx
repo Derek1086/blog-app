@@ -4,17 +4,35 @@ import axios from "axios";
 import { URL } from "../url";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Input from "@mui/material/Input";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import InputAdornment from "@mui/material/InputAdornment";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmedpassword, setConfirmedPassword] = useState("");
   const [error, setError] = useState({
     open: false,
     message: "Invalid username or pw",
     type: "",
   });
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmedPassword, setShowConfirmedPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowConfirmedPassword = () =>
+    setShowConfirmedPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const handleRegister = async () => {
     if (username.trim() === "") {
@@ -33,11 +51,35 @@ const Register = () => {
       });
       return;
     }
+    if (!email.includes("@")) {
+      setError({
+        open: true,
+        message: "Invalid email",
+        type: "email",
+      });
+      return;
+    }
     if (password.trim() === "") {
       setError({
         open: true,
         message: "Password cannot be empty",
         type: "password",
+      });
+      return;
+    }
+    if (confirmedpassword.trim() === "") {
+      setError({
+        open: true,
+        message: "Password cannot be empty",
+        type: "confirmedpassword",
+      });
+      return;
+    }
+    if (password !== confirmedpassword) {
+      setError({
+        open: true,
+        message: "Passwords do not match",
+        type: "confirmedpassword",
       });
       return;
     }
@@ -60,7 +102,7 @@ const Register = () => {
     } catch (err) {
       setError({
         open: true,
-        message: "Invalid credentials",
+        message: "Invalid Credentials",
         type: "login",
       });
       console.log(err);
@@ -93,7 +135,61 @@ const Register = () => {
             style={{ width: "100%" }}
             error={error.type === "email" && error.open === true}
           />
-          <TextField
+          <FormControl sx={{ width: "100%" }} variant="standard">
+            <InputLabel
+              htmlFor="standard-adornment-password"
+              color="secondary"
+              error={error.type === "password" && error.open === true}
+            >
+              Password
+            </InputLabel>
+            <Input
+              id="standard-adornment-password"
+              color="secondary"
+              error={error.type === "password" && error.open === true}
+              onChange={(e) => setPassword(e.target.value)}
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+          <FormControl sx={{ width: "100%" }} variant="standard">
+            <InputLabel
+              htmlFor="standard-adornment-password"
+              color="secondary"
+              error={error.type === "confirmedpassword" && error.open === true}
+            >
+              Confirm Password
+            </InputLabel>
+            <Input
+              id="standard-adornment-password"
+              color="secondary"
+              error={error.type === "password" && error.open === true}
+              onChange={(e) => setConfirmedPassword(e.target.value)}
+              type={showConfirmedPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowConfirmedPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {showConfirmedPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+          {/* <TextField
             onChange={(e) => setPassword(e.target.value)}
             id="standard-basic"
             label="Password"
@@ -102,7 +198,17 @@ const Register = () => {
             color="secondary"
             style={{ width: "100%" }}
             error={error.type === "password" && error.open === true}
-          />
+          /> */}
+          {/* <TextField
+            onChange={(e) => setConfirmedPassword(e.target.value)}
+            id="standard-basic"
+            label="Confirm Password"
+            type="password"
+            variant="standard"
+            color="secondary"
+            style={{ width: "100%" }}
+            error={error.type === "confirmedpassword" && error.open === true}
+          /> */}
           <Button
             onClick={handleRegister}
             variant="contained"
