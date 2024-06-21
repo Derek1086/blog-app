@@ -13,7 +13,16 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
+/**
+ * Login component for user authentication.
+ * Renders a form for users to enter their email/username or username and password.
+ * Handles login functionality and displays error messages if necessary.
+ * Redirects user to home page upon successful login.
+ *
+ * @returns {JSX.Element} Login component
+ */
 const Login = () => {
+  // State variables
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({
@@ -25,13 +34,27 @@ const Login = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
+  /**
+   * Handles showing or hiding password.
+   */
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
+  /**
+   * Prevents default mouse down event.
+   * @param {Event} event - The mouse down event.
+   */
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
+  /**
+   * Handles login functionality.
+   * Sends post request to server with email/username and password.
+   * If successful, sets user and redirects to home page.
+   * If unsuccessful, sets error message and logs error.
+   */
   const handleLogin = async () => {
+    // Check if email and password fields are empty
     if (email.trim() === "") {
       setError({
         open: true,
@@ -50,11 +73,13 @@ const Login = () => {
     }
 
     try {
+      // Send post request to server
       const res = await axios.post(
         URL + "/api/auth/login",
         { email, password },
         { withCredentials: true }
       );
+      // Set user and reset error state
       setUser(res.data);
       setError({
         open: false,
@@ -63,6 +88,7 @@ const Login = () => {
       });
       navigate("/");
     } catch (err) {
+      // Set error message and log error
       setError({
         open: true,
         message: "Invalid email/username or password",
@@ -73,74 +99,72 @@ const Login = () => {
   };
 
   return (
-    <>
-      <div className="w-full flex justify-center items-center h-[80vh] ">
-        <div className="flex flex-col justify-center items-center space-y-4 w-[80%] md:w-[25%]">
-          <h1 className="text-xl font-bold text-left">Log in</h1>
-          {error.open === true && (
-            <h3 className="text-red-500 text-sm ">{error.message}</h3>
-          )}
-          <TextField
-            onChange={(e) => setEmail(e.target.value)}
-            id="standard-basic"
-            label="Email or Username"
-            variant="standard"
+    <div className="w-full flex justify-center items-center h-[80vh] ">
+      <div className="flex flex-col justify-center items-center space-y-4 w-[80%] md:w-[25%]">
+        <h1 className="text-xl font-bold text-left">Log in</h1>
+        {error.open === true && (
+          <h3 className="text-red-500 text-sm ">{error.message}</h3>
+        )}
+        <TextField
+          onChange={(e) => setEmail(e.target.value)}
+          id="standard-basic"
+          label="Email or Username"
+          variant="standard"
+          color="secondary"
+          style={{ width: "100%" }}
+          error={error.type === "email" && error.open === true}
+        />
+        <FormControl sx={{ width: "100%" }} variant="standard">
+          <InputLabel
+            htmlFor="standard-adornment-password"
             color="secondary"
-            style={{ width: "100%" }}
-            error={error.type === "email" && error.open === true}
+            error={error.type === "password" && error.open === true}
+          >
+            Password
+          </InputLabel>
+          <Input
+            id="standard-adornment-password"
+            color="secondary"
+            error={error.type === "password" && error.open === true}
+            onChange={(e) => setPassword(e.target.value)}
+            type={showPassword ? "text" : "password"}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
           />
-          <FormControl sx={{ width: "100%" }} variant="standard">
-            <InputLabel
-              htmlFor="standard-adornment-password"
-              color="secondary"
-              error={error.type === "password" && error.open === true}
-            >
-              Password
-            </InputLabel>
-            <Input
-              id="standard-adornment-password"
-              color="secondary"
-              error={error.type === "password" && error.open === true}
-              onChange={(e) => setPassword(e.target.value)}
-              type={showPassword ? "text" : "password"}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-          <Button
-            onClick={handleLogin}
-            variant="contained"
-            color="secondary"
-            style={{ width: "100%", padding: "10px" }}
-          >
-            Log in
-          </Button>
-          <div className="flex justify-center items-center space-x-3">
-            <p>New here?</p>
-            <p className="text-gray-500 hover:text-white">
-              <Link to="/register">Register</Link>
-            </p>
-          </div>
-          <Button
-            onClick={() => navigate("/")}
-            variant="contained"
-            color="secondary"
-            style={{ width: "100%", padding: "10px" }}
-          >
-            Continue as Guest
-          </Button>
+        </FormControl>
+        <Button
+          onClick={handleLogin}
+          variant="contained"
+          color="secondary"
+          style={{ width: "100%", padding: "10px" }}
+        >
+          Log in
+        </Button>
+        <div className="flex justify-center items-center space-x-3">
+          <p>New here?</p>
+          <p className="text-gray-500 hover:text-white">
+            <Link to="/register">Register</Link>
+          </p>
         </div>
+        <Button
+          onClick={() => navigate("/")}
+          variant="contained"
+          color="secondary"
+          style={{ width: "100%", padding: "10px" }}
+        >
+          Continue as Guest
+        </Button>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -12,17 +12,27 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
+/**
+ * Register component for user registration.
+ * Handles user input for username, email and password
+ * and sends post request to server for registration.
+ * If registration is successful, user is redirected to login page.
+ * If registration fails, error message is displayed.
+ */
 const Register = () => {
+  // State variables for user input
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmedpassword, setConfirmedPassword] = useState("");
+  // State variable for error message
   const [error, setError] = useState({
     open: false,
     message: "Invalid username or pw",
     type: "",
   });
   const navigate = useNavigate();
+  // State variables for password visibility
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmedPassword, setShowConfirmedPassword] = useState(false);
 
@@ -34,7 +44,14 @@ const Register = () => {
     event.preventDefault();
   };
 
+  /**
+   * Handles registration functionality.
+   * Validates user input and sends post request to server for registration.
+   * If registration is successful, user is redirected to login page.
+   * If registration fails, error message is displayed.
+   */
   const handleRegister = async () => {
+    // Validate username input
     if (username.trim() === "") {
       setError({
         open: true,
@@ -43,6 +60,8 @@ const Register = () => {
       });
       return;
     }
+
+    // Validate email input
     if (email.trim() === "") {
       setError({
         open: true,
@@ -51,6 +70,8 @@ const Register = () => {
       });
       return;
     }
+
+    // Validate email format
     if (!email.includes("@")) {
       setError({
         open: true,
@@ -59,6 +80,8 @@ const Register = () => {
       });
       return;
     }
+
+    // Validate password input
     if (password.trim() === "") {
       setError({
         open: true,
@@ -67,6 +90,8 @@ const Register = () => {
       });
       return;
     }
+
+    // Validate confirmed password input
     if (confirmedpassword.trim() === "") {
       setError({
         open: true,
@@ -75,6 +100,8 @@ const Register = () => {
       });
       return;
     }
+
+    // Validate password match
     if (password !== confirmedpassword) {
       setError({
         open: true,
@@ -85,21 +112,29 @@ const Register = () => {
     }
 
     try {
+      // Send post request to server for registration
       const res = await axios.post(URL + "/api/auth/register", {
         username,
         email,
         password,
       });
+
+      // Update state variables with registration data
       setUsername(res.data.username);
       setEmail(res.data.email);
       setPassword(res.data.password);
+
+      // Reset error state
       setError({
         open: false,
         message: "",
         type: "",
       });
+
+      // Redirect to login page
       navigate("/login");
     } catch (err) {
+      // Set error message and log error
       setError({
         open: true,
         message: "Invalid Credentials",
@@ -110,122 +145,100 @@ const Register = () => {
   };
 
   return (
-    <>
-      <div className="w-full flex justify-center items-center h-[80vh] ">
-        <div className="flex flex-col justify-center items-center space-y-4 w-[80%] md:w-[25%]">
-          <h1 className="text-xl font-bold text-left">Create an account</h1>
-          {error.open === true && (
-            <h3 className="text-red-500 text-sm ">{error.message}</h3>
-          )}
-          <TextField
-            onChange={(e) => setUsername(e.target.value)}
-            id="standard-basic"
-            label="Username"
-            variant="standard"
+    <div className="w-full flex justify-center items-center h-[80vh] ">
+      <div className="flex flex-col justify-center items-center space-y-4 w-[80%] md:w-[25%]">
+        <h1 className="text-xl font-bold text-left">Create an account</h1>
+        {error.open === true && (
+          <h3 className="text-red-500 text-sm ">{error.message}</h3>
+        )}
+        <TextField
+          onChange={(e) => setUsername(e.target.value)}
+          id="standard-basic"
+          label="Username"
+          variant="standard"
+          color="secondary"
+          style={{ width: "100%" }}
+          error={error.type === "username" && error.open === true}
+        />
+        <TextField
+          onChange={(e) => setEmail(e.target.value)}
+          id="standard-basic"
+          label="Email"
+          variant="standard"
+          color="secondary"
+          style={{ width: "100%" }}
+          error={error.type === "email" && error.open === true}
+        />
+        <FormControl sx={{ width: "100%" }} variant="standard">
+          <InputLabel
+            htmlFor="standard-adornment-password"
             color="secondary"
-            style={{ width: "100%" }}
-            error={error.type === "username" && error.open === true}
-          />
-          <TextField
-            onChange={(e) => setEmail(e.target.value)}
-            id="standard-basic"
-            label="Email"
-            variant="standard"
-            color="secondary"
-            style={{ width: "100%" }}
-            error={error.type === "email" && error.open === true}
-          />
-          <FormControl sx={{ width: "100%" }} variant="standard">
-            <InputLabel
-              htmlFor="standard-adornment-password"
-              color="secondary"
-              error={error.type === "password" && error.open === true}
-            >
-              Password
-            </InputLabel>
-            <Input
-              id="standard-adornment-password"
-              color="secondary"
-              error={error.type === "password" && error.open === true}
-              onChange={(e) => setPassword(e.target.value)}
-              type={showPassword ? "text" : "password"}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-          <FormControl sx={{ width: "100%" }} variant="standard">
-            <InputLabel
-              htmlFor="standard-adornment-password"
-              color="secondary"
-              error={error.type === "confirmedpassword" && error.open === true}
-            >
-              Confirm Password
-            </InputLabel>
-            <Input
-              id="standard-adornment-password"
-              color="secondary"
-              error={error.type === "password" && error.open === true}
-              onChange={(e) => setConfirmedPassword(e.target.value)}
-              type={showConfirmedPassword ? "text" : "password"}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowConfirmedPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {showConfirmedPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-          {/* <TextField
-            onChange={(e) => setPassword(e.target.value)}
-            id="standard-basic"
-            label="Password"
-            type="password"
-            variant="standard"
-            color="secondary"
-            style={{ width: "100%" }}
             error={error.type === "password" && error.open === true}
-          /> */}
-          {/* <TextField
-            onChange={(e) => setConfirmedPassword(e.target.value)}
-            id="standard-basic"
-            label="Confirm Password"
-            type="password"
-            variant="standard"
-            color="secondary"
-            style={{ width: "100%" }}
-            error={error.type === "confirmedpassword" && error.open === true}
-          /> */}
-          <Button
-            onClick={handleRegister}
-            variant="contained"
-            color="secondary"
-            style={{ width: "100%", padding: "10px" }}
           >
-            Register
-          </Button>
-          <div className="flex justify-center items-center space-x-3">
-            <p>Already have an account?</p>
-            <p className="text-gray-500 hover:text-white">
-              <Link to="/login">Login</Link>
-            </p>
-          </div>
+            Password
+          </InputLabel>
+          <Input
+            id="standard-adornment-password"
+            color="secondary"
+            error={error.type === "password" && error.open === true}
+            onChange={(e) => setPassword(e.target.value)}
+            type={showPassword ? "text" : "password"}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+        <FormControl sx={{ width: "100%" }} variant="standard">
+          <InputLabel
+            htmlFor="standard-adornment-password"
+            color="secondary"
+            error={error.type === "confirmedpassword" && error.open === true}
+          >
+            Confirm Password
+          </InputLabel>
+          <Input
+            id="standard-adornment-password"
+            color="secondary"
+            error={error.type === "password" && error.open === true}
+            onChange={(e) => setConfirmedPassword(e.target.value)}
+            type={showConfirmedPassword ? "text" : "password"}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowConfirmedPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {showConfirmedPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+        <Button
+          onClick={handleRegister}
+          variant="contained"
+          color="secondary"
+          style={{ width: "100%", padding: "10px" }}
+        >
+          Register
+        </Button>
+        <div className="flex justify-center items-center space-x-3">
+          <p>Already have an account?</p>
+          <p className="text-gray-500 hover:text-white">
+            <Link to="/login">Login</Link>
+          </p>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
