@@ -12,6 +12,21 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 const PostDetails = () => {
   const postId = useParams().id;
@@ -20,6 +35,7 @@ const PostDetails = () => {
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const [loader, setLoader] = useState(false);
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
   const fetchPost = async () => {
@@ -66,6 +82,9 @@ const PostDetails = () => {
 
   const postComment = async (e) => {
     e.preventDefault();
+    if (comment === "") {
+      return;
+    }
     try {
       const res = await axios.post(
         URL + "/api/comments/create",
@@ -89,6 +108,47 @@ const PostDetails = () => {
   return (
     <div>
       <Navbar />
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Are you sure you want to delete "{post.title}"
+          </Typography>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "10px",
+              marginTop: "20px",
+            }}
+          >
+            <Button
+              variant="contained"
+              color="secondary"
+              sx={{
+                backgroundColor: "gray",
+                width: "40%",
+                padding: "10px",
+              }}
+              onClick={() => setOpen(false)}
+            >
+              Back
+            </Button>
+            <Button
+              onClick={handleDeletePost}
+              variant="contained"
+              color="secondary"
+              sx={{ width: "40%", padding: "10px" }}
+            >
+              Delete
+            </Button>
+          </div>
+        </Box>
+      </Modal>
       {loader ? (
         <div className="h-[80vh] flex justify-center items-center w-full">
           <Loader />
@@ -102,7 +162,7 @@ const PostDetails = () => {
                 <IconButton onClick={() => navigate("/edit/" + postId)}>
                   <EditIcon />
                 </IconButton>
-                <IconButton onClick={handleDeletePost}>
+                <IconButton onClick={() => setOpen(true)}>
                   <DeleteIcon />
                 </IconButton>
               </div>
@@ -156,6 +216,14 @@ const PostDetails = () => {
                     variant="standard"
                     color="secondary"
                     style={{ width: "100%" }}
+                    multiline
+                    minRows={1}
+                    maxRows={5}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        postComment(e);
+                      }
+                    }}
                   />
                 </div>
                 <div className="mt-4">
