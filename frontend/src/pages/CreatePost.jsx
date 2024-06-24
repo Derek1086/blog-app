@@ -68,7 +68,6 @@ const CreatePost = () => {
     if (event.target.files.length > 0) {
       setFile(event.target.files[0]);
       setFilename(event.target.files[0].name);
-      console.log(event.target.files[0].name);
     }
   };
 

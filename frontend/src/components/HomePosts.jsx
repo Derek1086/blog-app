@@ -37,7 +37,6 @@ const HomePosts = ({ post }) => {
                 variant="contained"
                 color="secondary"
                 sx={{
-                  backgroundColor: "gray",
                   width: "30%",
                   marginTop: "10px",
                 }}

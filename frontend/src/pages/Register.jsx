@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { URL } from "../url";
 import TextField from "@mui/material/TextField";
@@ -31,6 +31,7 @@ const Register = () => {
     message: "Invalid username or pw",
     type: "",
   });
+  const [disabled, setDisabled] = useState(true);
   const navigate = useNavigate();
   // State variables for password visibility
   const [showPassword, setShowPassword] = useState(false);
@@ -43,6 +44,19 @@ const Register = () => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  useEffect(() => {
+    if (
+      email.trim() === "" ||
+      password.trim() === "" ||
+      username.trim() === "" ||
+      confirmedpassword.trim() === ""
+    ) {
+      setDisabled(true);
+    } else {
+      setDisabled(false);
+    }
+  }, [email, password, username, confirmedpassword]);
 
   /**
    * Handles registration functionality.
@@ -228,6 +242,7 @@ const Register = () => {
           variant="contained"
           color="secondary"
           style={{ width: "100%", padding: "10px" }}
+          disabled={disabled}
         >
           Register
         </Button>

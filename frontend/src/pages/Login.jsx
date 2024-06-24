@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { URL } from "../url";
 import { UserContext } from "../context/UserContext";
@@ -30,6 +30,7 @@ const Login = () => {
     message: "",
     type: "",
   });
+  const [disabled, setDisabled] = useState(true);
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -38,6 +39,14 @@ const Login = () => {
    * Handles showing or hiding password.
    */
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  useEffect(() => {
+    if (email.trim() === "" || password.trim() === "") {
+      setDisabled(true);
+    } else {
+      setDisabled(false);
+    }
+  }, [email, password]);
 
   /**
    * Prevents default mouse down event.
@@ -146,6 +155,7 @@ const Login = () => {
           variant="contained"
           color="secondary"
           style={{ width: "100%", padding: "10px" }}
+          disabled={disabled}
         >
           Log in
         </Button>
