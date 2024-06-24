@@ -2,7 +2,6 @@ import { IF } from "../url";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
 
 import classes from "./HomePosts.module.css";
 
