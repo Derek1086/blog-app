@@ -3,6 +3,15 @@ import { UserContext } from "../context/UserContext";
 import axios from "axios";
 import { URL } from "../url";
 import { Link, useNavigate } from "react-router-dom";
+import Box from "@mui/material/Box";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Divider from "@mui/material/Divider";
+import InboxIcon from "@mui/icons-material/Inbox";
+import DraftsIcon from "@mui/icons-material/Drafts";
 
 const Menu = () => {
   const { user } = useContext(UserContext);
@@ -21,41 +30,56 @@ const Menu = () => {
       console.log(err);
     }
   };
+
   return (
-    <div className="bg-black w-[200px] z-10 flex flex-col items-start absolute top-12 right-6 md:right-32 rounded-md p-4 space-y-4">
-      {!user && (
-        <h3 className="text-white text-sm hover:text-gray-500 cursor-pointer">
-          <Link to="/login">Login</Link>
-        </h3>
-      )}
-      {!user && (
-        <h3 className="text-white text-sm hover:text-gray-500 cursor-pointer">
-          <Link to="/register">Register</Link>
-        </h3>
-      )}
-      {user && (
-        <h3 className="text-white text-sm hover:text-gray-500 cursor-pointer">
-          <Link to={"/profile/" + user._id}>Profile</Link>
-        </h3>
-      )}
-      {user && (
-        <h3 className="text-white text-sm hover:text-gray-500 cursor-pointer">
-          <Link to={"/write"}>Write</Link>
-        </h3>
-      )}
-      {user && (
-        <h3 className="text-white text-sm hover:text-gray-500 cursor-pointer">
-          <Link to={"/myposts/" + user._id}>My Posts</Link>
-        </h3>
-      )}
-      {user && (
-        <h3
-          onClick={handleLogout}
-          className="text-white text-sm hover:text-gray-500 cursor-pointer"
-        >
-          Logout
-        </h3>
-      )}
+    <div className=" w-[200px] z-10 flex flex-col items-start absolute top-12 right-6 md:right-32 rounded-md p-4 space-y-4">
+      <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+        <List>
+          {!user && (
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate("/login")}>
+                <ListItemText primary="Login" />
+              </ListItemButton>
+            </ListItem>
+          )}
+
+          {!user && (
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate("/register")}>
+                <ListItemText primary="Register" />
+              </ListItemButton>
+            </ListItem>
+          )}
+          {user && (
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate("/profile/" + user._id)}>
+                <ListItemText primary="Profile" />
+              </ListItemButton>
+            </ListItem>
+          )}
+          {user && (
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate("/write")}>
+                <ListItemText primary="Write" />
+              </ListItemButton>
+            </ListItem>
+          )}
+          {user && (
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate("/myposts/" + user._id)}>
+                <ListItemText primary="My Posts" />
+              </ListItemButton>
+            </ListItem>
+          )}
+          {user && (
+            <ListItem disablePadding>
+              <ListItemButton onClick={handleLogout}>
+                <ListItemText primary="Logout" />
+              </ListItemButton>
+            </ListItem>
+          )}
+        </List>
+      </Box>
     </div>
   );
 };

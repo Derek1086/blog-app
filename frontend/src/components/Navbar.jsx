@@ -16,9 +16,9 @@ import Divider from "@mui/material/Divider";
 
 import classes from "./NavBar.module.css";
 
-const Navbar = () => {
+const Navbar = ({ query }) => {
   const [menu, setMenu] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(query);
   const navigate = useNavigate();
 
   const handleSearchInputChange = (e) => {

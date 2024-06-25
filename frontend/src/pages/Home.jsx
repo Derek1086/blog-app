@@ -53,7 +53,7 @@ const Home = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar query={""} />
       <div className="px-8 md:px-[200px]">
         <h1 className="font-bold mb-5 mt-5">Recent Posts</h1>
         {loader ? (

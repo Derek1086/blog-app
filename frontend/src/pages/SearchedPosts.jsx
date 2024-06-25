@@ -42,7 +42,7 @@ const SearchedPosts = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar query={searchquery} />
       <div className="px-8 md:px-[200px]">
         <h1 className="font-bold mb-5 mt-5">
           {posts.length} results for '{searchquery}'
@@ -63,6 +63,7 @@ const SearchedPosts = () => {
           <h3 className="text-center font-bold mt-16">No posts available</h3>
         )}
       </div>
+      <div className="mb-10" />
     </>
   );
 };

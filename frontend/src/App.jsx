@@ -8,7 +8,7 @@ import EditPost from "./pages/EditPost";
 import Profile from "./pages/Profile";
 import { UserContextProvider } from "./context/UserContext";
 import MyBlogs from "./pages/MyPosts";
-import SearchedPosts from "./components/SearchedPosts";
+import SearchedPosts from "./pages/SearchedPosts";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 

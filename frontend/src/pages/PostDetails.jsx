@@ -107,7 +107,7 @@ const PostDetails = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar query={""} />
       <Modal
         open={open}
         onClose={() => setOpen(false)}

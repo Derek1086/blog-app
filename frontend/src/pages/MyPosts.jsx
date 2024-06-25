@@ -40,7 +40,7 @@ const MyBlogs = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar query={""} />
       <div className="px-8 md:px-[200px] min-h-[80vh]">
         <h1 className="font-bold mb-5 mt-5">Your Posts</h1>
         {loader ? (

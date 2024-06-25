@@ -79,7 +79,7 @@ const Profile = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar query={""} />
       <div className="min-h-[80vh] px-8 md:px-[200px] mt-8 flex md:flex-row flex-col-reverse md:items-start items-start">
         <div className="md:sticky md:top-12  flex justify-start md:justify-end items-start md:w-[30%] w-full md:items-end ">
           <div className=" flex flex-col space-y-4 items-start">
