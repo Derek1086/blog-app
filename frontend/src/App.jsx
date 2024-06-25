@@ -7,7 +7,8 @@ import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
 import Profile from "./pages/Profile";
 import { UserContextProvider } from "./context/UserContext";
-import MyBlogs from "./pages/MyBlogs";
+import MyBlogs from "./pages/MyPosts";
+import SearchedPosts from "./components/SearchedPosts";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
@@ -29,8 +30,9 @@ const App = () => {
           <Route exact path="/write" element={<CreatePost />} />
           <Route exact path="/posts/post/:id" element={<PostDetails />} />
           <Route exact path="/edit/:id" element={<EditPost />} />
-          <Route exact path="/myblogs/:id" element={<MyBlogs />} />
+          <Route exact path="/myposts/:id" element={<MyBlogs />} />
           <Route exact path="/profile/:id" element={<Profile />} />
+          <Route exact path="/posts/:searchquery" element={<SearchedPosts />} />
         </Routes>
       </ThemeProvider>
     </UserContextProvider>

@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 
-import classes from "./HomePosts.module.css";
+import classes from "./Posts.module.css";
 
 const HomePosts = ({ post }) => {
   return (
@@ -25,11 +25,18 @@ const HomePosts = ({ post }) => {
             <div className="flex mb-2 text-sm font-semibold text-gray-500 items-center justify-between md:mb-4">
               <p>@{post.username}</p>
               <div className={`flex space-x-2 text-sm ${classes.date}`}>
-                <p>{new Date(post.updatedAt).toString().slice(0, 15)}</p>
-                <p>{new Date(post.updatedAt).toString().slice(16, 24)}</p>
+                <p className={classes.date}>
+                  {new Date(post.updatedAt).toString().slice(0, 15)}
+                </p>
+                <p className={classes.date}>
+                  {new Date(post.updatedAt).toString().slice(16, 24)}
+                </p>
               </div>
             </div>
-            <p className="text-sm md:text-lg">
+            <p
+              className="text-sm md:text-lg"
+              style={{ wordWrap: "break-word" }}
+            >
               {post.desc.slice(0, 100) + "..."}
             </p>
             <div className={classes.actions}>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import HomePosts from "../components/HomePosts";
+import HomePosts from "../components/Posts";
 import Navbar from "../components/Navbar";
 import { URL } from "../url";
 import { useEffect, useState } from "react";
@@ -51,20 +51,9 @@ const Home = () => {
     setFilteredPosts(posts);
   }, [posts]);
 
-  const searchHandler = (prompt) => {
-    if (prompt.trim() === "") {
-      setFilteredPosts(posts);
-      return;
-    }
-    const searchResults = currentPosts.filter((post) =>
-      post.title.toLowerCase().includes(prompt)
-    );
-    setFilteredPosts(searchResults);
-  };
-
   return (
     <>
-      <Navbar searchHandler={searchHandler} />
+      <Navbar />
       <div className="px-8 md:px-[200px]">
         <h1 className="font-bold mb-5 mt-5">Recent Posts</h1>
         {loader ? (
@@ -85,35 +74,38 @@ const Home = () => {
           <h3 className="text-center font-bold mt-16">No posts available</h3>
         )}
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "10px",
-          width: "100%",
-          marginTop: "20px",
-          marginBottom: "100px",
-        }}
-      >
-        <Pagination
-          size="medium"
-          shape="rounded"
-          count={Math.ceil(posts.length / postsPerPage)}
-          page={page}
-          onChange={handleChange}
-          sx={{
-            "& .MuiPaginationItem-root": {
-              marginX: 1,
-            },
-            "@media screen and (max-width: 768px)": {
-              "& .MuiPaginationItem-root": {
-                marginX: 0,
-              },
-            },
+      {posts.length > postsPerPage && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "10px",
+            width: "100%",
+            marginTop: "20px",
+            marginBottom: "100px",
           }}
-        />
-      </div>
+        >
+          <Pagination
+            size="medium"
+            shape="rounded"
+            count={Math.ceil(posts.length / postsPerPage)}
+            page={page}
+            onChange={handleChange}
+            sx={{
+              "& .MuiPaginationItem-root": {
+                marginX: 1,
+              },
+              "@media screen and (max-width: 768px)": {
+                "& .MuiPaginationItem-root": {
+                  marginX: 0,
+                },
+              },
+            }}
+          />
+        </div>
+      )}
+      <div className="mb-10" />
     </>
   );
 };

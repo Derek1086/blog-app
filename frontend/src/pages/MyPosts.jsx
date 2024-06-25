@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import axios from "axios";
 import { URL } from "../url";
-import HomePosts from "../components/HomePosts";
+import HomePosts from "../components/Posts";
 import Loader from "../components/Loader";
 
 const MyBlogs = () => {
@@ -42,22 +42,25 @@ const MyBlogs = () => {
     <div>
       <Navbar />
       <div className="px-8 md:px-[200px] min-h-[80vh]">
+        <h1 className="font-bold mb-5 mt-5">Your Posts</h1>
         {loader ? (
           <div className="h-[40vh] flex justify-center items-center">
             <Loader />
           </div>
         ) : !noResults ? (
           posts.map((post) => (
-            <>
-              <Link to={user ? `/posts/post/${post._id}` : "/login"}>
-                <HomePosts key={post._id} post={post} />
-              </Link>
-            </>
+            <Link
+              to={user ? `/posts/post/${post._id}` : "/login"}
+              key={post._id}
+            >
+              <HomePosts key={post._id} post={post} />
+            </Link>
           ))
         ) : (
           <h3 className="text-center font-bold mt-16">No posts available</h3>
         )}
       </div>
+      <div className="mb-10" />
     </div>
   );
 };

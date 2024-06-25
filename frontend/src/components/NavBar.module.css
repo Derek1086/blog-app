@@ -33,5 +33,6 @@
   .search {
     width: 90%;
     gap: 10px;
+    padding-right: 10px;
   }
 }

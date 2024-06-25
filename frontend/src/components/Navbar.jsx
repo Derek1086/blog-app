@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useContext, useState } from "react";
 import Menu from "./Menu";
@@ -10,58 +10,25 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import { styled, alpha } from "@mui/material/styles";
+import HomeIcon from "@mui/icons-material/Home";
+import Paper from "@mui/material/Paper";
+import Divider from "@mui/material/Divider";
 
 import classes from "./NavBar.module.css";
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(2),
-    width: "auto",
-  },
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
-}));
-
-const Navbar = ({ searchHandler }) => {
+const Navbar = () => {
   const [menu, setMenu] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-  const path = useLocation().pathname;
 
-  const filterPrompt = (e) => {
-    let prompt = e.target.value;
-    searchHandler(prompt);
+  const handleSearchInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchButtonClick = () => {
+    if (searchQuery.trim()) {
+      navigate(`/posts/${searchQuery}`);
+    }
   };
 
   const showMenu = () => {
@@ -81,22 +48,48 @@ const Navbar = ({ searchHandler }) => {
               <Link to="/">Blog</Link>
             </h1>
             <div className={classes.search}>
-              <div style={{ width: "100%" }}>
-                <Search>
-                  <SearchIconWrapper>
-                    <SearchIcon />
-                  </SearchIconWrapper>
-                  <StyledInputBase
-                    placeholder="Search…"
+              <div style={{ display: "flex", gap: "10px", width: "100%" }}>
+                <Paper
+                  component="form"
+                  sx={{
+                    p: "2px 4px",
+                    display: "flex",
+                    alignItems: "center",
+                    width: 400,
+                  }}
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSearchButtonClick();
+                  }}
+                >
+                  <IconButton
+                    sx={{ p: "10px" }}
+                    aria-label="home"
+                    onClick={() => {
+                      navigate("/");
+                      setSearchQuery("");
+                    }}
+                  >
+                    <HomeIcon />
+                  </IconButton>
+                  <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                  <InputBase
+                    sx={{ ml: 1, flex: 1 }}
+                    placeholder="Search"
                     inputProps={{ "aria-label": "search" }}
-                    onChange={filterPrompt}
-                    disabled={path !== "/"}
+                    onChange={handleSearchInputChange}
+                    value={searchQuery}
                   />
-                </Search>
+                  <IconButton
+                    type="button"
+                    sx={{ p: "10px" }}
+                    aria-label="search"
+                    onClick={handleSearchButtonClick}
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </Paper>
               </div>
-              <IconButton disabled={path !== "/"}>
-                <FilterAltIcon />
-              </IconButton>
             </div>
             <div className={classes.actions}>
               {user ? (
