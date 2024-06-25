@@ -226,7 +226,7 @@ const Comment = ({ c, post }) => {
             </Box>
           </Box>
         ) : (
-          <div style={{ wordWrap: "break-word" }}>
+          <div style={{ wordWrap: "break-word", marginTop: "5px" }}>
             <span>{c.comment}</span>
           </div>
         )}

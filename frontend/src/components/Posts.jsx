@@ -47,8 +47,13 @@ const HomePosts = ({ post }) => {
             </div>
           </div>
           <p style={{ wordWrap: "break-word", fontSize: "14px" }}>
-            {post.desc.slice(0, 150) + "..."}
+            {post.desc
+              .replace(/\n/g, " ")
+              .replace(/\s+/g, " ")
+              .trim()
+              .slice(0, 150) + "..."}
           </p>
+
           <div className={classes.actions}>
             <Button
               variant="contained"

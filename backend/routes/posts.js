@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const fs = require("fs");
+const path = require("path");
 const Post = require("../models/Post");
 const Comment = require("../models/Comment");
 const verifyToken = require("../verifyToken");
@@ -33,13 +35,26 @@ router.put("/:id", verifyToken, async (req, res) => {
   }
 });
 
-//DELETE
+// DELETE
 router.delete("/:id", verifyToken, async (req, res) => {
   try {
+    const post = await Post.findById(req.params.id);
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    // Check if the post has a photo and delete it from filesystem
+    if (post.photo) {
+      const photoPath = path.join(__dirname, `../images/${post.photo}`);
+      fs.unlinkSync(photoPath);
+      console.log(post.photo + " has been deleted from the filesystem.");
+    }
+
     await Post.findByIdAndDelete(req.params.id);
     await Comment.deleteMany({ postId: req.params.id });
-    res.status(200).json("Post has been deleted!");
+    res.status(200).json("Post and associated comments have been deleted!");
   } catch (err) {
+    console.error(err);
     res.status(500).json(err);
   }
 });
