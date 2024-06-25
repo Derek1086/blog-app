@@ -127,7 +127,7 @@ const CreatePost = () => {
 
     const post = {
       title,
-      desc,
+      desc: desc.replace(/\n/g, "\\n"),
       username: user.username,
       userId: user._id,
       categories: cats,
@@ -240,6 +240,7 @@ const CreatePost = () => {
             color="secondary"
             style={{ width: "100%" }}
             error={error.type === "title" && error.open === true}
+            inputProps={{ maxLength: 100 }}
           />
           <div>
             <Button
@@ -273,6 +274,7 @@ const CreatePost = () => {
                 color="secondary"
                 style={{ width: "100%" }}
                 value={cat}
+                inputProps={{ maxLength: 20 }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     addCategory();

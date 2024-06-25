@@ -137,6 +137,11 @@ const Login = () => {
             error={error.type === "password" && error.open === true}
             onChange={(e) => setPassword(e.target.value)}
             type={showPassword ? "text" : "password"}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleLogin();
+              }
+            }}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton

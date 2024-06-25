@@ -224,6 +224,11 @@ const Register = () => {
             error={error.type === "password" && error.open === true}
             onChange={(e) => setConfirmedPassword(e.target.value)}
             type={showConfirmedPassword ? "text" : "password"}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleRegister();
+              }
+            }}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton

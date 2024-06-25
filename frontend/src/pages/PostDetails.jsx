@@ -199,7 +199,16 @@ const PostDetails = () => {
           >
             <img src={IF + post.photo} className="w-3/4  mx-auto mt-8" alt="" />
           </div>
-          <p className="mx-auto mt-8">{post.desc}</p>
+          {post.desc && (
+            <div className="mx-auto mt-8">
+              {post.desc.split("\\n").map((paragraph, index) => (
+                <div key={index}>
+                  <p key={index}>{paragraph}</p>
+                  <br />
+                </div>
+              ))}
+            </div>
+          )}
           <div className="flex flex-col mt-4">
             <h3 className="mt-6 mb-4 font-semibold">
               {comments.length} Comments

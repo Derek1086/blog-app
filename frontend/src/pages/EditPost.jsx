@@ -67,7 +67,7 @@ const EditPost = () => {
     try {
       const res = await axios.get(URL + "/api/posts/" + postId);
       setTitle(res.data.title);
-      setDesc(res.data.desc);
+      setDesc(res.data.desc.replace(/\\n/g, "\n"));
       setFile(res.data.photo);
       setCats(res.data.categories);
       console.log(res.data.photo);
@@ -98,7 +98,7 @@ const EditPost = () => {
 
     const post = {
       title,
-      desc,
+      desc: desc.replace(/\n/g, "\\n"),
       username: user.username,
       userId: user._id,
       categories: cats,
@@ -246,7 +246,6 @@ const EditPost = () => {
               <VisuallyHiddenInput onChange={handleFileChange} type="file" />
             </Button>
             <TextField
-              value={filename}
               variant="standard"
               color="secondary"
               fullWidth
@@ -265,6 +264,11 @@ const EditPost = () => {
                 color="secondary"
                 style={{ width: "100%" }}
                 value={cat}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    addCategory();
+                  }
+                }}
               />
               <Button
                 onClick={addCategory}
@@ -335,7 +339,7 @@ const EditPost = () => {
               color="secondary"
               sx={{ width: "30%", padding: "10px" }}
             >
-              Create
+              Update
             </Button>
           </div>
         </form>
