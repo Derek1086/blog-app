@@ -68,9 +68,8 @@ const EditPost = () => {
       const res = await axios.get(URL + "/api/posts/" + postId);
       setTitle(res.data.title);
       setDesc(res.data.desc.replace(/\\n/g, "\n"));
-      setFile(res.data.photo);
+      //setFile(res.data.photo);
       setCats(res.data.categories);
-      console.log(res.data.photo);
       setFilename(res.data.photo);
     } catch (err) {
       console.log(err);
@@ -83,10 +82,10 @@ const EditPost = () => {
       setError({ open: true, message: "Title cannot be empty", type: "title" });
       return;
     }
-    if (file === null || filename === "") {
-      setError({ open: true, message: "File cannot be empty", type: "file" });
-      return;
-    }
+    // if (file === null || filename === "") {
+    //   setError({ open: true, message: "File cannot be empty", type: "file" });
+    //   return;
+    // }
     if (desc === "") {
       setError({
         open: true,
@@ -110,23 +109,19 @@ const EditPost = () => {
       data.append("img", filename);
       data.append("file", file);
       post.photo = filename;
-      // console.log(data)
       //img upload
       try {
         const imgUpload = await axios.post(URL + "/api/upload", data);
-        setError({ open: false, message: "", type: "" });
       } catch (err) {
         console.log(err);
       }
     }
-    //post upload
 
     try {
       const res = await axios.put(URL + "/api/posts/" + postId, post, {
         withCredentials: true,
       });
       navigate("/posts/post/" + res.data._id);
-      // console.log(res.data)
     } catch (err) {
       console.log(err);
     }
