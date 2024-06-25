@@ -247,6 +247,7 @@ const EditPost = () => {
               disabled
               sx={{ mt: 2 }}
               error={error.type === "file" && error.open === true}
+              value={filename}
             />
           </div>
           <div className="flex flex-col">

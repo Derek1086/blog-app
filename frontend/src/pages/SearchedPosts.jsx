@@ -44,13 +44,11 @@ const SearchedPosts = () => {
     <>
       <Navbar query={searchquery} />
       <div className="px-8 md:px-[200px]">
-        <h1 className="font-bold mb-5 mt-5">
-          {!loader && (
-            <h1 className="font-bold mb-5 mt-5">
-              {posts.length} results for '{searchquery}'
-            </h1>
-          )}
-        </h1>
+        {!loader && (
+          <h1 className="font-bold mb-5 mt-5">
+            {posts.length} results for '{searchquery}'
+          </h1>
+        )}
       </div>
       <div className="px-8 md:px-[200px]">
         {loader ? (
