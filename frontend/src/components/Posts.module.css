@@ -2,6 +2,13 @@
   width: 25%;
 }
 
+.title {
+  font-weight: bold;
+  font-size: 20px;
+  word-wrap: break-word;
+  margin-bottom: 5px;
+}
+
 .content {
   display: flex;
   flex-direction: column;
@@ -18,5 +25,9 @@
 
   .content {
     width: 100%;
+  }
+
+  .title {
+    font-size: 16px;
   }
 }

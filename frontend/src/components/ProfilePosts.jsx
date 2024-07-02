@@ -26,16 +26,7 @@ const ProfilePosts = ({ post }) => {
       </div>
       <div className={classes.content}>
         <div style={{ height: "200px" }}>
-          <h1
-            style={{
-              fontWeight: "bold",
-              fontSize: "20px",
-              wordWrap: "break-word",
-              marginBottom: "5px",
-            }}
-          >
-            {post.title}
-          </h1>
+          <h1 className={classes.title}>{post.title}</h1>
           <div className="flex mb-2 text-sm font-semibold text-gray-500 items-center justify-between">
             <div className={`flex space-x-2 text-sm ${classes.date}`}>
               <p className={classes.date}>
