@@ -7,12 +7,17 @@ import { URL } from "../url";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 const SearchedPosts = () => {
   const { searchquery } = useParams();
   const [posts, setPosts] = useState([]);
   const [noResults, setNoResults] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [filter, setFilter] = useState("");
 
   useEffect(() => {
     fetchPosts();
@@ -40,14 +45,57 @@ const SearchedPosts = () => {
     }
   };
 
+  const handleFilter = (event) => {
+    setFilter(event.target.value);
+  };
+
   return (
     <>
       <Navbar query={searchquery} />
       <div className="px-8 md:px-[200px]">
         {!loader && (
-          <h1 className="font-bold mb-5 mt-5">
-            {posts.length} results for '{searchquery}'
-          </h1>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {posts.length !== 1 ? (
+              <h1 className="font-bold mb-5 mt-5">
+                {posts.length} results for '{searchquery}'
+              </h1>
+            ) : (
+              <h1 className="font-bold mb-5 mt-5">
+                {posts.length} result for '{searchquery}'
+              </h1>
+            )}
+            {posts.length > 0 && (
+              <div>
+                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <InputLabel color="secondary" id="demo-select-small-label">
+                    Sort
+                  </InputLabel>
+                  <Select
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    value={filter}
+                    label="Filter"
+                    onChange={handleFilter}
+                    color="secondary"
+                  >
+                    <MenuItem value="">
+                      <em>Default</em>
+                    </MenuItem>
+                    <MenuItem value={"Newest"}>Newest</MenuItem>
+                    <MenuItem value={"Oldest"}>Oldest</MenuItem>
+                    <MenuItem value={"Title"}>Title</MenuItem>
+                    <MenuItem value={"Author"}>Author</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+            )}
+          </div>
         )}
       </div>
       <div className="px-8 md:px-[200px]">

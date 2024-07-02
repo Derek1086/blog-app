@@ -29,7 +29,7 @@ const Menu = () => {
 
   return (
     <div className=" w-[200px] z-10 flex flex-col items-start absolute top-12 right-6 md:right-32 rounded-md p-4 space-y-4">
-      <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+      <Box sx={{ width: "100%", backgroundColor: "#272727" }}>
         <List>
           {!user && (
             <ListItem disablePadding>

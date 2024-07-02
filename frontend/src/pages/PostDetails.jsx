@@ -209,9 +209,15 @@ const PostDetails = () => {
             </div>
           )}
           <div className="flex flex-col mt-4">
-            <h3 className="mt-6 mb-4 font-semibold">
-              {comments.length} Comments
-            </h3>
+            {comments.length !== 1 ? (
+              <h3 className="mt-6 mb-4 font-semibold">
+                {comments.length} Comments
+              </h3>
+            ) : (
+              <h3 className="mt-6 mb-4 font-semibold">
+                {comments.length} Comment
+              </h3>
+            )}
           </div>
           <>
             {user ? (
