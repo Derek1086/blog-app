@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+}
+
+.profile {
+  width: 35%;
+}
+
+.posts {
+  width: 65%;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    display: block;
+  }
+
+  .profile {
+    width: 100%;
+  }
+
+  .posts {
+    width: 100%;
+  }
+}

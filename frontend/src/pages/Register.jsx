@@ -148,13 +148,24 @@ const Register = () => {
       // Redirect to login page
       navigate("/login");
     } catch (err) {
-      // Set error message and log error
-      setError({
-        open: true,
-        message: "Invalid Credentials",
-        type: "login",
-      });
-      console.log(err);
+      // Handle duplicate username or email error
+      if (err.response && err.response.status === 400) {
+        setError({
+          open: true,
+          message: err.response.data.message,
+          type: err.response.data.message.includes("Username")
+            ? "username"
+            : "email",
+        });
+      } else {
+        // Set general error message and log error
+        setError({
+          open: true,
+          message: "Invalid Credentials",
+          type: "login",
+        });
+        console.log(err);
+      }
     }
   };
 

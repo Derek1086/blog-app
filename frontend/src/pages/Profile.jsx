@@ -1,12 +1,16 @@
 import { useContext, useEffect, useState } from "react";
-import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import ProfilePosts from "../components/ProfilePosts";
-import HomePosts from "../components/Posts";
 import axios from "axios";
 import { IF, URL } from "../url";
 import { UserContext } from "../context/UserContext";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+
+import classes from "./Profile.module.css";
 
 const Profile = () => {
   const param = useParams().id;
@@ -16,33 +20,71 @@ const Profile = () => {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
-  const [updated, setUpdated] = useState(false);
-  // console.log(user)
+  const [editing, setEditing] = useState({
+    editing: false,
+    type: "",
+  });
+  const [error, setError] = useState({
+    open: false,
+    message: "",
+    type: "",
+  });
 
   const fetchProfile = async () => {
+    if (!user || !user._id) return;
     try {
       const res = await axios.get(URL + "/api/users/" + user._id);
       setUsername(res.data.username);
       setEmail(res.data.email);
-      setPassword(res.data.password);
     } catch (err) {
       console.log(err);
     }
   };
 
   const handleUserUpdate = async () => {
-    setUpdated(false);
+    if (username.trim() === "") {
+      setError({
+        open: true,
+        message: "Username cannot be empty",
+        type: "username",
+      });
+      return;
+    }
+    if (email.trim() === "") {
+      setError({
+        open: true,
+        message: "Email cannot be empty",
+        type: "email",
+      });
+      return;
+    }
+
     try {
       const res = await axios.put(
         URL + "/api/users/" + user._id,
-        { username, email, password },
+        { username, email },
         { withCredentials: true }
       );
-      // console.log(res.data)
-      setUpdated(true);
+      window.location.reload();
     } catch (err) {
-      console.log(err);
-      setUpdated(false);
+      // Handle duplicate username or email error
+      if (err.response && err.response.status === 400) {
+        setError({
+          open: true,
+          message: err.response.data.message,
+          type: err.response.data.message.includes("Username")
+            ? "username"
+            : "email",
+        });
+      } else {
+        // Set general error message and log error
+        setError({
+          open: true,
+          message: "Invalid Credentials",
+          type: "login",
+        });
+        console.log(err);
+      }
     }
   };
 
@@ -53,16 +95,15 @@ const Profile = () => {
       });
       setUser(null);
       navigate("/");
-      // console.log(res.data)
     } catch (err) {
       console.log(err);
     }
   };
-  // console.log(user)
+
   const fetchUserPosts = async () => {
+    if (!user || !user._id) return;
     try {
       const res = await axios.get(URL + "/api/posts/user/" + user._id);
-      // console.log(res.data)
       setPosts(res.data);
     } catch (err) {
       console.log(err);
@@ -71,57 +112,162 @@ const Profile = () => {
 
   useEffect(() => {
     fetchProfile();
-  }, [param]);
+  }, [param, user]);
 
   useEffect(() => {
     fetchUserPosts();
-  }, [param]);
+  }, [param, user]);
 
   return (
     <div>
       <Navbar query={""} />
-      <div className="min-h-[80vh] px-8 md:px-[200px] mt-8 flex md:flex-row flex-col-reverse md:items-start items-start">
-        <div className="md:sticky md:top-12  flex justify-start md:justify-end items-start md:w-[30%] w-full md:items-end ">
-          <div className=" flex flex-col space-y-4 items-start">
-            <h1 className="text-xl font-bold mb-4">Profile</h1>
-            <input
+      <div className={`px-8 py-5 md:px-[200px] space-y-5 ${classes.container}`}>
+        <div className={`flex flex-col space-y-5 ${classes.profile}`}>
+          <h1 className="text-xl font-bold mt-5">Your Profile</h1>
+          {error.open === true && (
+            <h3 className="text-red-500 text-sm ">{error.message}</h3>
+          )}
+          <div className={classes.line}>
+            <TextField
               onChange={(e) => setUsername(e.target.value)}
               value={username}
-              className="outline-none px-4 py-2 text-gray-500"
-              placeholder="Your username"
+              label="Username"
+              variant="standard"
+              color="secondary"
               type="text"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleUserUpdate();
+                }
+              }}
+              disabled={
+                editing.editing === false || editing.type !== "username"
+              }
+              error={error.type === "username" && error.open === true}
             />
-            <input
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              className="outline-none px-4 py-2 text-gray-500"
-              placeholder="Your email"
-              type="email"
-            />
-            {/* <input onChange={(e)=>setPassword(e.target.value)} value={password} className="outline-none px-4 py-2 text-gray-500" placeholder="Your password" type="password"/> */}
-            <div className="flex items-center space-x-4 mt-8">
-              <button
-                onClick={handleUserUpdate}
-                className="text-white font-semibold bg-black px-4 py-2 hover:text-black hover:bg-gray-400"
+            {editing.editing === true && editing.type === "username" ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
               >
-                Update
-              </button>
-              <button
-                onClick={handleUserDelete}
-                className="text-white font-semibold bg-black px-4 py-2 hover:text-black hover:bg-gray-400"
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  sx={{
+                    backgroundColor: "gray",
+                    width: "50%",
+                    padding: "10px",
+                  }}
+                  onClick={() => window.location.reload()}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  sx={{ width: "50%", padding: "10px" }}
+                  onClick={handleUserUpdate}
+                >
+                  Update
+                </Button>
+              </div>
+            ) : (
+              <IconButton
+                onClick={() =>
+                  setEditing({
+                    editing: true,
+                    type: "username",
+                  })
+                }
               >
-                Delete
-              </button>
-            </div>
-            {updated && (
-              <h3 className="text-green-500 text-sm text-center mt-4">
-                user updated successfully!
-              </h3>
+                <EditIcon />
+              </IconButton>
             )}
           </div>
+          <div className={classes.line}>
+            <TextField
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              label="Email"
+              variant="standard"
+              color="secondary"
+              type="text"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleUserUpdate();
+                }
+              }}
+              disabled={editing.editing === false || editing.type !== "email"}
+              error={error.type === "email" && error.open === true}
+            />
+            {editing.editing === true && editing.type === "email" ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  sx={{
+                    backgroundColor: "gray",
+                    width: "50%",
+                    padding: "10px",
+                  }}
+                  onClick={() => window.location.reload()}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  sx={{ width: "50%", padding: "10px" }}
+                  onClick={handleUserUpdate}
+                >
+                  Update
+                </Button>
+              </div>
+            ) : (
+              <IconButton
+                onClick={() =>
+                  setEditing({
+                    editing: true,
+                    type: "email",
+                  })
+                }
+              >
+                <EditIcon />
+              </IconButton>
+            )}
+          </div>
+          <div className={classes.line}>
+            <Button
+              variant="contained"
+              color="secondary"
+              sx={{ padding: "10px" }}
+            >
+              Update Password
+            </Button>
+          </div>
+        </div>
+        <div className={classes.posts}>
+          <h1 className="text-xl font-bold mb-5">Your Posts</h1>
+          {posts.length === 0 ? (
+            <p>You haven't posted anything</p>
+          ) : (
+            posts.map((p) => (
+              <Link to={`/posts/post/${p._id}`} key={p._id}>
+                <ProfilePosts key={p._id} post={p} />
+              </Link>
+            ))
+          )}
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

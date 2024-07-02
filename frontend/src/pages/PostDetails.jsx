@@ -85,6 +85,7 @@ const PostDetails = () => {
     if (comment === "") {
       return;
     }
+
     try {
       const res = await axios.post(
         URL + "/api/comments/create",
@@ -96,10 +97,8 @@ const PostDetails = () => {
         },
         { withCredentials: true }
       );
-
-      // fetchPostComments()
-      // setComment("")
-      window.location.reload(true);
+      setComment("");
+      await fetchPostComments();
     } catch (err) {
       console.log(err);
     }
@@ -220,6 +219,7 @@ const PostDetails = () => {
                 <div className="w-full flex flex-col md:flex-row">
                   <TextField
                     onChange={(e) => setComment(e.target.value)}
+                    value={comment}
                     id="standard-basic"
                     label="Write a comment"
                     variant="standard"

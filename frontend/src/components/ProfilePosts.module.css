@@ -1,0 +1,21 @@
+.image {
+  width: 25%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 75%;
+  padding: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .image,
+  .date {
+    display: none;
+  }
+
+  .content {
+    width: 100%;
+  }
+}

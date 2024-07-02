@@ -62,11 +62,7 @@ const Home = () => {
           </div>
         ) : !noResults ? (
           currentPosts.map((post) => (
-            <Link
-              // to={user ? `/posts/post/${post._id}` : "/login"}
-              to={`/posts/post/${post._id}`}
-              key={post._id}
-            >
+            <Link to={`/posts/post/${post._id}`} key={post._id}>
               <HomePosts key={post._id} post={post} />
             </Link>
           ))
