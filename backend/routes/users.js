@@ -68,6 +68,33 @@ router.put("/password/:id", verifyToken, async (req, res) => {
   }
 });
 
+// VERIFY Password
+router.put("/password/verify/:id", verifyToken, async (req, res) => {
+  const { userpassword } = req.body;
+  const { id } = req.params; // Extract user ID from URL parameter
+
+  try {
+    // Fetch user details by ID from token or session
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Compare provided password with stored hash
+    const passwordMatch = await bcrypt.compare(userpassword, user.password);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ message: "Incorrect current password" });
+    }
+
+    res.status(200).json({ message: "Password verified successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // DELETE User
 router.delete("/:id", verifyToken, async (req, res) => {
   try {

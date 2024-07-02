@@ -153,7 +153,7 @@ const EditPost = () => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Are you sure you want to discard your changes??
+            Are you sure you want to discard your changes?
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             All of your info will be lost.

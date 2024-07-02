@@ -223,14 +223,14 @@ const Register = () => {
         </FormControl>
         <FormControl sx={{ width: "100%" }} variant="standard">
           <InputLabel
-            htmlFor="standard-adornment-password"
+            htmlFor="standard-adornment-confirmed-password"
             color="secondary"
             error={error.type === "confirmedpassword" && error.open === true}
           >
             Confirm Password
           </InputLabel>
           <Input
-            id="standard-adornment-password"
+            id="standard-adornment-confirmed-password"
             color="secondary"
             error={error.type === "password" && error.open === true}
             onChange={(e) => setConfirmedPassword(e.target.value)}
