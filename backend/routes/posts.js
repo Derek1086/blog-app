@@ -8,7 +8,7 @@ const Post = require("../models/Post");
 const Comment = require("../models/Comment");
 const verifyToken = require("../verifyToken");
 
-//CREATE
+// CREATE
 router.post("/create", verifyToken, async (req, res) => {
   try {
     const newPost = new Post(req.body);
@@ -81,7 +81,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
   }
 });
 
-//GET POST DETAILS
+// GET POST DETAILS
 router.get("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -91,7 +91,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-//GET POSTS
+// GET POSTS
 router.get("/", async (req, res) => {
   const query = req.query;
 
@@ -106,7 +106,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-//GET USER POSTS
+// GET USER POSTS
 router.get("/user/:userId", async (req, res) => {
   try {
     const posts = await Post.find({ userId: req.params.userId });

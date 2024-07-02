@@ -71,17 +71,15 @@ router.put("/password/:id", verifyToken, async (req, res) => {
 // VERIFY Password
 router.put("/password/verify/:id", verifyToken, async (req, res) => {
   const { userpassword } = req.body;
-  const { id } = req.params; // Extract user ID from URL parameter
+  const { id } = req.params;
 
   try {
-    // Fetch user details by ID from token or session
     const user = await User.findById(id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Compare provided password with stored hash
     const passwordMatch = await bcrypt.compare(userpassword, user.password);
 
     if (!passwordMatch) {

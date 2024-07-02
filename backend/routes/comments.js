@@ -6,7 +6,7 @@ const Post = require("../models/Post");
 const Comment = require("../models/Comment");
 const verifyToken = require("../verifyToken");
 
-//CREATE
+// CREATE
 router.post("/create", verifyToken, async (req, res) => {
   try {
     const newComment = new Comment(req.body);
@@ -17,7 +17,7 @@ router.post("/create", verifyToken, async (req, res) => {
   }
 });
 
-//UPDATE
+// UPDATE
 router.put("/:id", verifyToken, async (req, res) => {
   try {
     const updatedComment = await Comment.findByIdAndUpdate(
@@ -31,7 +31,7 @@ router.put("/:id", verifyToken, async (req, res) => {
   }
 });
 
-//DELETE
+// DELETE
 router.delete("/:id", verifyToken, async (req, res) => {
   try {
     await Comment.findByIdAndDelete(req.params.id);
@@ -42,7 +42,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
   }
 });
 
-//GET POST COMMENTS
+// GET POST COMMENTS
 router.get("/post/:postId", async (req, res) => {
   try {
     const comments = await Comment.find({ postId: req.params.postId });
