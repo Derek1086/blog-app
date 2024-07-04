@@ -2,15 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { URL } from "../url";
-import TextField from "@mui/material/TextField";
+import HeaderText from "../ui/text/HeaderText";
+import BodyText from "../ui/text/BodyText";
+import MainContainer from "../ui/container/MainContainer";
+import Stack from "@mui/material/Stack";
+import CustomTextField from "../ui/input/CustomTextField";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import Input from "@mui/material/Input";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 /**
  * Register component for user registration.
@@ -161,8 +158,8 @@ const Register = () => {
         // Set general error message and log error
         setError({
           open: true,
-          message: "Invalid Credentials",
-          type: "login",
+          message: "Invalid credentials",
+          type: "register",
         });
         console.log(err);
       }
@@ -170,104 +167,130 @@ const Register = () => {
   };
 
   return (
-    <div className="w-full flex justify-center items-center h-[80vh] ">
+    <div className="w-full flex justify-center items-center mt-10">
       <div className="flex flex-col justify-center items-center space-y-4 w-[80%] md:w-[25%]">
-        <h1 className="text-xl font-bold text-left">Create an account</h1>
-        {error.open === true && (
-          <h3 className="text-red-500 text-sm ">{error.message}</h3>
-        )}
-        <TextField
-          onChange={(e) => setUsername(e.target.value)}
-          id="standard-basic"
-          label="Username"
-          variant="standard"
-          color="secondary"
-          style={{ width: "100%" }}
-          error={error.type === "username" && error.open === true}
-        />
-        <TextField
-          onChange={(e) => setEmail(e.target.value)}
-          id="standard-basic"
-          label="Email"
-          variant="standard"
-          color="secondary"
-          style={{ width: "100%" }}
-          error={error.type === "email" && error.open === true}
-        />
-        <FormControl sx={{ width: "100%" }} variant="standard">
-          <InputLabel
-            htmlFor="standard-adornment-password"
-            color="secondary"
-            error={error.type === "password" && error.open === true}
-          >
-            Password
-          </InputLabel>
-          <Input
-            id="standard-adornment-password"
-            color="secondary"
-            error={error.type === "password" && error.open === true}
-            onChange={(e) => setPassword(e.target.value)}
-            type={showPassword ? "text" : "password"}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
+        <Stack spacing={2} sx={{ width: "100%" }}>
+          <HeaderText
+            fontsize={"22px"}
+            text="Create Account"
+            textalign={"center"}
           />
-        </FormControl>
-        <FormControl sx={{ width: "100%" }} variant="standard">
-          <InputLabel
-            htmlFor="standard-adornment-confirmed-password"
-            color="secondary"
-            error={error.type === "confirmedpassword" && error.open === true}
-          >
-            Confirm Password
-          </InputLabel>
-          <Input
-            id="standard-adornment-confirmed-password"
-            color="secondary"
-            error={error.type === "password" && error.open === true}
-            onChange={(e) => setConfirmedPassword(e.target.value)}
-            type={showConfirmedPassword ? "text" : "password"}
-            onKeyDown={(e) => {
+          {error.open === true && (
+            <BodyText
+              text={error.message}
+              variant={"body2"}
+              color={"red"}
+              textalign={"center"}
+            />
+          )}
+          <CustomTextField
+            label="Username"
+            id={"username"}
+            onchange={(e) => {
+              setUsername(e.target.value);
+              setError({ open: false, message: "", type: "" });
+            }}
+            value={username}
+            error={
+              error.type === "register" ||
+              (error.type === "username" && error.open === true)
+            }
+            autofocus={true}
+            password={false}
+            showpassword={null}
+            enterfunction={null}
+            handleclick={null}
+            handleshow={null}
+          />
+          <CustomTextField
+            label="Email"
+            id={"email"}
+            onchange={(e) => {
+              setEmail(e.target.value);
+              setError({ open: false, message: "", type: "" });
+            }}
+            value={email}
+            error={
+              error.type === "register" ||
+              (error.type === "email" && error.open === true)
+            }
+            autofocus={false}
+            password={false}
+            showpassword={null}
+            enterfunction={null}
+            handleclick={null}
+            handleshow={null}
+          />
+          <CustomTextField
+            label="Password"
+            id={"password"}
+            onchange={(e) => {
+              setPassword(e.target.value);
+              setError({ open: false, message: "", type: "" });
+            }}
+            value={password}
+            error={
+              error.type === "register" ||
+              (error.type === "password" && error.open === true)
+            }
+            autofocus={false}
+            password={true}
+            showpassword={showPassword}
+            enterfunction={null}
+            handleclick={handleClickShowPassword}
+            handleshow={handleMouseDownPassword}
+          />
+          <CustomTextField
+            label="Confirm Password"
+            id={"confirm-password"}
+            onchange={(e) => {
+              setConfirmedPassword(e.target.value);
+              setError({ open: false, message: "", type: "" });
+            }}
+            value={confirmedpassword}
+            error={
+              error.type === "register" ||
+              (error.type === "password" && error.open === true)
+            }
+            autofocus={false}
+            password={true}
+            showpassword={showConfirmedPassword}
+            enterfunction={(e) => {
               if (e.key === "Enter") {
                 handleRegister();
               }
             }}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowConfirmedPassword}
-                  onMouseDown={handleMouseDownPassword}
-                >
-                  {showConfirmedPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
+            handleclick={handleClickShowConfirmedPassword}
+            handleshow={handleMouseDownPassword}
+          />
+          <Button
+            onClick={handleRegister}
+            variant="contained"
+            color="secondary"
+            style={{ width: "100%", padding: "10px" }}
+            disabled={disabled}
+          >
+            Register
+          </Button>
+          <MainContainer
+            children={
+              <>
+                <BodyText
+                  text="Already have an account?"
+                  variant={"body2"}
+                  color={"white"}
+                />
+                <Link to="/login">
+                  <BodyText
+                    text="Login"
+                    variant={"body2"}
+                    color={"text.secondary"}
+                  />
+                </Link>
+              </>
             }
           />
-        </FormControl>
-        <Button
-          onClick={handleRegister}
-          variant="contained"
-          color="secondary"
-          style={{ width: "100%", padding: "10px" }}
-          disabled={disabled}
-        >
-          Register
-        </Button>
-        <div className="flex justify-center items-center space-x-3">
-          <p>Already have an account?</p>
-          <p className="text-gray-500 hover:text-white">
-            <Link to="/login">Login</Link>
-          </p>
-        </div>
+        </Stack>
       </div>
     </div>
   );
