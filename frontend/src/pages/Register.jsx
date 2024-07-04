@@ -231,7 +231,8 @@ const Register = () => {
             value={password}
             error={
               error.type === "register" ||
-              (error.type === "password" && error.open === true)
+              error.type === "password" ||
+              (error.type === "confirmedpassword" && error.open === true)
             }
             autofocus={false}
             password={true}
