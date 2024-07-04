@@ -117,7 +117,7 @@ const Register = () => {
       setError({
         open: true,
         message: "Passwords do not match",
-        type: "confirmedpassword",
+        type: "password",
       });
       return;
     }
