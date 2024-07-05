@@ -15,7 +15,7 @@ import HeaderText from "../ui/text/HeaderText";
 import BodyText from "../ui/text/BodyText";
 import Stack from "@mui/material/Stack";
 import CustomTextField from "../ui/input/CustomTextField";
-import Pagination from "@mui/material/Pagination";
+import CustomPagination from "../ui/container/CustomPagination";
 import ProfileLoader from "../ui/loaders/ProfileLoader";
 
 import classes from "./Profile.module.css";
@@ -646,37 +646,12 @@ const Profile = () => {
               )}
             </div>
             {/* Pagination */}
-            {posts.length > postsPerPage && (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "10px",
-                  width: "100%",
-                  marginTop: "20px",
-                  marginBottom: "100px",
-                }}
-              >
-                <Pagination
-                  size="medium"
-                  shape="rounded"
-                  count={Math.ceil(posts.length / postsPerPage)}
-                  page={page}
-                  onChange={handleChange}
-                  sx={{
-                    "& .MuiPaginationItem-root": {
-                      marginX: 1,
-                    },
-                    "@media screen and (max-width: 768px)": {
-                      "& .MuiPaginationItem-root": {
-                        marginX: 0,
-                      },
-                    },
-                  }}
-                />
-              </div>
-            )}
+            <CustomPagination
+              posts={posts}
+              postsPerPage={postsPerPage}
+              page={page}
+              handleChange={handleChange}
+            />
           </Stack>
         </div>
       </div>

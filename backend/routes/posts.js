@@ -108,7 +108,9 @@ router.get("/", async (req, res) => {
   const query = req.query;
 
   try {
-    console.log("Fetching posts with query:", query);
+    if (Object.keys(query).length !== 0) {
+      console.log("Fetching posts with query:", query);
+    }
     const searchFilter = {
       title: { $regex: query.search, $options: "i" },
     };

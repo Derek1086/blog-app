@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import HeaderText from "../ui/text/HeaderText";
 import Featured from "../components/Featured";
-import Pagination from "@mui/material/Pagination";
+import CustomPagination from "../ui/container/CustomPagination";
 import HomeLoader from "../ui/loaders/HomeLoader";
 
 import classes from "./Home.module.css";
@@ -90,37 +90,12 @@ const Home = () => {
         </div>
       </div>
       {/* Pagination */}
-      {posts.length > postsPerPage && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "10px",
-            width: "100%",
-            marginTop: "20px",
-            marginBottom: "100px",
-          }}
-        >
-          <Pagination
-            size="medium"
-            shape="rounded"
-            count={Math.ceil(posts.length / postsPerPage)}
-            page={page}
-            onChange={handleChange}
-            sx={{
-              "& .MuiPaginationItem-root": {
-                marginX: 1,
-              },
-              "@media screen and (max-width: 768px)": {
-                "& .MuiPaginationItem-root": {
-                  marginX: 0,
-                },
-              },
-            }}
-          />
-        </div>
-      )}
+      <CustomPagination
+        posts={posts}
+        postsPerPage={postsPerPage}
+        page={page}
+        handleChange={handleChange}
+      />
       <div className="mb-10" />
     </>
   );

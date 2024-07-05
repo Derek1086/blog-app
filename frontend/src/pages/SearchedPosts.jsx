@@ -6,36 +6,45 @@ import { useParams } from "react-router-dom";
 import { URL } from "../url";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Loader from "../components/Loader";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import HeaderText from "../ui/text/HeaderText";
+import MyPostsLoader from "../ui/loaders/MyPostsLoader";
+import CustomSelect from "../ui/input/CustomSelect";
+import CustomPagination from "../ui/container/CustomPagination";
+
+import classes from "./Home.module.css";
 
 const SearchedPosts = () => {
   const { searchquery } = useParams();
   const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState(posts || []);
   const [noResults, setNoResults] = useState(false);
   const [loader, setLoader] = useState(false);
   const [filter, setFilter] = useState("");
+  const [page, setPage] = useState(1);
+  const postsPerPage = 6;
+
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
+
+  const indexOfLastPost = page * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   useEffect(() => {
     fetchPosts();
-    console.log("Fetched");
-  }, [searchquery]);
+  }, [searchquery, filter]);
 
   const fetchPosts = async () => {
     setLoader(true);
     try {
       const res = await axios.get(URL + "/api/posts/");
-      console.log(res.data);
       const filteredPosts = res.data.filter(
         (post) =>
           post.title.toLowerCase().includes(searchquery.toLowerCase()) ||
           post.desc.toLowerCase().includes(searchquery.toLowerCase())
       );
-      const sortedPosts = filteredPosts.reverse();
-      console.log(sortedPosts);
+      const sortedPosts = sortPosts(filteredPosts);
       setPosts(sortedPosts);
       setNoResults(sortedPosts.length === 0);
       setLoader(false);
@@ -45,9 +54,34 @@ const SearchedPosts = () => {
     }
   };
 
+  const sortPosts = (posts) => {
+    switch (filter) {
+      case "Newest":
+        return posts.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+      case "Oldest":
+        return posts.sort(
+          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+        );
+      case "Title":
+        return posts.sort((a, b) => a.title.localeCompare(b.title));
+      case "Author":
+        return posts.sort((a, b) => a.username.localeCompare(b.username));
+      case "Default":
+        return posts.reverse();
+      default:
+        return posts.reverse();
+    }
+  };
+
   const handleFilter = (event) => {
     setFilter(event.target.value);
   };
+
+  useEffect(() => {
+    setFilteredPosts(posts);
+  }, [posts]);
 
   return (
     <>
@@ -62,49 +96,43 @@ const SearchedPosts = () => {
             }}
           >
             {posts.length !== 1 ? (
-              <h1 className="font-bold mb-5 mt-5">
-                {posts.length} results for '{searchquery}'
-              </h1>
+              <>
+                <HeaderText
+                  fontsize={"18px"}
+                  text={`${posts.length} results for '${searchquery}'`}
+                  textalign={"left"}
+                />
+                <CustomSelect
+                  filter={filter}
+                  handleFilter={handleFilter}
+                  filters={[
+                    { value: "default", label: "Default" },
+                    { value: "Newest", label: "Newest" },
+                    { value: "Oldest", label: "Oldest" },
+                    { value: "Title", label: "Title" },
+                    { value: "Author", label: "Author" },
+                  ]}
+                />
+              </>
             ) : (
-              <h1 className="font-bold mb-5 mt-5">
-                {posts.length} result for '{searchquery}'
-              </h1>
-            )}
-            {posts.length > 0 && (
-              <div>
-                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                  <InputLabel color="secondary" id="demo-select-small-label">
-                    Sort
-                  </InputLabel>
-                  <Select
-                    labelId="demo-select-small-label"
-                    id="demo-select-small"
-                    value={filter}
-                    label="Filter"
-                    onChange={handleFilter}
-                    color="secondary"
-                  >
-                    <MenuItem value="">
-                      <em>Default</em>
-                    </MenuItem>
-                    <MenuItem value={"Newest"}>Newest</MenuItem>
-                    <MenuItem value={"Oldest"}>Oldest</MenuItem>
-                    <MenuItem value={"Title"}>Title</MenuItem>
-                    <MenuItem value={"Author"}>Author</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
+              <>
+                <HeaderText
+                  fontsize={"18px"}
+                  text={`${posts.length} result for '${searchquery}'`}
+                  textalign={"left"}
+                />
+              </>
             )}
           </div>
         )}
       </div>
-      <div className="px-8 md:px-[200px]">
+      <div className={`px-8 md:px-[200px] ${classes.container}`}>
         {loader ? (
-          <div className="h-[40vh] flex justify-center items-center">
-            <Loader />
+          <div className="mt-14">
+            <MyPostsLoader />
           </div>
         ) : !noResults ? (
-          posts.map((post) => (
+          currentPosts.map((post) => (
             <Link to={`/posts/post/${post._id}`} key={post._id}>
               <HomePosts key={post._id} post={post} />
             </Link>
@@ -113,6 +141,13 @@ const SearchedPosts = () => {
           <h3 className="text-center font-bold mt-16">No posts available</h3>
         )}
       </div>
+      {/* Pagination */}
+      <CustomPagination
+        posts={posts}
+        postsPerPage={postsPerPage}
+        page={page}
+        handleChange={handleChange}
+      />
       <div className="mb-10" />
     </>
   );
