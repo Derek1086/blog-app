@@ -94,7 +94,7 @@ const Navbar = ({ query }) => {
             <div className={classes.actions}>
               {user ? (
                 <Button
-                  variant="text"
+                  variant="contained"
                   color="secondary"
                   onClick={() => navigate("/write")}
                 >
@@ -102,7 +102,7 @@ const Navbar = ({ query }) => {
                 </Button>
               ) : (
                 <Button
-                  variant="text"
+                  variant="contained"
                   color="secondary"
                   onClick={() => navigate("/login")}
                 >
@@ -118,7 +118,7 @@ const Navbar = ({ query }) => {
                 </div>
               ) : (
                 <Button
-                  variant="text"
+                  variant="contained"
                   color="secondary"
                   onClick={() => navigate("/register")}
                 >

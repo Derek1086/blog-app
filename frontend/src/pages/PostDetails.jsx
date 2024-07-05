@@ -12,25 +12,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import BodyText from "../ui/text/BodyText";
+import { formatDistanceToNow } from "date-fns";
+import Stack from "@mui/material/Stack";
+import CustomModal from "../ui/container/CustomModal";
+import CustomTextField from "../ui/input/CustomTextField";
 
 const PostDetails = () => {
   const postId = useParams().id;
-  const [post, setPost] = useState({});
+  const [post, setPost] = useState(null); // Initialize as null
   const { user } = useContext(UserContext);
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
@@ -39,12 +29,14 @@ const PostDetails = () => {
   const navigate = useNavigate();
 
   const fetchPost = async () => {
+    setLoader(true);
     try {
       const res = await axios.get(URL + "/api/posts/" + postId);
-      // console.log(res.data)
       setPost(res.data);
+      setLoader(false);
     } catch (err) {
       console.log(err);
+      setLoader(false);
     }
   };
 
@@ -71,8 +63,8 @@ const PostDetails = () => {
       setComments(res.data);
       setLoader(false);
     } catch (err) {
-      setLoader(true);
       console.log(err);
+      setLoader(false);
     }
   };
 
@@ -107,177 +99,169 @@ const PostDetails = () => {
   return (
     <div>
       <Navbar query={""} />
-      <Modal
+      <CustomModal
         open={open}
-        onClose={() => setOpen(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Are you sure you want to delete "{post.title}"
-          </Typography>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "10px",
-              marginTop: "20px",
-            }}
-          >
-            <Button
-              variant="contained"
-              color="secondary"
-              sx={{
-                backgroundColor: "gray",
-                width: "40%",
-                padding: "10px",
-              }}
-              onClick={() => setOpen(false)}
-            >
-              Back
-            </Button>
-            <Button
-              onClick={handleDeletePost}
-              variant="contained"
-              color="secondary"
-              sx={{ width: "40%", padding: "10px" }}
-            >
-              Delete
-            </Button>
-          </div>
-        </Box>
-      </Modal>
-      {loader ? (
+        onclose={() => setOpen(false)}
+        title={`Are you sure you want to delete '${post?.title}'?`}
+        leftbuttontext="Back"
+        leftbuttonclick={() => setOpen(false)}
+        rightbuttontext="Delete"
+        rightbuttonclick={handleDeletePost}
+      />
+      {loader || !post ? (
         <div className="h-[80vh] flex justify-center items-center w-full">
           <Loader />
         </div>
       ) : (
-        <div className="px-8 md:px-[200px] mt-8">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold md:text-3xl">{post.title}</h1>
-            {user?._id === post?.userId && (
-              <div className="flex items-center justify-center space-x-2">
-                <IconButton onClick={() => navigate("/edit/" + postId)}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton onClick={() => setOpen(true)}>
-                  <DeleteIcon />
-                </IconButton>
-              </div>
-            )}
-          </div>
-          <div className="flex items-center text-gray-500 justify-between mt-2 md:mt-4">
-            <p>@{post.username}</p>
-            <div className="flex space-x-2">
-              <p>{new Date(post.updatedAt).toString().slice(0, 15)}</p>
-              <p>{new Date(post.updatedAt).toString().slice(16, 24)}</p>
-            </div>
-          </div>
-          <div className="flex items-center mt-8 space-x-4 font-semibold">
-            <p>Categories:</p>
-            <div className="flex justify-center items-center space-x-2">
-              {post.categories && post.categories.length > 0 ? (
-                post.categories.map((c, i) => (
-                  <Card sx={{ padding: "10px" }} key={i}>
-                    {c}
-                  </Card>
-                ))
-              ) : (
-                <p>None</p>
+        <Stack spacing={2} style={{ marginTop: "10px" }}>
+          <div className="px-8 md:px-[200px]">
+            <div className="flex justify-between items-center">
+              <h1 className="text-2xl font-bold md:text-3xl">{post.title}</h1>
+              {user?._id === post?.userId && (
+                <div className="flex items-center justify-center space-x-2">
+                  <IconButton onClick={() => navigate("/edit/" + postId)}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton onClick={() => setOpen(true)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </div>
               )}
             </div>
-          </div>
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <img src={IF + post.photo} className="w-3/4  mx-auto mt-8" alt="" />
-          </div>
-          {post.desc && (
-            <div className="mx-auto mt-8">
-              {post.desc.split("\\n").map((paragraph, index) => (
-                <div key={index}>
-                  <p key={index}>{paragraph}</p>
-                  <br />
-                </div>
-              ))}
+
+            <div className="flex items-center text-gray-500 justify-between md:mt-2">
+              <BodyText
+                text={post.username}
+                variant={"body1"}
+                color={"text.secondary"}
+              />
+              <div style={{ display: "flex", gap: "10px" }}>
+                <BodyText
+                  text={formatDistanceToNow(new Date(post.updatedAt), {
+                    addSuffix: true,
+                  })}
+                  variant={"body2"}
+                  color={"text.secondary"}
+                />
+              </div>
             </div>
-          )}
-          <div className="flex flex-col mt-4">
-            {comments.length !== 1 ? (
-              <h3 className="mt-6 mb-4 font-semibold">
-                {comments.length} Comments
-              </h3>
-            ) : (
-              <h3 className="mt-6 mb-4 font-semibold">
-                {comments.length} Comment
-              </h3>
+            <div className="flex items-center space-x-4 font-semibold">
+              <BodyText
+                text={"Categories: "}
+                variant={"body1"}
+                color={"white"}
+              />
+              <div className="flex justify-center items-center space-x-2">
+                {post.categories && post.categories.length > 0 ? (
+                  post.categories.map((c, i) => (
+                    <Card sx={{ padding: "10px" }} key={i}>
+                      <BodyText text={c} variant={"body2"} color={"white"} />
+                    </Card>
+                  ))
+                ) : (
+                  <BodyText text={"None"} variant={"body1"} color={"white"} />
+                )}
+              </div>
+            </div>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "10px",
+              }}
+            >
+              <img src={IF + post.photo} className="w-3/4  mx-auto" alt="" />
+            </div>
+            {post.desc && (
+              <div className="mx-auto mt-4">
+                {post.desc.split("\\n").map((paragraph, index) => (
+                  <div key={index}>
+                    <p key={index}>{paragraph}</p>
+                    <br />
+                  </div>
+                ))}
+              </div>
             )}
-          </div>
-          <>
-            {user ? (
-              <>
-                <div className="w-full flex flex-col md:flex-row">
-                  <TextField
-                    onChange={(e) => setComment(e.target.value)}
-                    value={comment}
-                    id="standard-basic"
-                    label="Write a comment"
-                    variant="standard"
-                    color="secondary"
-                    style={{ width: "100%" }}
-                    multiline
-                    minRows={1}
-                    maxRows={5}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        postComment(e);
-                      }
-                    }}
-                  />
-                </div>
-                <div className="mt-4">
+            <div className="flex flex-col">
+              {comments.length !== 1 ? (
+                <BodyText
+                  text={`${comments.length} Comments`}
+                  variant={"body1"}
+                  color={"white"}
+                />
+              ) : (
+                <BodyText
+                  text={`${comments.length} Comment`}
+                  variant={"body1"}
+                  color={"white"}
+                />
+              )}
+            </div>
+            <>
+              {user ? (
+                <>
+                  <div className="w-full flex flex-col md:flex-row">
+                    <div style={{ width: "100%" }}>
+                      <CustomTextField
+                        label="Write a comment"
+                        id={"comment"}
+                        onchange={(e) => setComment(e.target.value)}
+                        value={comment}
+                        error={null}
+                        autofocus={false}
+                        password={false}
+                        showpassword={null}
+                        enterfunction={(e) => {
+                          if (e.key === "Enter") {
+                            postComment(e);
+                          }
+                        }}
+                        handleclick={null}
+                        handleshow={null}
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-2">
+                    <Button
+                      onClick={postComment}
+                      variant="contained"
+                      color="secondary"
+                      sx={{ padding: "10px" }}
+                    >
+                      Add Comment
+                    </Button>
+                  </div>
+                </>
+              ) : (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    padding: "20px",
+                  }}
+                >
                   <Button
-                    onClick={postComment}
+                    onClick={() => navigate("/login")}
                     variant="contained"
                     color="secondary"
                     sx={{ padding: "10px" }}
                   >
-                    Add Comment
+                    Login to comment
                   </Button>
                 </div>
-              </>
-            ) : (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  padding: "20px",
-                }}
-              >
-                <Button
-                  onClick={() => navigate("/login")}
-                  variant="contained"
-                  color="secondary"
-                  sx={{ padding: "10px" }}
-                >
-                  Login to comment
-                </Button>
+              )}
+              <div className="mt-2 mb-20">
+                {comments?.map((c) => (
+                  <Comment key={c._id} c={c} post={post} />
+                ))}
               </div>
-            )}
-            <div className="mt-4 mb-20">
-              {comments?.map((c) => (
-                <Comment key={c._id} c={c} post={post} />
-              ))}
-            </div>
-          </>
-        </div>
+            </>
+          </div>
+        </Stack>
       )}
+      <div style={{ height: "400px" }} />
     </div>
   );
 };

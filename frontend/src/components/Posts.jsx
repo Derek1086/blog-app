@@ -1,62 +1,45 @@
 import { IF } from "../url";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
+import HeaderText from "../ui/text/HeaderText";
+import BodyText from "../ui/text/BodyText";
+import { formatDistanceToNow } from "date-fns";
 
 import classes from "./Posts.module.css";
 
 const HomePosts = ({ post }) => {
   return (
-    <Card
-      sx={{
-        display: "flex",
-        width: "100%",
-        marginTop: "10px",
-        height: "200px",
-      }}
-    >
-      <div className={classes.image}>
+    <Card className={classes.content}>
+      <div>
         <CardMedia
           component="img"
-          sx={{ height: "200px" }}
+          sx={{ height: "200px", width: "100%" }}
           image={IF + post.photo}
           alt=""
         />
       </div>
-      <div className={classes.content}>
-        <div style={{ height: "200px" }}>
-          <h1 className={classes.title}>{post.title}</h1>
-          <div className="flex mb-2 text-sm font-semibold text-gray-500 items-center justify-between">
-            <p>@{post.username}</p>
-            <div className={`flex space-x-2 text-sm ${classes.date}`}>
-              <p className={classes.date}>
-                {new Date(post.updatedAt).toString().slice(0, 15)}
-              </p>
-              <p className={classes.date}>
-                {new Date(post.updatedAt).toString().slice(16, 24)}
-              </p>
-            </div>
-          </div>
-          <p style={{ wordWrap: "break-word", fontSize: "14px" }}>
-            {post.desc
-              .replace(/\n/g, " ")
-              .replace(/\s+/g, " ")
-              .trim()
-              .slice(0, 150) + "..."}
-          </p>
-
-          <div className={classes.actions}>
-            <Button
-              variant="contained"
-              color="secondary"
-              sx={{
-                width: "30%",
-                marginTop: "10px",
-              }}
-            >
-              Read More
-            </Button>
-          </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          padding: "10px",
+        }}
+      >
+        <HeaderText fontsize={"16px"} text={post.title} textalign={"left"} />
+        <BodyText
+          text={post.username}
+          variant={"body2"}
+          color={"text.secondary"}
+        />
+        <div style={{ display: "flex", gap: "10px" }}>
+          <BodyText
+            text={formatDistanceToNow(new Date(post.updatedAt), {
+              addSuffix: true,
+            })}
+            variant={"body2"}
+            color={"text.secondary"}
+          />
         </div>
       </div>
     </Card>

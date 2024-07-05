@@ -4,8 +4,12 @@ import Navbar from "../components/Navbar";
 import { URL } from "../url";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import HeaderText from "../ui/text/HeaderText";
 import Loader from "../components/Loader";
+import Featured from "../components/Featured";
 import Pagination from "@mui/material/Pagination";
+
+import classes from "./Home.module.css";
 
 const Home = () => {
   const { search } = useLocation();
@@ -14,10 +18,9 @@ const Home = () => {
   const [filteredPosts, setFilteredPosts] = useState(posts || []);
   const [loader, setLoader] = useState(false);
   const [page, setPage] = useState(1);
-  const postsPerPage = 5;
+  const postsPerPage = 6;
 
   const handleChange = (event, value) => {
-    console.log(event);
     setPage(value);
   };
 
@@ -55,20 +58,34 @@ const Home = () => {
     <>
       <Navbar query={""} />
       <div className="px-8 md:px-[200px]">
-        <h1 className="font-bold mb-5 mt-5">Recent Posts</h1>
+        <HeaderText fontsize={"20px"} text="Featured" textalign={"left"} />
         {loader ? (
           <div className="h-[40vh] flex justify-center items-center">
             <Loader />
           </div>
-        ) : !noResults ? (
-          currentPosts.map((post) => (
-            <Link to={`/posts/post/${post._id}`} key={post._id}>
-              <HomePosts key={post._id} post={post} />
-            </Link>
-          ))
+        ) : !noResults && currentPosts.length > 0 ? (
+          <Link to={`/posts/post/${posts[0]._id}`}>
+            <Featured post={posts[0]} />
+          </Link>
         ) : (
           <h3 className="text-center font-bold mt-16">No posts available</h3>
         )}
+        <HeaderText fontsize={"20px"} text="Recent Posts" textalign={"left"} />
+        <div className={classes.container}>
+          {loader ? (
+            <div className="h-[40vh] flex justify-center items-center">
+              <Loader />
+            </div>
+          ) : !noResults ? (
+            currentPosts.map((post) => (
+              <Link to={`/posts/post/${post._id}`} key={post._id}>
+                <HomePosts key={post._id} post={post} />
+              </Link>
+            ))
+          ) : (
+            <h3 className="text-center font-bold mt-16">No posts available</h3>
+          )}
+        </div>
       </div>
       {posts.length > postsPerPage && (
         <div

@@ -7,24 +7,11 @@ import { useContext, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
-
-import classes from "./Comment.module.css";
+import BodyText from "../ui/text/BodyText";
+import { formatDistanceToNow } from "date-fns";
+import CustomModal from "../ui/container/CustomModal";
+import CustomTextField from "../ui/input/CustomTextField";
 
 const Comment = ({ c, post }) => {
   const { user } = useContext(UserContext);
@@ -57,9 +44,9 @@ const Comment = ({ c, post }) => {
         { withCredentials: true }
       );
       setEditing(false);
-      window.location.reload(true);
       setCommentId("");
       setError({ open: false, message: "", type: "" });
+      window.location.reload(true);
     } catch (err) {
       console.log(err);
     }
@@ -77,67 +64,35 @@ const Comment = ({ c, post }) => {
       console.log(err);
     }
   };
-  // console.log(post.userId)
-  // console.log(user._id)
-  // console.log(post)
-  // console.log(user)
+
   return (
     <>
-      <Modal
+      <CustomModal
         open={open}
-        onClose={() => setOpen(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Are you sure you want to delete your comment?
-          </Typography>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "10px",
-              marginTop: "20px",
-            }}
-          >
-            <Button
-              variant="contained"
-              color="secondary"
-              sx={{
-                backgroundColor: "gray",
-                width: "40%",
-                padding: "10px",
-              }}
-              onClick={() => setOpen(false)}
-            >
-              Back
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              sx={{ width: "40%", padding: "10px" }}
-              onClick={() => deleteComment(commentId)}
-            >
-              Delete
-            </Button>
-          </div>
-        </Box>
-      </Modal>
+        onclose={() => setOpen(false)}
+        title={"Are you sure you want to delete your comment?"}
+        leftbuttontext="Back"
+        leftbuttonclick={() => setOpen(false)}
+        rightbuttontext="Delete"
+        rightbuttonclick={() => deleteComment(commentId)}
+      />
       <Card sx={{ padding: "10px", marginTop: "10px" }}>
         <div className="flex items-center justify-between">
-          <h3 className="font-bold text-gray-500">@{c.author}</h3>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <BodyText
+              text={c.author}
+              variant={"body2"}
+              color={"text.secondary"}
+            />
+            <BodyText
+              text={formatDistanceToNow(new Date(c.updatedAt), {
+                addSuffix: true,
+              })}
+              variant={"body2"}
+              color={"text.secondary"}
+            />
+          </div>
           <div className="flex justify-center items-center space-x-4">
-            <div
-              className={`flex justify-center items-center space-x-1  ${classes.date}`}
-            >
-              <p className="text-gray-500">
-                {new Date(c.updatedAt).toString().slice(0, 15)}
-              </p>
-              <p className="text-gray-500">
-                {new Date(c.updatedAt).toString().slice(16, 24)}
-              </p>
-            </div>
             {user?._id === c?.userId && !editing && (
               <div className="flex items-center justify-center space-x-2">
                 <IconButton
@@ -168,32 +123,34 @@ const Comment = ({ c, post }) => {
                 display: "flex",
                 justifyContent: "center",
                 width: "100%",
-                marginTop: "20px",
+                marginTop: "10px",
               }}
             >
               {error.open === true && (
-                <h3 className="text-red-500 text-sm text-center">
-                  {error.message}
-                </h3>
+                <BodyText
+                  text={error.message}
+                  variant={"body2"}
+                  color={"red"}
+                  textalign={"center"}
+                />
               )}
             </div>
-            <TextField
-              onChange={(e) => setComment(e.target.value)}
-              id="standard-basic"
+            <CustomTextField
               label="Comment"
-              variant="standard"
-              color="secondary"
-              style={{ width: "100%" }}
+              id={"comment"}
+              onchange={(e) => setComment(e.target.value)}
               value={comment}
               error={error.open === true}
-              multiline
-              minRows={1}
-              maxRows={5}
-              onKeyDown={(e) => {
+              autofocus={true}
+              password={false}
+              showpassword={null}
+              enterfunction={(e) => {
                 if (e.key === "Enter") {
                   updateComment();
                 }
               }}
+              handleclick={null}
+              handleshow={null}
             />
             <Box
               sx={{
@@ -226,8 +183,8 @@ const Comment = ({ c, post }) => {
             </Box>
           </Box>
         ) : (
-          <div style={{ wordWrap: "break-word", marginTop: "5px" }}>
-            <span>{c.comment}</span>
+          <div style={{ wordWrap: "break-word" }}>
+            <BodyText text={c.comment} variant={"body1"} color={"white"} />
           </div>
         )}
       </Card>

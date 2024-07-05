@@ -38,7 +38,9 @@ const CustomTextField = ({
           onChange={onchange}
           value={value}
           error={error}
+          onKeyDown={enterfunction}
           autoFocus={autofocus}
+          inputProps={{ maxLength: 200 }}
         />
       ) : (
         <TextField
@@ -65,6 +67,7 @@ const CustomTextField = ({
                 </IconButton>
               </InputAdornment>
             ),
+            maxLength: 100,
           }}
         />
       )}

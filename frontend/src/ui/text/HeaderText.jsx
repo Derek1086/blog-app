@@ -9,6 +9,7 @@ const HeaderText = ({ fontsize, text, textalign }) => {
         overflow: "hidden",
         textOverflow: "ellipsis",
         textAlign: textalign,
+        marginTop: "10px",
       }}
     >
       {text}

@@ -1,0 +1,21 @@
+.image {
+  width: 35%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 65%;
+  padding: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .actions,
+  .image {
+    display: none;
+  }
+
+  .content {
+    width: 100%;
+  }
+}
