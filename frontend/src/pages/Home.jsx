@@ -5,7 +5,6 @@ import { URL } from "../url";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import HeaderText from "../ui/text/HeaderText";
-import Loader from "../components/Loader";
 import Featured from "../components/Featured";
 import Pagination from "@mui/material/Pagination";
 import HomeLoader from "../components/HomeLoader";
