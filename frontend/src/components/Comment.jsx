@@ -138,19 +138,19 @@ const Comment = ({ c, post }) => {
             <CustomTextField
               label="Comment"
               id={"comment"}
-              onchange={(e) => setComment(e.target.value)}
+              onChange={(e) => setComment(e.target.value)}
               value={comment}
               error={error.open === true}
-              autofocus={true}
+              autoFocus={true}
               password={false}
-              showpassword={null}
-              enterfunction={(e) => {
+              showPassword={null}
+              enterFunction={(e) => {
                 if (e.key === "Enter") {
                   updateComment();
                 }
               }}
-              handleclick={null}
-              handleshow={null}
+              handleClick={null}
+              handleShow={null}
               maxLength={200}
             />
             <Box

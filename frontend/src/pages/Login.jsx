@@ -120,7 +120,7 @@ const Login = () => {
           <CustomTextField
             label="Email or Username"
             id={"email"}
-            onchange={(e) => {
+            onChange={(e) => {
               setEmail(e.target.value);
               setError({ open: false, message: "", type: "" });
             }}
@@ -129,18 +129,18 @@ const Login = () => {
               error.type === "login" ||
               (error.type === "email" && error.open === true)
             }
-            autofocus={true}
+            autoFocus={true}
             password={false}
-            showpassword={null}
-            enterfunction={null}
-            handleclick={null}
-            handleshow={null}
+            showPassword={null}
+            enterFunction={null}
+            handleClick={null}
+            handleShow={null}
             maxLength={50}
           />
           <CustomTextField
             label="Password"
             id={"password"}
-            onchange={(e) => {
+            onChange={(e) => {
               setPassword(e.target.value);
               setError({ open: false, message: "", type: "" });
             }}
@@ -149,16 +149,16 @@ const Login = () => {
               error.type === "login" ||
               (error.type === "password" && error.open === true)
             }
-            autofocus={false}
+            autoFocus={false}
             password={true}
-            showpassword={showPassword}
-            enterfunction={(e) => {
+            showPassword={showPassword}
+            enterFunction={(e) => {
               if (e.key === "Enter") {
                 handleLogin();
               }
             }}
-            handleclick={handleClickShowPassword}
-            handleshow={handleMouseDownPassword}
+            handleClick={handleClickShowPassword}
+            handleShow={handleMouseDownPassword}
             maxLength={50}
           />
           <Button

@@ -1,3 +1,10 @@
+.container {
+  display: flex;
+  width: 100%;
+  margin-top: 10px;
+  height: 300px;
+}
+
 .image {
   width: 40%;
 }
@@ -9,10 +16,30 @@
   padding: 10px;
 }
 
+.info {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  height: 30px;
+}
+
+.desc {
+  height: 130px;
+}
+
 @media screen and (max-width: 768px) {
   .actions,
-  .image {
+  .desc {
     display: none;
+  }
+
+  .image {
+    width: 100%;
+  }
+
+  .container {
+    display: block;
+    height: 450px;
   }
 
   .content {

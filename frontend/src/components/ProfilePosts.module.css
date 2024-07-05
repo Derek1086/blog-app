@@ -1,31 +1,45 @@
+.container {
+  display: flex;
+  width: 100%;
+  margin-top: 10px;
+  height: 200px;
+}
+
 .image {
-  width: 25%;
+  width: 35%;
 }
 
 .title {
-  font-weight: bold;
-  font-size: 20px;
-  word-wrap: break-word;
-  margin-bottom: 5px;
+  height: 60px;
+}
+
+.desc {
+  height: 140px;
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  width: 75%;
+  width: 65%;
   padding: 10px;
 }
 
 @media screen and (max-width: 768px) {
-  .image {
-    display: none;
+  .container {
+    display: block;
+    height: 400px;
   }
 
+  .image,
   .content {
     width: 100%;
   }
 
   .title {
-    font-size: 16px;
+    height: 60px;
+  }
+
+  .desc {
+    height: 100px;
   }
 }

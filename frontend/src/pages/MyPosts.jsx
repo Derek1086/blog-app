@@ -5,8 +5,9 @@ import { UserContext } from "../context/UserContext";
 import axios from "axios";
 import { URL } from "../url";
 import HomePosts from "../components/Posts";
-import MyPostsLoader from "../components/MyPostsLoader";
+import MyPostsLoader from "../ui/loaders/MyPostsLoader";
 import HeaderText from "../ui/text/HeaderText";
+import BodyText from "../ui/text/BodyText";
 
 import classes from "./Home.module.css";
 
@@ -25,7 +26,7 @@ const MyBlogs = () => {
     setNoResults(false);
     try {
       const res = await axios.get(URL + "/api/posts/user/" + user._id);
-      setPosts(res.data);
+      setPosts(res.data.reverse());
       if (res.data.length === 0) {
         setNoResults(true);
       }
@@ -53,7 +54,12 @@ const MyBlogs = () => {
           {loader ? (
             <MyPostsLoader />
           ) : noResults ? (
-            <h3 className="text-center font-bold mt-16">No posts available</h3>
+            <BodyText
+              text={"You have not posted anything yet"}
+              variant={"body1"}
+              color={"white"}
+              textalign={"center"}
+            />
           ) : (
             posts.map((post) => (
               <Link

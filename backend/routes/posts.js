@@ -125,7 +125,6 @@ router.get("/user/:userId", async (req, res) => {
   try {
     console.log("Fetching posts for user with ID:", req.params.userId);
     const posts = await Post.find({ userId: req.params.userId });
-    console.log("Found user posts:", posts);
     res.status(200).json(posts);
   } catch (err) {
     console.error("Error fetching user posts:", err);

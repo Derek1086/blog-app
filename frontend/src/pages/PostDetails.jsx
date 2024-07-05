@@ -207,19 +207,19 @@ const PostDetails = () => {
                       <CustomTextField
                         label="Write a comment"
                         id={"comment"}
-                        onchange={(e) => setComment(e.target.value)}
+                        onChange={(e) => setComment(e.target.value)}
                         value={comment}
                         error={null}
-                        autofocus={false}
+                        autoFocus={false}
                         password={false}
-                        showpassword={null}
-                        enterfunction={(e) => {
+                        showPassword={null}
+                        enterFunction={(e) => {
                           if (e.key === "Enter") {
                             postComment(e);
                           }
                         }}
-                        handleclick={null}
-                        handleshow={null}
+                        handleClick={null}
+                        handleShow={null}
                         maxLength={200}
                       />
                     </div>

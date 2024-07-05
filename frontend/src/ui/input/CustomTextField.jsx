@@ -1,3 +1,4 @@
+import React from "react";
 import TextField from "@mui/material/TextField";
 import BodyText from "../text/BodyText";
 import IconButton from "@mui/material/IconButton";
@@ -8,25 +9,26 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 const CustomTextField = ({
   label,
   id,
-  onchange,
+  onChange,
   value,
   error,
-  autofocus,
+  autoFocus,
   password,
-  showpassword,
-  enterfunction,
-  handleclick,
-  handleshow,
+  showPassword,
+  enterFunction,
+  handleClick,
+  handleMouseDown,
   maxLength,
+  disabled,
 }) => {
   return (
     <div>
       <div style={{ marginBottom: "10px" }}>
         <BodyText
           text={label}
-          variant={"body2"}
-          color={"text.secondary"}
-          textalign={"left"}
+          variant="body2"
+          color="text.secondary"
+          textAlign="left"
         />
       </div>
       {!password ? (
@@ -36,12 +38,13 @@ const CustomTextField = ({
           variant="outlined"
           color="secondary"
           sx={{ width: "100%" }}
-          onChange={onchange}
+          onChange={onChange}
           value={value}
           error={error}
-          onKeyDown={enterfunction}
-          autoFocus={autofocus}
+          onKeyDown={enterFunction}
+          autoFocus={autoFocus}
           inputProps={{ maxLength: maxLength }}
+          disabled={disabled}
         />
       ) : (
         <TextField
@@ -50,26 +53,27 @@ const CustomTextField = ({
           variant="outlined"
           color="secondary"
           sx={{ width: "100%" }}
-          onChange={onchange}
+          onChange={onChange}
           value={value}
           error={error}
-          type={showpassword ? "text" : "password"}
-          onKeyDown={enterfunction}
+          type={showPassword ? "text" : "password"}
+          onKeyDown={enterFunction}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle password visibility"
-                  onClick={handleclick}
-                  onMouseDown={handleshow}
+                  onClick={handleClick}
+                  onMouseDown={handleMouseDown}
                   edge="end"
                 >
-                  {showpassword ? <VisibilityOff /> : <Visibility />}
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
             ),
-            maxLength: maxLength,
           }}
+          inputProps={{ maxLength: maxLength }}
+          disabled={disabled}
         />
       )}
     </div>

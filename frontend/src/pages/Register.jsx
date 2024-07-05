@@ -186,7 +186,7 @@ const Register = () => {
           <CustomTextField
             label="Username"
             id={"username"}
-            onchange={(e) => {
+            onChange={(e) => {
               setUsername(e.target.value);
               setError({ open: false, message: "", type: "" });
             }}
@@ -195,18 +195,18 @@ const Register = () => {
               error.type === "register" ||
               (error.type === "username" && error.open === true)
             }
-            autofocus={true}
+            autoFocus={true}
             password={false}
-            showpassword={null}
-            enterfunction={null}
-            handleclick={null}
-            handleshow={null}
+            showPassword={null}
+            enterFunction={null}
+            handleClick={null}
+            handleShow={null}
             maxLength={50}
           />
           <CustomTextField
             label="Email"
             id={"email"}
-            onchange={(e) => {
+            onChange={(e) => {
               setEmail(e.target.value);
               setError({ open: false, message: "", type: "" });
             }}
@@ -215,18 +215,18 @@ const Register = () => {
               error.type === "register" ||
               (error.type === "email" && error.open === true)
             }
-            autofocus={false}
+            autoFocus={false}
             password={false}
-            showpassword={null}
-            enterfunction={null}
-            handleclick={null}
-            handleshow={null}
+            showPassword={null}
+            enterFunction={null}
+            handleClick={null}
+            handleShow={null}
             maxLength={50}
           />
           <CustomTextField
             label="Password"
             id={"password"}
-            onchange={(e) => {
+            onChange={(e) => {
               setPassword(e.target.value);
               setError({ open: false, message: "", type: "" });
             }}
@@ -236,18 +236,18 @@ const Register = () => {
               error.type === "password" ||
               (error.type === "confirmedpassword" && error.open === true)
             }
-            autofocus={false}
+            autoFocus={false}
             password={true}
-            showpassword={showPassword}
-            enterfunction={null}
-            handleclick={handleClickShowPassword}
-            handleshow={handleMouseDownPassword}
+            showPassword={showPassword}
+            enterFunction={null}
+            handleClick={handleClickShowPassword}
+            handleShow={handleMouseDownPassword}
             maxLength={50}
           />
           <CustomTextField
             label="Confirm Password"
             id={"confirm-password"}
-            onchange={(e) => {
+            onChange={(e) => {
               setConfirmedPassword(e.target.value);
               setError({ open: false, message: "", type: "" });
             }}
@@ -256,16 +256,16 @@ const Register = () => {
               error.type === "register" ||
               (error.type === "password" && error.open === true)
             }
-            autofocus={false}
+            autoFocus={false}
             password={true}
-            showpassword={showConfirmedPassword}
-            enterfunction={(e) => {
+            showPassword={showConfirmedPassword}
+            enterFunction={(e) => {
               if (e.key === "Enter") {
                 handleRegister();
               }
             }}
-            handleclick={handleClickShowConfirmedPassword}
-            handleshow={handleMouseDownPassword}
+            handleClick={handleClickShowConfirmedPassword}
+            handleShow={handleMouseDownPassword}
             maxLength={50}
           />
           <Button

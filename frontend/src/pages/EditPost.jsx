@@ -216,19 +216,19 @@ const EditPost = () => {
           <CustomTextField
             label="Title"
             id={"title"}
-            onchange={(e) => {
+            onChange={(e) => {
               setTitle(e.target.value);
               setError({ open: false, message: "", type: "" });
             }}
             value={title}
             error={error.type === "title" && error.open === true}
-            autofocus={true}
+            autoFocus={true}
             password={false}
-            showpassword={null}
-            enterfunction={null}
-            handleclick={null}
-            handleshow={null}
-            maxLength={100}
+            showPassword={null}
+            enterFunction={null}
+            handleClick={null}
+            handleShow={null}
+            maxLength={50}
           />
           <div>
             <div style={{ marginBottom: "10px" }}>
@@ -263,22 +263,22 @@ const EditPost = () => {
           <CustomTextField
             label="Category"
             id={"category"}
-            onchange={(e) => {
+            onChange={(e) => {
               setCat(e.target.value);
               setError({ open: false, message: "", type: "" });
             }}
             value={cat}
             error={error.type === "category" && error.open === true}
-            autofocus={false}
+            autoFocus={false}
             password={false}
-            showpassword={null}
-            enterfunction={(e) => {
+            showPassword={null}
+            enterFunction={(e) => {
               if (e.key === "Enter") {
                 addCategory();
               }
             }}
-            handleclick={null}
-            handleshow={null}
+            handleClick={null}
+            handleShow={null}
             maxLength={20}
           />
           <div>

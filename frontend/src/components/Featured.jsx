@@ -9,14 +9,7 @@ import classes from "./Featured.module.css";
 
 const Featured = ({ post }) => {
   return (
-    <Card
-      sx={{
-        display: "flex",
-        width: "100%",
-        marginTop: "10px",
-        height: "300px",
-      }}
-    >
+    <Card className={classes.container}>
       <div className={classes.image}>
         <CardMedia
           component="img"
@@ -27,16 +20,16 @@ const Featured = ({ post }) => {
       </div>
       <div className={classes.content}>
         <div style={{ height: "200px" }}>
-          <span style={{ fontSize: "24px", fontWeight: "bold" }}>
-            {post.title}
-          </span>
-          <div
+          <span
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: "10px",
+              fontSize: "24px",
+              fontWeight: "bold",
+              wordWrap: "break-word",
             }}
           >
+            {post.title}
+          </span>
+          <div className={classes.info}>
             <BodyText
               text={post.username}
               variant={"body2"}
@@ -60,7 +53,6 @@ const Featured = ({ post }) => {
               .trim()
               .slice(0, 220) + "..."}
           </p>
-
           <div className={classes.actions}>
             <Button
               variant="contained"

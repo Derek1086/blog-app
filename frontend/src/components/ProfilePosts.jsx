@@ -1,21 +1,14 @@
-/* eslint-disable react/prop-types */
 import { IF } from "../url";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
+import BodyText from "../ui/text/BodyText";
+import { formatDistanceToNow } from "date-fns";
 
 import classes from "./ProfilePosts.module.css";
 
 const ProfilePosts = ({ post }) => {
-  // console.log(p)
   return (
-    <Card
-      sx={{
-        display: "flex",
-        width: "100%",
-        marginTop: "10px",
-        height: "200px",
-      }}
-    >
+    <Card className={classes.container}>
       <div className={classes.image}>
         <CardMedia
           component="img"
@@ -25,25 +18,35 @@ const ProfilePosts = ({ post }) => {
         />
       </div>
       <div className={classes.content}>
-        <div style={{ height: "200px" }}>
-          <h1 className={classes.title}>{post.title}</h1>
-          <div className="flex mb-2 text-sm font-semibold text-gray-500 items-center justify-between">
-            <div className={`flex space-x-2 text-sm ${classes.date}`}>
-              <p className={classes.date}>
-                {new Date(post.updatedAt).toString().slice(0, 15)}
-              </p>
-              <p className={classes.date}>
-                {new Date(post.updatedAt).toString().slice(16, 24)}
-              </p>
-            </div>
-          </div>
-          <p style={{ wordWrap: "break-word", fontSize: "14px" }}>
-            {post.desc
-              .replace(/\n/g, " ")
-              .replace(/\s+/g, " ")
-              .trim()
-              .slice(0, 150) + "..."}
-          </p>
+        <div className={classes.title}>
+          <span
+            style={{
+              fontSize: "20px",
+              fontWeight: "bold",
+              wordWrap: "break-word",
+            }}
+          >
+            {post.title}
+          </span>
+        </div>
+        <p
+          className={classes.desc}
+          style={{ wordWrap: "break-word", fontSize: "14px" }}
+        >
+          {post.desc
+            .replace(/\n/g, " ")
+            .replace(/\s+/g, " ")
+            .trim()
+            .slice(0, 150) + "..."}
+        </p>
+        <div className={classes.date}>
+          <BodyText
+            text={formatDistanceToNow(new Date(post.updatedAt), {
+              addSuffix: true,
+            })}
+            variant={"body2"}
+            color={"text.secondary"}
+          />
         </div>
       </div>
     </Card>

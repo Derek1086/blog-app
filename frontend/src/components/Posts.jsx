@@ -10,20 +10,19 @@ import classes from "./Posts.module.css";
 const HomePosts = ({ post }) => {
   return (
     <Card className={classes.content}>
-      <div>
-        <CardMedia
-          component="img"
-          sx={{ height: "200px", width: "100%" }}
-          image={IF + post.photo}
-          alt=""
-        />
-      </div>
+      <CardMedia
+        component="img"
+        sx={{ height: "200px", width: "100%" }}
+        image={IF + post.photo}
+        alt=""
+      />
       <div
         style={{
           display: "flex",
           flexDirection: "column",
           width: "100%",
           padding: "10px",
+          gap: "2px",
         }}
       >
         <HeaderText fontsize={"16px"} text={post.title} textalign={"left"} />
@@ -32,15 +31,13 @@ const HomePosts = ({ post }) => {
           variant={"body2"}
           color={"text.secondary"}
         />
-        <div style={{ display: "flex", gap: "10px" }}>
-          <BodyText
-            text={formatDistanceToNow(new Date(post.updatedAt), {
-              addSuffix: true,
-            })}
-            variant={"body2"}
-            color={"text.secondary"}
-          />
-        </div>
+        <BodyText
+          text={formatDistanceToNow(new Date(post.updatedAt), {
+            addSuffix: true,
+          })}
+          variant={"body2"}
+          color={"text.secondary"}
+        />
       </div>
     </Card>
   );

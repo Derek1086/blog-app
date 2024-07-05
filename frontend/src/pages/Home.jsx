@@ -7,7 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 import HeaderText from "../ui/text/HeaderText";
 import Featured from "../components/Featured";
 import Pagination from "@mui/material/Pagination";
-import HomeLoader from "../components/HomeLoader";
+import HomeLoader from "../ui/loaders/HomeLoader";
 
 import classes from "./Home.module.css";
 
@@ -89,6 +89,7 @@ const Home = () => {
           )}
         </div>
       </div>
+      {/* Pagination */}
       {posts.length > postsPerPage && (
         <div
           style={{
