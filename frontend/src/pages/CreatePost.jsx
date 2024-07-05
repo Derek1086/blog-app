@@ -29,18 +29,6 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
-
 /**
  * *CreatePost component for creating new posts.
  * @returns {JSX.Element} The CreatePost component.
@@ -294,6 +282,7 @@ const CreatePost = () => {
               Add
             </Button>
           </div>
+          {/* categories */}
           <div
             style={{
               display: "flex",

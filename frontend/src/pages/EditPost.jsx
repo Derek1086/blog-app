@@ -4,16 +4,18 @@ import { URL } from "../url";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { styled } from "@mui/material/styles";
+import Stack from "@mui/material/Stack";
+import CustomTextField from "../ui/input/CustomTextField";
+import HeaderText from "../ui/text/HeaderText";
+import BodyText from "../ui/text/BodyText";
+import CustomModal from "../ui/container/CustomModal";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -27,19 +29,12 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
-
+/**
+ * *EditPost component for editing new posts.
+ * @returns {JSX.Element} The EditPost component.
+ */
 const EditPost = () => {
+  // State variables
   const postId = useParams().id;
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -56,6 +51,10 @@ const EditPost = () => {
     type: "",
   });
 
+  /**
+   * Handles file change event.
+   * @param {Event} event - The file change event.
+   */
   const handleFileChange = (event) => {
     if (event.target.files.length > 0) {
       setFile(event.target.files[0]);
@@ -63,6 +62,9 @@ const EditPost = () => {
     }
   };
 
+  /**
+   * Handles fetching the post to edit.
+   */
   const fetchPost = async () => {
     try {
       const res = await axios.get(URL + "/api/posts/" + postId);
@@ -76,6 +78,10 @@ const EditPost = () => {
     }
   };
 
+  /**
+   * Handles updating a new post.
+   * @param {Event} e - The form submit event.
+   */
   const handleUpdate = async (e) => {
     e.preventDefault();
     if (title === "") {
@@ -131,64 +137,51 @@ const EditPost = () => {
     fetchPost();
   }, [postId]);
 
+  /**
+   * Deletes a category.
+   * @param {number} i - The index of the category to delete.
+   */
   const deleteCategory = (i) => {
     let updatedCats = [...cats];
-    updatedCats.splice(i);
+    updatedCats.splice(i, 1);
     setCats(updatedCats);
   };
 
+  /**
+   * Adds a category.
+   */
   const addCategory = () => {
-    let updatedCats = [...cats];
-    updatedCats.push(cat);
-    setCat("");
-    setCats(updatedCats);
+    if (cat === "") {
+      return;
+    }
+    if (cats.length >= 5) {
+      setError({
+        open: true,
+        message: "Cannot add more than 5 categories",
+        type: "category",
+      });
+      return;
+    }
+    if (cats.length < 5) {
+      let updatedCats = [...cats];
+      updatedCats.push(cat);
+      setCat("");
+      setCats(updatedCats);
+      setError({ open: false, message: "", type: "" });
+    }
   };
+
   return (
     <div>
-      <Modal
+      <CustomModal
         open={open}
-        onClose={() => setOpen(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Are you sure you want to discard your changes?
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            All of your info will be lost.
-          </Typography>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "10px",
-              marginTop: "20px",
-            }}
-          >
-            <Button
-              variant="contained"
-              color="secondary"
-              sx={{
-                backgroundColor: "gray",
-                width: "40%",
-                padding: "10px",
-              }}
-              onClick={() => setOpen(false)}
-            >
-              Back
-            </Button>
-            <Button
-              onClick={() => navigate("/posts/post/" + postId)}
-              variant="contained"
-              color="secondary"
-              sx={{ width: "40%", padding: "10px" }}
-            >
-              Discard
-            </Button>
-          </div>
-        </Box>
-      </Modal>
+        onclose={() => setOpen(false)}
+        title={`Are you sure you want to discard your changes?`}
+        leftbuttontext="Back"
+        leftbuttonclick={() => setOpen(false)}
+        rightbuttontext="Discard"
+        rightbuttonclick={() => navigate("/posts/post/" + postId)}
+      />
       <div className="px-6 md:px-[200px] mt-8">
         <Button
           color="secondary"
@@ -197,8 +190,8 @@ const EditPost = () => {
           variant="contained"
           tabIndex={-1}
           startIcon={<ArrowBackIcon />}
-          style={{ marginBottom: "20px" }}
           onClick={() => setOpen(true)}
+          sx={{ mb: 2 }}
         >
           Back
         </Button>
@@ -207,28 +200,45 @@ const EditPost = () => {
             display: "flex",
             justifyContent: "center",
             width: "100%",
-            marginTop: "20px",
           }}
         >
           {error.open === true && (
-            <h3 className="text-red-500 text-sm text-center">
-              {error.message}
-            </h3>
+            <BodyText
+              text={error.message}
+              variant={"body2"}
+              color={"red"}
+              textalign={"center"}
+            />
           )}
         </div>
-        <h1 className="font-bold md:text-2xl text-xl">Update</h1>
-        <form className="w-full flex flex-col space-y-4 md:space-y-8 mt-4">
-          <TextField
-            onChange={(e) => setTitle(e.target.value)}
-            id="standard-basic"
+        <HeaderText fontsize={"22px"} text="Update Post" textalign={"left"} />
+        <Stack spacing={2} sx={{ width: "100%", mt: 2 }}>
+          <CustomTextField
             label="Title"
-            variant="standard"
-            color="secondary"
-            style={{ width: "100%" }}
+            id={"title"}
+            onchange={(e) => {
+              setTitle(e.target.value);
+              setError({ open: false, message: "", type: "" });
+            }}
             value={title}
             error={error.type === "title" && error.open === true}
+            autofocus={true}
+            password={false}
+            showpassword={null}
+            enterfunction={null}
+            handleclick={null}
+            handleshow={null}
+            maxLength={100}
           />
           <div>
+            <div style={{ marginBottom: "10px" }}>
+              <BodyText
+                text={"Filename"}
+                variant={"body2"}
+                color={"text.secondary"}
+                textalign={"left"}
+              />
+            </div>
             <Button
               color="secondary"
               component="label"
@@ -241,73 +251,91 @@ const EditPost = () => {
               <VisuallyHiddenInput onChange={handleFileChange} type="file" />
             </Button>
             <TextField
-              variant="standard"
+              value={filename}
+              variant="outlined"
               color="secondary"
               fullWidth
               disabled
               sx={{ mt: 2 }}
               error={error.type === "file" && error.open === true}
-              value={filename}
             />
           </div>
-          <div className="flex flex-col">
-            <div className="flex items-center space-x-4 md:space-x-8">
-              <TextField
-                onChange={(e) => setCat(e.target.value)}
-                id="standard-basic"
-                label="Enter post category"
-                variant="standard"
-                color="secondary"
-                style={{ width: "100%" }}
-                value={cat}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    addCategory();
-                  }
-                }}
-              />
-              <Button
-                onClick={addCategory}
-                variant="contained"
-                color="secondary"
-                style={{ padding: "10px" }}
-              >
-                Add
-              </Button>
-            </div>
-            {/* categories */}
-            <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
-              {cats?.map((c, i) => (
-                <Card
-                  sx={{
-                    padding: "10px",
-                    display: "flex",
-                    gap: "10px",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                  key={i}
-                >
-                  {c}
-                  <IconButton onClick={() => deleteCategory(i)}>
-                    <CloseIcon />
-                  </IconButton>
-                </Card>
-              ))}
-            </div>
+          <CustomTextField
+            label="Category"
+            id={"category"}
+            onchange={(e) => {
+              setCat(e.target.value);
+              setError({ open: false, message: "", type: "" });
+            }}
+            value={cat}
+            error={error.type === "category" && error.open === true}
+            autofocus={false}
+            password={false}
+            showpassword={null}
+            enterfunction={(e) => {
+              if (e.key === "Enter") {
+                addCategory();
+              }
+            }}
+            handleclick={null}
+            handleshow={null}
+            maxLength={20}
+          />
+          <div>
+            <Button
+              onClick={addCategory}
+              variant="contained"
+              color="secondary"
+              style={{ padding: "10px" }}
+            >
+              Add
+            </Button>
           </div>
+          {/* categories */}
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              marginTop: "10px",
+              flexWrap: "wrap",
+            }}
+          >
+            {cats?.map((c, i) => (
+              <Card
+                sx={{
+                  padding: "5px",
+                  display: "flex",
+                  gap: "5px",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                key={i}
+              >
+                {c}
+                <IconButton onClick={() => deleteCategory(i)}>
+                  <CloseIcon />
+                </IconButton>
+              </Card>
+            ))}
+          </div>
+          <BodyText
+            text={"Description"}
+            variant={"body2"}
+            color={"text.secondary"}
+            textalign={"left"}
+          />
           <TextField
+            id={"description"}
+            label=""
+            variant="outlined"
+            color="secondary"
+            sx={{ width: "100%" }}
             onChange={(e) => setDesc(e.target.value)}
             value={desc}
-            id="standard-basic"
-            label="Description"
-            variant="standard"
-            color="secondary"
-            style={{ width: "100%" }}
+            error={error.type === "desc" && error.open === true}
             multiline
             minRows={15}
             cols={30}
-            error={error.type === "desc" && error.open === true}
           />
           <div
             style={{
@@ -338,7 +366,7 @@ const EditPost = () => {
               Update
             </Button>
           </div>
-        </form>
+        </Stack>
       </div>
     </div>
   );
