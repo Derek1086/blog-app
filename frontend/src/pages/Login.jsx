@@ -135,6 +135,7 @@ const Login = () => {
             enterfunction={null}
             handleclick={null}
             handleshow={null}
+            maxLength={50}
           />
           <CustomTextField
             label="Password"
@@ -158,6 +159,7 @@ const Login = () => {
             }}
             handleclick={handleClickShowPassword}
             handleshow={handleMouseDownPassword}
+            maxLength={50}
           />
           <Button
             onClick={handleLogin}

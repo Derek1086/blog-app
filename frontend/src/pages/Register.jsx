@@ -201,6 +201,7 @@ const Register = () => {
             enterfunction={null}
             handleclick={null}
             handleshow={null}
+            maxLength={50}
           />
           <CustomTextField
             label="Email"
@@ -220,6 +221,7 @@ const Register = () => {
             enterfunction={null}
             handleclick={null}
             handleshow={null}
+            maxLength={50}
           />
           <CustomTextField
             label="Password"
@@ -240,6 +242,7 @@ const Register = () => {
             enterfunction={null}
             handleclick={handleClickShowPassword}
             handleshow={handleMouseDownPassword}
+            maxLength={50}
           />
           <CustomTextField
             label="Confirm Password"
@@ -263,6 +266,7 @@ const Register = () => {
             }}
             handleclick={handleClickShowConfirmedPassword}
             handleshow={handleMouseDownPassword}
+            maxLength={50}
           />
           <Button
             onClick={handleRegister}

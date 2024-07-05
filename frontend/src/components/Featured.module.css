@@ -1,11 +1,11 @@
 .image {
-  width: 35%;
+  width: 40%;
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  width: 65%;
+  width: 60%;
   padding: 10px;
 }
 

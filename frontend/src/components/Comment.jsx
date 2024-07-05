@@ -151,6 +151,7 @@ const Comment = ({ c, post }) => {
               }}
               handleclick={null}
               handleshow={null}
+              maxLength={200}
             />
             <Box
               sx={{

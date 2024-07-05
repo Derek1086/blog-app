@@ -17,6 +17,7 @@ const CustomTextField = ({
   enterfunction,
   handleclick,
   handleshow,
+  maxLength,
 }) => {
   return (
     <div>
@@ -40,7 +41,7 @@ const CustomTextField = ({
           error={error}
           onKeyDown={enterfunction}
           autoFocus={autofocus}
-          inputProps={{ maxLength: 200 }}
+          inputProps={{ maxLength: maxLength }}
         />
       ) : (
         <TextField
@@ -67,7 +68,7 @@ const CustomTextField = ({
                 </IconButton>
               </InputAdornment>
             ),
-            maxLength: 100,
+            maxLength: maxLength,
           }}
         />
       )}

@@ -151,10 +151,10 @@ const PostDetails = () => {
                 variant={"body1"}
                 color={"white"}
               />
-              <div className="flex justify-center items-center space-x-2">
+              <div className="flex space-x-2 flex-wrap">
                 {post.categories && post.categories.length > 0 ? (
                   post.categories.map((c, i) => (
-                    <Card sx={{ padding: "10px" }} key={i}>
+                    <Card sx={{ padding: "10px", mt: 1 }} key={i}>
                       <BodyText text={c} variant={"body2"} color={"white"} />
                     </Card>
                   ))
@@ -220,6 +220,7 @@ const PostDetails = () => {
                         }}
                         handleclick={null}
                         handleshow={null}
+                        maxLength={200}
                       />
                     </div>
                   </div>
