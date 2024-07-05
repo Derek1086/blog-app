@@ -11,6 +11,7 @@ const verifyToken = require("../verifyToken");
 // CREATE
 router.post("/create", verifyToken, async (req, res) => {
   try {
+    console.log("Attempting to create a new post with data:", req.body);
     const newPost = new Post(req.body);
     const savedPost = await newPost.save();
 
@@ -19,6 +20,7 @@ router.post("/create", verifyToken, async (req, res) => {
 
     res.status(200).json(savedPost);
   } catch (err) {
+    console.error("Error creating post:", err);
     res.status(500).json(err);
   }
 });
@@ -26,8 +28,10 @@ router.post("/create", verifyToken, async (req, res) => {
 // UPDATE
 router.put("/:id", verifyToken, async (req, res) => {
   try {
+    console.log("Attempting to update post with ID:", req.params.id);
     const post = await Post.findById(req.params.id);
     if (!post) {
+      console.log("Post not found with ID:", req.params.id);
       return res.status(404).json({ error: "Post not found" });
     }
 
@@ -50,9 +54,10 @@ router.put("/:id", verifyToken, async (req, res) => {
       { new: true }
     );
 
+    console.log("Post updated:", updatedPost);
     res.status(200).json(updatedPost);
   } catch (err) {
-    console.error(err);
+    console.error("Error updating post:", err);
     res.status(500).json(err);
   }
 });
@@ -60,8 +65,10 @@ router.put("/:id", verifyToken, async (req, res) => {
 // DELETE
 router.delete("/:id", verifyToken, async (req, res) => {
   try {
+    console.log("Attempting to delete post with ID:", req.params.id);
     const post = await Post.findById(req.params.id);
     if (!post) {
+      console.log("Post not found with ID:", req.params.id);
       return res.status(404).json({ error: "Post not found" });
     }
 
@@ -79,7 +86,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
     );
     res.status(200).json("Post and associated comments have been deleted!");
   } catch (err) {
-    console.error(err);
+    console.error("Error deleting post:", err);
     res.status(500).json(err);
   }
 });
@@ -87,9 +94,11 @@ router.delete("/:id", verifyToken, async (req, res) => {
 // GET POST DETAILS
 router.get("/:id", async (req, res) => {
   try {
+    console.log("Fetching details for post with ID:", req.params.id);
     const post = await Post.findById(req.params.id);
     res.status(200).json(post);
   } catch (err) {
+    console.error("Error fetching post details:", err);
     res.status(500).json(err);
   }
 });
@@ -99,12 +108,14 @@ router.get("/", async (req, res) => {
   const query = req.query;
 
   try {
+    console.log("Fetching posts with query:", query);
     const searchFilter = {
       title: { $regex: query.search, $options: "i" },
     };
     const posts = await Post.find(query.search ? searchFilter : null);
     res.status(200).json(posts);
   } catch (err) {
+    console.error("Error fetching posts:", err);
     res.status(500).json(err);
   }
 });
@@ -112,9 +123,12 @@ router.get("/", async (req, res) => {
 // GET USER POSTS
 router.get("/user/:userId", async (req, res) => {
   try {
+    console.log("Fetching posts for user with ID:", req.params.userId);
     const posts = await Post.find({ userId: req.params.userId });
+    console.log("Found user posts:", posts);
     res.status(200).json(posts);
   } catch (err) {
+    console.error("Error fetching user posts:", err);
     res.status(500).json(err);
   }
 });

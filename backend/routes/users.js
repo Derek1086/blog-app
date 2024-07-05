@@ -86,6 +86,7 @@ router.put("/password/verify/:id", verifyToken, async (req, res) => {
       return res.status(401).json({ message: "Incorrect current password" });
     }
 
+    console.log("Password verified successfully");
     res.status(200).json({ message: "Password verified successfully" });
   } catch (err) {
     console.error(err);
@@ -99,6 +100,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
     await User.findByIdAndDelete(req.params.id);
     await Post.deleteMany({ userId: req.params.id });
     await Comment.deleteMany({ userId: req.params.id });
+    console.log("User and their posts/comments has been deleted!");
     res.status(200).json("User has been deleted!");
   } catch (err) {
     res.status(500).json(err);
