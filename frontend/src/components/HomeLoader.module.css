@@ -1,0 +1,23 @@
+.box {
+  width: 100%;
+}
+
+.post {
+  width: 300px;
+}
+
+.container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .post {
+    width: 100%;
+  }
+}

@@ -13,7 +13,10 @@ router.post("/create", verifyToken, async (req, res) => {
   try {
     const newPost = new Post(req.body);
     const savedPost = await newPost.save();
-    console.log("post created");
+
+    // Log the title of the post created
+    console.log("Post created:", savedPost.title);
+
     res.status(200).json(savedPost);
   } catch (err) {
     res.status(500).json(err);

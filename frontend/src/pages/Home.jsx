@@ -8,6 +8,7 @@ import HeaderText from "../ui/text/HeaderText";
 import Loader from "../components/Loader";
 import Featured from "../components/Featured";
 import Pagination from "@mui/material/Pagination";
+import HomeLoader from "../components/HomeLoader";
 
 import classes from "./Home.module.css";
 
@@ -58,24 +59,26 @@ const Home = () => {
     <>
       <Navbar query={""} />
       <div className="px-8 md:px-[200px]">
-        <HeaderText fontsize={"20px"} text="Featured" textalign={"left"} />
         {loader ? (
-          <div className="h-[40vh] flex justify-center items-center">
-            <Loader />
-          </div>
+          <HomeLoader />
         ) : !noResults && currentPosts.length > 0 ? (
-          <Link to={`/posts/post/${posts[0]._id}`}>
-            <Featured post={posts[0]} />
-          </Link>
+          <>
+            <HeaderText fontsize={"20px"} text="Featured" textalign={"left"} />
+            <Link to={`/posts/post/${posts[0]._id}`}>
+              <Featured post={posts[0]} />
+            </Link>
+            <HeaderText
+              fontsize={"20px"}
+              text="Recent Posts"
+              textalign={"left"}
+            />
+          </>
         ) : (
-          <h3 className="text-center font-bold mt-16">No posts available</h3>
+          <></>
         )}
-        <HeaderText fontsize={"20px"} text="Recent Posts" textalign={"left"} />
         <div className={classes.container}>
           {loader ? (
-            <div className="h-[40vh] flex justify-center items-center">
-              <Loader />
-            </div>
+            <></>
           ) : !noResults ? (
             currentPosts.map((post) => (
               <Link to={`/posts/post/${post._id}`} key={post._id}>
