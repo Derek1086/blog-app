@@ -43,7 +43,7 @@ const Profile = () => {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState(posts || []);
   const [page, setPage] = useState(1);
-  const postsPerPage = 6;
+  const postsPerPage = 4;
   const [authenticated, setAuthenticated] = useState(false);
   const [open, setOpen] = useState(false);
   const [loadingPosts, setLoadingPosts] = useState(true);
@@ -383,6 +383,9 @@ const Profile = () => {
                 color="secondary"
                 sx={{ width: "40%", padding: "10px" }}
                 onClick={handlePasswordUpdate}
+                disabled={
+                  password.trim() === "" || confirmedpassword.trim() === ""
+                }
               >
                 Update
               </Button>
@@ -447,6 +450,7 @@ const Profile = () => {
                 color="secondary"
                 sx={{ width: "40%", padding: "10px" }}
                 onClick={handlePasswordVerify}
+                disabled={userPassword.trim() === ""}
               >
                 Confirm
               </Button>

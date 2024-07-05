@@ -26,7 +26,12 @@ const CustomModal = ({
   return (
     <Modal open={open} onClose={onclose}>
       <Box sx={style}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
+        <Typography
+          id="modal-modal-title"
+          variant="h6"
+          component="h2"
+          sx={{ wordWrap: "break-word" }}
+        >
           {title}
         </Typography>
         <div
