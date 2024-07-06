@@ -138,7 +138,7 @@ const SearchedPosts = () => {
             </Link>
           ))
         ) : (
-          <h3 className="text-center font-bold mt-16">No posts available</h3>
+          <></>
         )}
       </div>
       {/* Pagination */}

@@ -5,6 +5,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { URL } from "../url";
 import { useContext, useState } from "react";
 import { UserContext } from "../context/UserContext";
+import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -65,6 +66,8 @@ const Comment = ({ c, post }) => {
     }
   };
 
+  console.log(c.userId);
+
   return (
     <>
       <CustomModal
@@ -79,11 +82,13 @@ const Comment = ({ c, post }) => {
       <Card sx={{ padding: "10px", marginTop: "10px" }}>
         <div className="flex items-center justify-between">
           <div style={{ display: "flex", gap: "10px" }}>
-            <BodyText
-              text={c.author}
-              variant={"body2"}
-              color={"text.secondary"}
-            />
+            <Link to={"/profile/" + c.userId}>
+              <BodyText
+                text={c.author}
+                variant={"body2"}
+                color={"text.secondary"}
+              />
+            </Link>
             <BodyText
               text={formatDistanceToNow(new Date(c.updatedAt), {
                 addSuffix: true,

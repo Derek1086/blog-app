@@ -27,6 +27,22 @@ const PostSchema = new mongoose.Schema(
     categories: {
       type: Array,
     },
+    viewCount: {
+      type: Number,
+      default: 0,
+    },
+    favoriteCount: {
+      type: Number,
+      default: 0,
+    },
+    viewedBy: {
+      type: [String],
+      default: [],
+    },
+    favoritedBy: {
+      type: [String],
+      default: [],
+    },
   },
   { timestamps: true }
 );

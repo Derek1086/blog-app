@@ -134,4 +134,73 @@ router.get("/user/:userId", async (req, res) => {
   }
 });
 
+// UPDATE VIEW COUNT
+router.post("/:id/view", verifyToken, async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const userId = req.user.id;
+
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    // Ensure the user hasn't already viewed this post
+    const userViewed = post.viewedBy.includes(userId);
+    if (!userViewed) {
+      post.viewCount += 1;
+      post.viewedBy.push(userId);
+      await post.save();
+    }
+
+    res.status(200).json(post);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// UPDATE FAVORITE COUNT
+router.post("/:id/favorite", verifyToken, async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const userId = req.user.id;
+
+    console.log(
+      "User ID:",
+      userId,
+      "is attempting to favorite post ID:",
+      postId
+    );
+
+    const post = await Post.findById(postId);
+    if (!post) {
+      console.log("Post not found with ID:", postId);
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    const userFavorited = post.favoritedBy.includes(userId);
+    if (userFavorited) {
+      console.log("User ID:", userId, "is unfavoriting post ID:", postId);
+      post.favoriteCount -= 1;
+      post.favoritedBy = post.favoritedBy.filter((id) => id !== userId);
+    } else {
+      console.log("User ID:", userId, "is favoriting post ID:", postId);
+      post.favoriteCount += 1;
+      post.favoritedBy.push(userId);
+    }
+    await post.save();
+
+    console.log(
+      "Favorite count for post ID:",
+      postId,
+      "is now:",
+      post.favoriteCount
+    );
+
+    res.status(200).json(post);
+  } catch (err) {
+    console.error("Error updating favorite count:", err);
+    res.status(500).json(err);
+  }
+});
 module.exports = router;

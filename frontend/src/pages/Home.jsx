@@ -5,6 +5,7 @@ import { URL } from "../url";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import HeaderText from "../ui/text/HeaderText";
+import BodyText from "../ui/text/BodyText";
 import Featured from "../components/Featured";
 import CustomPagination from "../ui/container/CustomPagination";
 import HomeLoader from "../ui/loaders/HomeLoader";
@@ -85,7 +86,14 @@ const Home = () => {
               </Link>
             ))
           ) : (
-            <h3 className="text-center font-bold mt-16">No posts available</h3>
+            <div className="mt-10">
+              <BodyText
+                text={"No posts available"}
+                variant={"body1"}
+                color={"white"}
+                textalign={"center"}
+              />
+            </div>
           )}
         </div>
       </div>

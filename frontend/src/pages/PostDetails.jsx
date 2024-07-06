@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import Comment from "../components/Comment";
 import Navbar from "../components/Navbar";
 import axios from "axios";
@@ -9,7 +9,6 @@ import Loader from "../components/Loader";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import BodyText from "../ui/text/BodyText";
@@ -116,7 +115,15 @@ const PostDetails = () => {
         <Stack spacing={2} style={{ marginTop: "10px" }}>
           <div className="px-8 md:px-[200px]">
             <div className="flex justify-between items-center">
-              <h1 className="text-2xl font-bold md:text-3xl">{post.title}</h1>
+              <p
+                style={{
+                  fontSize: "24px",
+                  fontWeight: "bold",
+                  wordWrap: "break-word",
+                }}
+              >
+                {post.title}
+              </p>
               {user?._id === post?.userId && (
                 <div className="flex items-center justify-center space-x-2">
                   <IconButton onClick={() => navigate("/edit/" + postId)}>
@@ -130,11 +137,13 @@ const PostDetails = () => {
             </div>
 
             <div className="flex items-center text-gray-500 justify-between md:mt-2">
-              <BodyText
-                text={post.username}
-                variant={"body1"}
-                color={"text.secondary"}
-              />
+              <Link to={"/profile/" + post.userId}>
+                <BodyText
+                  text={post.username}
+                  variant={"body1"}
+                  color={"text.secondary"}
+                />
+              </Link>
               <div style={{ display: "flex", gap: "10px" }}>
                 <BodyText
                   text={formatDistanceToNow(new Date(post.updatedAt), {
@@ -175,10 +184,12 @@ const PostDetails = () => {
               <img src={IF + post.photo} className="w-3/4  mx-auto" alt="" />
             </div>
             {post.desc && (
-              <div className="mx-auto mt-4">
+              <div className="mt-4">
                 {post.desc.split("\\n").map((paragraph, index) => (
                   <div key={index}>
-                    <p key={index}>{paragraph}</p>
+                    <p key={index} style={{ wordWrap: "break-word" }}>
+                      {paragraph}
+                    </p>
                     <br />
                   </div>
                 ))}
