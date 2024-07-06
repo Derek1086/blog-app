@@ -91,11 +91,29 @@ router.delete("/:id", verifyToken, async (req, res) => {
   }
 });
 
-// GET POST DETAILS
-router.get("/:id", async (req, res) => {
+// GET Post Details and Update View Count
+router.get("/:id", verifyToken, async (req, res) => {
   try {
     console.log("Fetching details for post with ID:", req.params.id);
     const post = await Post.findById(req.params.id);
+
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    const userId = req.userId;
+    console.log("User ID:", userId, "is viewing post ID:", req.params.id);
+
+    // Ensure the user hasn't already viewed this post
+    if (!post.viewedBy.includes(userId)) {
+      const randomIncrement = Math.floor(Math.random() * 100000000) + 1;
+      post.viewCount += randomIncrement;
+      post.viewedBy.push(userId);
+      await post.save();
+    } else {
+      console.log("User has already viewed this post");
+    }
+
     res.status(200).json(post);
   } catch (err) {
     console.error("Error fetching post details:", err);
@@ -130,31 +148,6 @@ router.get("/user/:userId", async (req, res) => {
     res.status(200).json(posts);
   } catch (err) {
     console.error("Error fetching user posts:", err);
-    res.status(500).json(err);
-  }
-});
-
-// UPDATE VIEW COUNT
-router.post("/:id/view", verifyToken, async (req, res) => {
-  try {
-    const postId = req.params.id;
-    const userId = req.user.id;
-
-    const post = await Post.findById(postId);
-    if (!post) {
-      return res.status(404).json({ error: "Post not found" });
-    }
-
-    // Ensure the user hasn't already viewed this post
-    const userViewed = post.viewedBy.includes(userId);
-    if (!userViewed) {
-      post.viewCount += 1;
-      post.viewedBy.push(userId);
-      await post.save();
-    }
-
-    res.status(200).json(post);
-  } catch (err) {
     res.status(500).json(err);
   }
 });
@@ -203,4 +196,5 @@ router.post("/:id/favorite", verifyToken, async (req, res) => {
     res.status(500).json(err);
   }
 });
+
 module.exports = router;

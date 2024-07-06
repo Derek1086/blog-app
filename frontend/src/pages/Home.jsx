@@ -13,6 +13,7 @@ import HomeLoader from "../ui/loaders/HomeLoader";
 import classes from "./Home.module.css";
 
 const Home = () => {
+  // State variables
   const { search } = useLocation();
   const [posts, setPosts] = useState([]);
   const [noResults, setNoResults] = useState(false);
@@ -21,6 +22,12 @@ const Home = () => {
   const [page, setPage] = useState(1);
   const postsPerPage = 6;
 
+  /**
+   * Handles change in pagination page.
+   * Updates the current page number.
+   * @param {Object} event - The event object from the pagination component.
+   * @param {number} value - The new page number selected.
+   */
   const handleChange = (event, value) => {
     setPage(value);
   };
@@ -29,6 +36,12 @@ const Home = () => {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
 
+  /**
+   * Fetches posts from the server based on the search query.
+   * Sets fetched posts to state.
+   * Checks if no results are found and updates state accordingly.
+   * Logs error if request fails.
+   */
   const fetchPosts = async () => {
     setLoader(true);
     try {

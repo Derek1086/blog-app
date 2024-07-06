@@ -13,7 +13,13 @@ import CustomPagination from "../ui/container/CustomPagination";
 
 import classes from "./Home.module.css";
 
+/**
+ * Component for displaying posts based on search query and filtering.
+ * Fetches posts from the server based on search query.
+ * Handles filtering posts by newest, oldest, title, author, and default sorting.
+ */
 const SearchedPosts = () => {
+  // State variables
   const { searchquery } = useParams();
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState(posts || []);
@@ -23,6 +29,12 @@ const SearchedPosts = () => {
   const [page, setPage] = useState(1);
   const postsPerPage = 6;
 
+  /**
+   * Handles change in pagination page.
+   * Updates the current page number.
+   * @param {Object} event - The event object from the pagination component.
+   * @param {number} value - The new page number selected.
+   */
   const handleChange = (event, value) => {
     setPage(value);
   };
@@ -35,6 +47,12 @@ const SearchedPosts = () => {
     fetchPosts();
   }, [searchquery, filter]);
 
+  /**
+   * Handles fetching posts from the server based on search query.
+   * Sets fetched posts to state and handles sorting based on the selected filter.
+   * Sets noResults state if no posts are found.
+   * Logs error if request fails.
+   */
   const fetchPosts = async () => {
     setLoader(true);
     try {
@@ -54,6 +72,11 @@ const SearchedPosts = () => {
     }
   };
 
+  /**
+   * Sorts posts based on the selected filter.
+   * @param {Array} posts - The array of posts to be sorted.
+   * @returns {Array} - The sorted array of posts based on the selected filter.
+   */
   const sortPosts = (posts) => {
     switch (filter) {
       case "Newest":
@@ -75,6 +98,11 @@ const SearchedPosts = () => {
     }
   };
 
+  /**
+   * Handles change in filter selection.
+   * Updates the filter state based on user selection.
+   * @param {Object} event - The event object from the filter input/select component.
+   */
   const handleFilter = (event) => {
     setFilter(event.target.value);
   };

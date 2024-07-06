@@ -67,7 +67,9 @@ const EditPost = () => {
    */
   const fetchPost = async () => {
     try {
-      const res = await axios.get(URL + "/api/posts/" + postId);
+      const res = await axios.get(URL + "/api/posts/" + postId, {
+        withCredentials: true,
+      });
       setTitle(res.data.title);
       setDesc(res.data.desc.replace(/\\n/g, "\n"));
       //setFile(res.data.photo);

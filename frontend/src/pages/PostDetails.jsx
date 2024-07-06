@@ -17,9 +17,14 @@ import Stack from "@mui/material/Stack";
 import CustomModal from "../ui/container/CustomModal";
 import CustomTextField from "../ui/input/CustomTextField";
 
+/**
+ * Component for displaying detailed information of a single post.
+ * Allows viewing, editing, deleting, and commenting on the post.
+ */
 const PostDetails = () => {
+  // State Variables
   const postId = useParams().id;
-  const [post, setPost] = useState(null); // Initialize as null
+  const [post, setPost] = useState(null);
   const { user } = useContext(UserContext);
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
@@ -27,10 +32,17 @@ const PostDetails = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
+  /**
+   * Fetches the post details from the server based on postId.
+   * Sets the fetched post data to state.
+   * Logs error if request fails.
+   */
   const fetchPost = async () => {
     setLoader(true);
     try {
-      const res = await axios.get(URL + "/api/posts/" + postId);
+      const res = await axios.get(URL + "/api/posts/" + postId, {
+        withCredentials: true,
+      });
       setPost(res.data);
       setLoader(false);
     } catch (err) {
@@ -39,6 +51,11 @@ const PostDetails = () => {
     }
   };
 
+  /**
+   * Deletes the post from the server based on postId.
+   * Navigates to the home page upon successful deletion.
+   * Logs error if request fails.
+   */
   const handleDeletePost = async () => {
     try {
       const res = await axios.delete(URL + "/api/posts/" + postId, {
@@ -55,6 +72,11 @@ const PostDetails = () => {
     fetchPost();
   }, [postId]);
 
+  /**
+   * Fetches comments associated with the post from the server.
+   * Sets the fetched comments to state.
+   * Logs error if request fails.
+   */
   const fetchPostComments = async () => {
     setLoader(true);
     try {
@@ -71,6 +93,13 @@ const PostDetails = () => {
     fetchPostComments();
   }, [postId]);
 
+  /**
+   * Posts a new comment to the post on the server.
+   * Resets the comment input field upon successful posting.
+   * Fetches updated comments after posting.
+   * Logs error if request fails.
+   * @param {Object} e - The event object from the form submission.
+   */
   const postComment = async (e) => {
     e.preventDefault();
     if (comment === "") {
@@ -92,6 +121,22 @@ const PostDetails = () => {
       await fetchPostComments();
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  /**
+   * Formats the view count number to a human-readable string.
+   * Displays counts in k (thousands) and M (millions) format.
+   * @param {number} count - The view count number to format.
+   * @returns {string} - The formatted view count string.
+   */
+  const formatViewCount = (count) => {
+    if (count < 1000) {
+      return count.toString();
+    } else if (count < 1000000) {
+      return (count / 1000).toFixed(1) + "k";
+    } else {
+      return (count / 1000000).toFixed(1) + "M";
     }
   };
 
@@ -135,7 +180,6 @@ const PostDetails = () => {
                 </div>
               )}
             </div>
-
             <div className="flex items-center text-gray-500 justify-between md:mt-2">
               <Link to={"/profile/" + post.userId}>
                 <BodyText
@@ -154,7 +198,20 @@ const PostDetails = () => {
                 />
               </div>
             </div>
-            <div className="flex items-center space-x-4 font-semibold">
+            {post.viewCount !== 1 ? (
+              <BodyText
+                text={formatViewCount(post.viewCount) + " views"}
+                variant={"body2"}
+                color={"text.secondary"}
+              />
+            ) : (
+              <BodyText
+                text={post.viewCount + " view"}
+                variant={"body2"}
+                color={"text.secondary"}
+              />
+            )}
+            <div className="flex items-center space-x-4 font-semibold mt-2">
               <BodyText
                 text={"Categories: "}
                 variant={"body1"}

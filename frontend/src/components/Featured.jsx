@@ -8,6 +8,16 @@ import { formatDistanceToNow } from "date-fns";
 import classes from "./Featured.module.css";
 
 const Featured = ({ post }) => {
+  const formatViewCount = (count) => {
+    if (count < 1000) {
+      return count.toString();
+    } else if (count < 1000000) {
+      return (count / 1000).toFixed(1) + "k";
+    } else {
+      return (count / 1000000).toFixed(1) + "M";
+    }
+  };
+
   return (
     <Card className={classes.container}>
       <div className={classes.image}>
@@ -65,6 +75,21 @@ const Featured = ({ post }) => {
             >
               Read More
             </Button>
+          </div>
+          <div className="mt-4">
+            {post.viewCount !== 1 ? (
+              <BodyText
+                text={formatViewCount(post.viewCount) + " views"}
+                variant={"body2"}
+                color={"text.secondary"}
+              />
+            ) : (
+              <BodyText
+                text={post.viewCount + " view"}
+                variant={"body2"}
+                color={"text.secondary"}
+              />
+            )}
           </div>
         </div>
       </div>
