@@ -24,7 +24,16 @@ router.post("/register", async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hashSync(password, salt);
-    const newUser = new User({ username, email, password: hashedPassword });
+
+    // Create new user with posthistory and favorites initialized
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPassword,
+      posthistory: [],
+      favorites: [],
+    });
+
     const savedUser = await newUser.save();
     console.log("User registered successfully:", savedUser.username);
     res.status(200).json(savedUser);

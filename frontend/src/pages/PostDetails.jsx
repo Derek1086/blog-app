@@ -16,6 +16,8 @@ import { formatDistanceToNow } from "date-fns";
 import Stack from "@mui/material/Stack";
 import CustomModal from "../ui/container/CustomModal";
 import CustomTextField from "../ui/input/CustomTextField";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 /**
  * Component for displaying detailed information of a single post.
@@ -125,6 +127,23 @@ const PostDetails = () => {
   };
 
   /**
+   * Handles toggling the favorite status of the post.
+   * Adds or removes the post from user's favorites.
+   */
+  const handleFavoriteClick = async () => {
+    try {
+      const res = await axios.post(
+        URL + "/api/posts/" + postId + "/favorite",
+        {},
+        { withCredentials: true }
+      );
+      setPost(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  /**
    * Formats the view count number to a human-readable string.
    * Displays counts in k (thousands) and M (millions) format.
    * @param {number} count - The view count number to format.
@@ -169,16 +188,27 @@ const PostDetails = () => {
               >
                 {post.title}
               </p>
-              {user?._id === post?.userId && (
-                <div className="flex items-center justify-center space-x-2">
-                  <IconButton onClick={() => navigate("/edit/" + postId)}>
-                    <EditIcon />
+              <div className="flex items-center justify-center space-x-2">
+                {user && (
+                  <IconButton onClick={handleFavoriteClick}>
+                    {post.favoritedBy && post.favoritedBy.includes(user._id) ? (
+                      <FavoriteIcon />
+                    ) : (
+                      <FavoriteBorderIcon />
+                    )}
                   </IconButton>
-                  <IconButton onClick={() => setOpen(true)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </div>
-              )}
+                )}
+                {user?._id === post?.userId && (
+                  <>
+                    <IconButton onClick={() => navigate("/edit/" + postId)}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton onClick={() => setOpen(true)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </>
+                )}
+              </div>
             </div>
             <div className="flex items-center text-gray-500 justify-between md:mt-2">
               <Link to={"/profile/" + post.userId}>

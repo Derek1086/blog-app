@@ -16,6 +16,14 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    posthistory: {
+      type: [String],
+      default: [],
+    },
+    favorites: {
+      type: [String],
+      default: [],
+    },
   },
   { timestamps: true }
 );

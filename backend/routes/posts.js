@@ -94,24 +94,34 @@ router.delete("/:id", verifyToken, async (req, res) => {
 // GET Post Details and Update View Count
 router.get("/:id", verifyToken, async (req, res) => {
   try {
-    console.log("Fetching details for post with ID:", req.params.id);
-    const post = await Post.findById(req.params.id);
+    const postId = req.params.id;
+    const userId = req.userId;
 
+    console.log("Fetching details for post with ID:", postId);
+
+    const post = await Post.findById(postId);
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    const userId = req.userId;
     console.log("User ID:", userId, "is viewing post ID:", req.params.id);
 
-    // Ensure the user hasn't already viewed this post
+    // Update view count and add to user's postHistory
     if (!post.viewedBy.includes(userId)) {
-      const randomIncrement = Math.floor(Math.random() * 100000000) + 1;
-      post.viewCount += randomIncrement;
+      post.viewCount++;
       post.viewedBy.push(userId);
       await post.save();
-    } else {
-      console.log("User has already viewed this post");
+    }
+
+    // Add post to user's postHistory
+    const user = await User.findById(userId);
+    if (user) {
+      // Remove post if already exists in history
+      user.posthistory = user.posthistory.filter(
+        (id) => id.toString() !== postId
+      );
+      user.posthistory.unshift(postId);
+      await user.save();
     }
 
     res.status(200).json(post);
@@ -156,14 +166,7 @@ router.get("/user/:userId", async (req, res) => {
 router.post("/:id/favorite", verifyToken, async (req, res) => {
   try {
     const postId = req.params.id;
-    const userId = req.user.id;
-
-    console.log(
-      "User ID:",
-      userId,
-      "is attempting to favorite post ID:",
-      postId
-    );
+    const userId = req.userId;
 
     const post = await Post.findById(postId);
     if (!post) {
@@ -171,24 +174,30 @@ router.post("/:id/favorite", verifyToken, async (req, res) => {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    const userFavorited = post.favoritedBy.includes(userId);
-    if (userFavorited) {
+    // Toggle favorite status
+    const user = await User.findById(userId);
+    if (!user) {
+      console.log("User not found with ID:", userId);
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const isFavorited = user.favorites.includes(postId);
+    if (isFavorited) {
       console.log("User ID:", userId, "is unfavoriting post ID:", postId);
-      post.favoriteCount -= 1;
-      post.favoritedBy = post.favoritedBy.filter((id) => id !== userId);
+      user.favorites = user.favorites.filter((id) => id.toString() !== postId);
+      post.favoritedBy = post.favoritedBy.filter(
+        (id) => id.toString() !== userId
+      );
     } else {
       console.log("User ID:", userId, "is favoriting post ID:", postId);
-      post.favoriteCount += 1;
+      user.favorites.unshift(postId);
       post.favoritedBy.push(userId);
     }
-    await post.save();
 
-    console.log(
-      "Favorite count for post ID:",
-      postId,
-      "is now:",
-      post.favoriteCount
-    );
+    console.log(user.username + "'s favorites:", user.favorites);
+
+    await user.save();
+    await post.save();
 
     res.status(200).json(post);
   } catch (err) {
