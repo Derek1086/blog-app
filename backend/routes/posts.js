@@ -188,10 +188,12 @@ router.post("/:id/favorite", verifyToken, async (req, res) => {
       post.favoritedBy = post.favoritedBy.filter(
         (id) => id.toString() !== userId
       );
+      post.favoriteCount--;
     } else {
       console.log("User ID:", userId, "is favoriting post ID:", postId);
       user.favorites.unshift(postId);
       post.favoritedBy.push(userId);
+      post.favoriteCount++;
     }
 
     console.log(user.username + "'s favorites:", user.favorites);
