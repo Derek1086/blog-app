@@ -123,16 +123,13 @@ router.get("/:id/favorites", verifyToken, async (req, res) => {
   try {
     const userId = req.params.id;
 
-    // Find the user
     const user = await User.findById(userId);
     if (!user) {
       console.log("User not found with ID:", userId);
       return res.status(404).json({ error: "User not found" });
     }
 
-    // Fetch all posts that the user has favorited
     const favoritePosts = await Post.find({ _id: { $in: user.favorites } });
-
     res.status(200).json(favoritePosts);
   } catch (err) {
     console.error("Error fetching user's favorites:", err);
@@ -145,13 +142,13 @@ router.get("/:id/posthistory", verifyToken, async (req, res) => {
   try {
     const userId = req.params.id;
 
-    // Find user by ID
     const user = await User.findById(userId);
     if (!user) {
+      console.log("User not found with ID:", userId);
       return res.status(404).json({ error: "User not found" });
     }
 
-    const postHistory = user.posthistory;
+    const postHistory = await Post.find({ _id: { $in: user.posthistory } });
     res.status(200).json(postHistory);
   } catch (err) {
     console.error("Error fetching user's post history:", err);

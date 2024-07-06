@@ -193,7 +193,7 @@ router.post("/:id/favorite", verifyToken, async (req, res) => {
       console.log("User ID:", userId, "is favoriting post ID:", postId);
       user.favorites.unshift(postId);
       post.favoritedBy.push(userId);
-      post.favoriteCount++;
+      post.favoriteCount;
     }
 
     console.log(user.username + "'s favorites:", user.favorites);
