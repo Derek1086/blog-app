@@ -59,6 +59,7 @@ const PostRenderer = ({
     try {
       const res = await axios.get(URL + route);
       if (searchable) {
+        console.log("FETCHING AND SORTING");
         const sortedPosts = res.data.filter(
           (post) =>
             post.title
@@ -66,7 +67,7 @@ const PostRenderer = ({
               .includes(searchquery.trim().toLowerCase()) ||
             post.desc.toLowerCase().includes(searchquery.trim().toLowerCase())
         );
-        setPosts(sortedPosts);
+        setPosts(sortPosts(sortedPosts));
         setNoResults(sortedPosts.length === 0);
         setLoading(false);
         return;
@@ -100,6 +101,10 @@ const PostRenderer = ({
         );
       case "Title":
         return posts.sort((a, b) => a.title.localeCompare(b.title));
+      case "View Count":
+        return posts.sort((a, b) => b.viewCount - a.viewCount);
+      case "Author":
+        return posts.sort((a, b) => a.username.localeCompare(b.username));
       case "Default":
         return posts.reverse();
       default:
@@ -152,7 +157,9 @@ const PostRenderer = ({
                     { value: "default", label: "Default" },
                     { value: "Newest", label: "Newest" },
                     { value: "Oldest", label: "Oldest" },
+                    { value: "Author", label: "Author" },
                     { value: "Title", label: "Title" },
+                    { value: "View Count", label: "View Count" },
                   ]}
                 />
               </>
