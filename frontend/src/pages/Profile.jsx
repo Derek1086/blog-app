@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import ProfilePosts from "../components/ProfilePosts";
 import axios from "axios";
 import { URL } from "../url";
 import { UserContext } from "../context/UserContext";
@@ -16,7 +15,7 @@ import BodyText from "../ui/text/BodyText";
 import Stack from "@mui/material/Stack";
 import CustomTextField from "../ui/input/CustomTextField";
 import CustomPagination from "../ui/container/CustomPagination";
-import ProfileLoader from "../ui/loaders/ProfileLoader";
+import PostRenderer from "../components/PostRenderer";
 
 import classes from "./Profile.module.css";
 
@@ -690,43 +689,15 @@ const Profile = () => {
               </Stack>
               <div className="mb-5" />
             </div>
-            <div className={classes.posts}>
-              <Stack spacing={2}>
-                <HeaderText
-                  fontsize={"20px"}
-                  text="Your Posts"
-                  textalign={"left"}
-                />
-                <div>
-                  {loadingPosts ? (
-                    <ProfileLoader />
-                  ) : posts.length === 0 ? (
-                    <div className="mt-10">
-                      <BodyText
-                        text={"You haven't posted anything yet"}
-                        variant={"body1"}
-                        color={"white"}
-                        textalign={"center"}
-                      />
-                    </div>
-                  ) : (
-                    currentPosts.map((post) => (
-                      <Link to={`/posts/post/${post._id}`} key={post._id}>
-                        <ProfilePosts key={post._id} post={post} />
-                      </Link>
-                    ))
-                  )}
-                </div>
-                {/* Pagination */}
-                <CustomPagination
-                  posts={posts}
-                  postsPerPage={postsPerPage}
-                  page={page}
-                  handleChange={handleChange}
-                />
-              </Stack>
-            </div>
           </div>
+          <PostRenderer
+            route={"/api/posts/user/" + user._id}
+            headerText={"Your Posts"}
+            altText={"You don't have any posts"}
+            sortable={false}
+            searchable={false}
+            searchquery={""}
+          />
         </>
       )}
     </div>

@@ -10,7 +10,14 @@ import { URL } from "../url";
 import BlogPost from "./BlogPost";
 import CustomPagination from "../ui/container/CustomPagination";
 
-const PostRenderer = ({ route, headerText, altText, sortable }) => {
+const PostRenderer = ({
+  route,
+  headerText,
+  altText,
+  sortable,
+  searchable,
+  searchquery,
+}) => {
   const [posts, setPosts] = useState([]);
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(true);
@@ -51,6 +58,20 @@ const PostRenderer = ({ route, headerText, altText, sortable }) => {
     setLoading(true);
     try {
       const res = await axios.get(URL + route);
+      if (searchable) {
+        const sortedPosts = res.data.filter(
+          (post) =>
+            post.title
+              .toLowerCase()
+              .includes(searchquery.trim().toLowerCase()) ||
+            post.desc.toLowerCase().includes(searchquery.trim().toLowerCase())
+        );
+        setPosts(sortedPosts);
+        setNoResults(sortedPosts.length === 0);
+        setLoading(false);
+        return;
+      }
+
       const sortedPosts = sortPosts(res.data);
       setPosts(sortedPosts);
       setNoResults(sortedPosts.length === 0);
@@ -138,7 +159,7 @@ const PostRenderer = ({ route, headerText, altText, sortable }) => {
             ) : (
               <HeaderText
                 fontsize={"18px"}
-                text="Recent Posts"
+                text={headerText}
                 textalign={"left"}
               />
             )}

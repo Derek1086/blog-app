@@ -17,6 +17,8 @@ const MyFavorites = () => {
           headerText={"Your Favorites"}
           altText={"You don't have any favorites"}
           sortable={true}
+          searchable={false}
+          searchquery={""}
         />
       )}
     </>

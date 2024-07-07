@@ -16,7 +16,9 @@ const MyHistory = () => {
           route={"/api/users/" + user._id + "/history"}
           headerText={"Your History"}
           altText={"No history available"}
-          sortable={true}
+          sortable={false}
+          searchable={false}
+          searchquery={""}
         />
       )}
     </>

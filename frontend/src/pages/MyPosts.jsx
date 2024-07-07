@@ -17,6 +17,8 @@ const MyBlogs = () => {
           headerText={"Your Posts"}
           altText={"You don't have any posts"}
           sortable={true}
+          searchable={false}
+          searchquery={""}
         />
       )}
     </>

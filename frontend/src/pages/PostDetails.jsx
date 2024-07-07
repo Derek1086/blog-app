@@ -5,7 +5,7 @@ import axios from "axios";
 import { URL, IF } from "../url";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
-import Loader from "../components/Loader";
+import PostLoader from "../ui/loaders/PostLoader";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -173,7 +173,7 @@ const PostDetails = () => {
       />
       {loader || !post ? (
         <div className="h-[80vh] flex justify-center items-center w-full">
-          <Loader />
+          <PostLoader />
         </div>
       ) : (
         <Stack spacing={2} style={{ marginTop: "10px" }}>

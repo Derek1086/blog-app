@@ -118,7 +118,7 @@ router.get("/:id", verifyToken, async (req, res) => {
     if (user) {
       // Remove post if already exists in history
       user.posthistory = user.posthistory.filter(
-        (id) => id.toString() !== postId
+        (id) => id.toString() !== postId.toString()
       );
       user.posthistory.unshift(postId);
       await user.save();

@@ -10,6 +10,8 @@ const Home = () => {
         headerText={"Recent Posts"}
         altText={"No posts available"}
         sortable={false}
+        searchable={false}
+        searchquery={""}
       />
     </>
   );
