@@ -119,7 +119,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // GET User Favorites
-router.get("/:id/favorites", verifyToken, async (req, res) => {
+router.get("/:id/favorites", async (req, res) => {
   try {
     const userId = req.params.id;
 
@@ -138,7 +138,7 @@ router.get("/:id/favorites", verifyToken, async (req, res) => {
 });
 
 // GET User Post History
-router.get("/:id/posthistory", verifyToken, async (req, res) => {
+router.get("/:id/history", async (req, res) => {
   try {
     const userId = req.params.id;
 

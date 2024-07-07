@@ -192,7 +192,7 @@ const PostDetails = () => {
                 {user && (
                   <IconButton onClick={handleFavoriteClick}>
                     {post.favoritedBy && post.favoritedBy.includes(user._id) ? (
-                      <FavoriteIcon />
+                      <FavoriteIcon color="secondary" />
                     ) : (
                       <FavoriteBorderIcon />
                     )}
@@ -220,7 +220,7 @@ const PostDetails = () => {
               </Link>
               <div style={{ display: "flex", gap: "10px" }}>
                 <BodyText
-                  text={formatDistanceToNow(new Date(post.updatedAt), {
+                  text={formatDistanceToNow(new Date(post.createdAt), {
                     addSuffix: true,
                   })}
                   variant={"body2"}

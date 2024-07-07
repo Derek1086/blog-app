@@ -3,7 +3,7 @@ import { UserContext } from "../context/UserContext";
 import Navbar from "../components/Navbar";
 import PostRenderer from "../components/PostRenderer";
 
-const MyBlogs = () => {
+const MyFavorites = () => {
   const { user } = useContext(UserContext);
 
   return (
@@ -13,9 +13,9 @@ const MyBlogs = () => {
         <></>
       ) : (
         <PostRenderer
-          route={"/api/posts/user/" + user._id}
-          headerText={"Your Posts"}
-          altText={"You don't have any posts"}
+          route={"/api/users/" + user._id + "/favorites"}
+          headerText={"Your Favorites"}
+          altText={"You don't have any favorites"}
           sortable={true}
         />
       )}
@@ -23,4 +23,4 @@ const MyBlogs = () => {
   );
 };
 
-export default MyBlogs;
+export default MyFavorites;

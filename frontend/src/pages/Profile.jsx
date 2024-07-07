@@ -103,20 +103,6 @@ const Profile = () => {
         const res = await axios.get(URL + "/api/users/" + user._id);
         setUsername(res.data.username);
         setEmail(res.data.email);
-
-        // Fetch favorites and post history list for the user
-        const favoritesRes = await axios.get(
-          URL + "/api/users/" + user._id + "/favorites",
-          { withCredentials: true }
-        );
-
-        console.log("User Favorites:", favoritesRes.data);
-
-        const posthistoryRes = await axios.get(
-          URL + "/api/users/" + user._id + "/posthistory",
-          { withCredentials: true }
-        );
-        console.log("User Post History:", posthistoryRes.data);
       }
     } catch (err) {
       console.log(err);

@@ -1,10 +1,9 @@
-const MainContainer = ({ children }) => {
+const MainContainer = ({ children, justifyContent }) => {
   return (
     <div
       style={{
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: justifyContent,
         gap: "10px",
       }}
     >

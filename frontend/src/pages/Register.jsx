@@ -277,24 +277,20 @@ const Register = () => {
           >
             Register
           </Button>
-          <MainContainer
-            children={
-              <>
-                <BodyText
-                  text="Already have an account?"
-                  variant={"body2"}
-                  color={"white"}
-                />
-                <Link to="/login">
-                  <BodyText
-                    text="Login"
-                    variant={"body2"}
-                    color={"text.secondary"}
-                  />
-                </Link>
-              </>
-            }
-          />
+          <MainContainer justifyContent={"center"}>
+            <BodyText
+              text="Already have an account?"
+              variant={"body2"}
+              color={"white"}
+            />
+            <Link to="/login">
+              <BodyText
+                text="Login"
+                variant={"body2"}
+                color={"text.secondary"}
+              />
+            </Link>
+          </MainContainer>
         </Stack>
       </div>
     </div>

@@ -170,20 +170,16 @@ const Login = () => {
           >
             Log in
           </Button>
-          <MainContainer
-            children={
-              <>
-                <BodyText text="New here?" variant={"body2"} color={"white"} />
-                <Link to="/register">
-                  <BodyText
-                    text="Register"
-                    variant={"body2"}
-                    color={"text.secondary"}
-                  />
-                </Link>
-              </>
-            }
-          />
+          <MainContainer justifyContent={"center"}>
+            <BodyText text="New here?" variant={"body2"} color={"white"} />
+            <Link to="/register">
+              <BodyText
+                text="Register"
+                variant={"body2"}
+                color={"text.secondary"}
+              />
+            </Link>
+          </MainContainer>
           <Button
             onClick={() => navigate("/")}
             variant="contained"

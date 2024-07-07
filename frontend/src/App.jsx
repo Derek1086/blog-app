@@ -8,6 +8,8 @@ import EditPost from "./pages/EditPost";
 import Profile from "./pages/Profile";
 import { UserContextProvider } from "./context/UserContext";
 import MyBlogs from "./pages/MyPosts";
+import MyFavorites from "./pages/MyFavorites";
+import MyHistory from "./pages/MyHistory";
 import SearchedPosts from "./pages/SearchedPosts";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -31,6 +33,8 @@ const App = () => {
           <Route exact path="/posts/post/:id" element={<PostDetails />} />
           <Route exact path="/edit/:id" element={<EditPost />} />
           <Route exact path="/myposts/:id" element={<MyBlogs />} />
+          <Route exact path="/myfavorites/:id" element={<MyFavorites />} />
+          <Route exact path="/myhistory/:id" element={<MyHistory />} />
           <Route exact path="/profile/:id" element={<Profile />} />
           <Route exact path="/posts/:searchquery" element={<SearchedPosts />} />
         </Routes>

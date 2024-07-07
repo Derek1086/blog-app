@@ -11,8 +11,6 @@ import MyPostsLoader from "../ui/loaders/MyPostsLoader";
 import CustomSelect from "../ui/input/CustomSelect";
 import CustomPagination from "../ui/container/CustomPagination";
 
-import classes from "./Home.module.css";
-
 /**
  * Component for displaying posts based on search query and filtering.
  * Fetches posts from the server based on search query.
@@ -154,7 +152,7 @@ const SearchedPosts = () => {
           </div>
         )}
       </div>
-      <div className={`px-8 md:px-[200px] ${classes.container}`}>
+      <div className={`px-8 md:px-[200px]`}>
         {loader ? (
           <div className="mt-14">
             <MyPostsLoader />
