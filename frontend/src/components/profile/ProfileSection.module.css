@@ -1,0 +1,27 @@
+.info {
+  display: flex;
+  margin-top: 10px;
+}
+
+.stats {
+  width: 20%;
+}
+
+.popular {
+  width: 80%;
+}
+
+@media screen and (max-width: 768px) {
+  .info {
+    display: block;
+  }
+
+  .stats,
+  .popular {
+    width: 100%;
+  }
+
+  .popular {
+    margin-top: 10px;
+  }
+}

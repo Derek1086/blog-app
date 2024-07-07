@@ -97,8 +97,6 @@ router.get("/:id", verifyToken, async (req, res) => {
     const postId = req.params.id;
     const userId = req.userId;
 
-    console.log("Fetching details for post with ID:", postId);
-
     const post = await Post.findById(postId);
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
@@ -153,7 +151,6 @@ router.get("/", async (req, res) => {
 // GET USER POSTS
 router.get("/user/:userId", async (req, res) => {
   try {
-    console.log("Fetching posts for user with ID:", req.params.userId);
     const posts = await Post.find({ userId: req.params.userId });
     res.status(200).json(posts);
   } catch (err) {

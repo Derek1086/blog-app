@@ -20,6 +20,7 @@ const CustomTextField = ({
   handleMouseDown,
   maxLength,
   disabled,
+  inputProps,
 }) => {
   return (
     <div>
@@ -43,6 +44,7 @@ const CustomTextField = ({
           error={error}
           onKeyDown={enterFunction}
           autoFocus={autoFocus}
+          InputProps={inputProps || null}
           inputProps={{ maxLength: maxLength }}
           disabled={disabled}
         />

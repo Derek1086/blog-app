@@ -20,6 +20,8 @@ const BlogPost = ({ post }) => {
     }
   };
 
+  if (!post) return <></>;
+
   return (
     <Card className={classes.container}>
       <div className={classes.image}>

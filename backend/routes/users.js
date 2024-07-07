@@ -70,7 +70,7 @@ router.put("/password/:id", verifyToken, async (req, res) => {
 
 // VERIFY Password
 router.put("/password/verify/:id", verifyToken, async (req, res) => {
-  const { userPassword } = req.body;
+  const { currentPassword } = req.body;
   const { id } = req.params;
 
   try {
@@ -80,7 +80,7 @@ router.put("/password/verify/:id", verifyToken, async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const passwordMatch = await bcrypt.compare(userPassword, user.password);
+    const passwordMatch = await bcrypt.compare(currentPassword, user.password);
 
     if (!passwordMatch) {
       return res.status(401).json({ message: "Incorrect current password" });
