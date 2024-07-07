@@ -1,18 +1,11 @@
 import Skeleton from "@mui/material/Skeleton";
-import Box from "@mui/material/Box";
-
-import classes from "../../components/ProfilePosts.module.css";
 
 const ProfileLoader = () => {
   return (
-    <Box>
-      <Skeleton variant="rounded" className={classes.container} height={200} />
-      <Skeleton variant="rounded" className={classes.container} height={200} />
-      <Skeleton variant="rounded" className={classes.container} height={200} />
-      <Skeleton variant="rounded" className={classes.container} height={200} />
-      <Skeleton variant="rounded" className={classes.container} height={200} />
-      <Skeleton variant="rounded" className={classes.container} height={200} />
-    </Box>
+    <>
+      <Skeleton variant="text" sx={{ fontSize: "24px" }} width={"100%"} />
+      <Skeleton variant="rounded" height={250} width={"100%"} />
+    </>
   );
 };
 

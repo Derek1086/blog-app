@@ -1,6 +1,7 @@
 import ProfileSection from "./ProfileSection";
 import PostContainer from "../../ui/container/PostContainer";
 import PostRenderer from "../PostRenderer";
+import ProfileLoader from "../../ui/loaders/ProfileLoader";
 
 const ProfileRenderer = ({
   loading,
@@ -13,7 +14,9 @@ const ProfileRenderer = ({
   return (
     <>
       {loading ? (
-        <p>loading</p>
+        <PostContainer>
+          <ProfileLoader />
+        </PostContainer>
       ) : (
         <div>
           {visitor === true && username !== "" ? (
