@@ -164,12 +164,12 @@ const PostDetails = () => {
       <Navbar query={""} />
       <CustomModal
         open={open}
-        onclose={() => setOpen(false)}
+        onClose={() => setOpen(false)}
         title={`Are you sure you want to delete '${post?.title}'?`}
-        leftbuttontext="Back"
-        leftbuttonclick={() => setOpen(false)}
-        rightbuttontext="Delete"
-        rightbuttonclick={handleDeletePost}
+        leftButtonText="Back"
+        leftButtonClick={() => setOpen(false)}
+        rightButtonText="Delete"
+        rightButtonClick={handleDeletePost}
       />
       {loader || !post ? (
         <div className="h-[80vh] flex justify-center items-center w-full">

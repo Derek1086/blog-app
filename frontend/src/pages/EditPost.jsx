@@ -177,12 +177,12 @@ const EditPost = () => {
     <div>
       <CustomModal
         open={open}
-        onclose={() => setOpen(false)}
+        onClose={() => setOpen(false)}
         title={`Are you sure you want to discard your changes?`}
-        leftbuttontext="Back"
-        leftbuttonclick={() => setOpen(false)}
-        rightbuttontext="Discard"
-        rightbuttonclick={() => navigate("/posts/post/" + postId)}
+        leftButtonText="Back"
+        leftButtonClick={() => setOpen(false)}
+        rightButtonText="Discard"
+        rightButtonClick={() => navigate("/posts/post/" + postId)}
       />
       <div className="px-6 md:px-[200px] mt-8">
         <Button

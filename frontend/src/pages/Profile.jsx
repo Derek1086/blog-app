@@ -15,7 +15,7 @@ import BodyText from "../ui/text/BodyText";
 import Stack from "@mui/material/Stack";
 import CustomTextField from "../ui/input/CustomTextField";
 import CustomPagination from "../ui/container/CustomPagination";
-import PostRenderer from "../components/PostRenderer";
+import ProfileRenderer from "../components/ProfileRenderer";
 
 import classes from "./Profile.module.css";
 
@@ -308,399 +308,398 @@ const Profile = () => {
     setFilteredPosts(posts);
   }, [posts]);
 
+  // return (
+  //   <div>
+  //     <Navbar query={""} />
+  //     {visitor ? (
+  //       <div className={`px-8 py-5 md:px-[200px] ${classes.container}`}>
+  //         <div className={classes.profile}>
+  //           <Stack spacing={2}>
+  //             <HeaderText
+  //               fontsize={"20px"}
+  //               text={`${username}'s Profile`}
+  //               textalign={"left"}
+  //             />
+  //           </Stack>
+  //           <div className="mb-5" />
+  //         </div>
+  //         <div className={classes.posts}>
+  //           <Stack spacing={2}>
+  //             <HeaderText
+  //               fontsize={"20px"}
+  //               text={`${username}'s Posts`}
+  //               textalign={"left"}
+  //             />
+  //             <div>
+  //               {loadingPosts ? (
+  //                 <></>
+  //               ) : posts.length === 0 ? (
+  //                 <h3 className="text-center font-bold mt-16">
+  //                   No posts available
+  //                 </h3>
+  //               ) : (
+  //                 currentPosts.map((post) => (
+  //                   <Link to={`/posts/post/${post._id}`} key={post._id}>
+  //                     <ProfilePosts key={post._id} post={post} />
+  //                   </Link>
+  //                 ))
+  //               )}
+  //             </div>
+  //             {/* Pagination */}
+  //             <CustomPagination
+  //               posts={posts}
+  //               postsPerPage={postsPerPage}
+  //               page={page}
+  //               handleChange={handleChange}
+  //             />
+  //           </Stack>
+  //         </div>
+  //       </div>
+  //     ) : (
+  //       <>
+  //         <Modal
+  //           open={open}
+  //           onClose={() => setOpen(false)}
+  //           aria-labelledby="modal-modal-title"
+  //           aria-describedby="modal-modal-description"
+  //         >
+  //           {authenticated ? (
+  //             <Box sx={style}>
+  //               <Stack spacing={2} sx={{ width: "100%" }}>
+  //                 <Typography
+  //                   id="modal-modal-title"
+  //                   variant="h6"
+  //                   component="h2"
+  //                 >
+  //                   Change Password
+  //                 </Typography>
+  //                 {error.open === true && (
+  //                   <BodyText
+  //                     text={error.message}
+  //                     variant={"body2"}
+  //                     color={"red"}
+  //                     textalign={"center"}
+  //                   />
+  //                 )}
+  //                 <CustomTextField
+  //                   label="New Password"
+  //                   id={"new-password"}
+  //                   onChange={(e) => {
+  //                     setPassword(e.target.value);
+  //                     setError({ open: false, message: "", type: "" });
+  //                   }}
+  //                   value={password}
+  //                   error={error.type === "password" && error.open === true}
+  //                   autoFocus={false}
+  //                   password={true}
+  //                   showPassword={showPassword}
+  //                   enterFunction={null}
+  //                   handleClick={handleClickShowPassword}
+  //                   handleShow={handleMouseDownPassword}
+  //                   maxLength={50}
+  //                 />
+  //                 <CustomTextField
+  //                   label="Confirm Password"
+  //                   id={"confirm-password"}
+  //                   onChange={(e) => {
+  //                     setConfirmedPassword(e.target.value);
+  //                     setError({ open: false, message: "", type: "" });
+  //                   }}
+  //                   value={confirmedpassword}
+  //                   error={
+  //                     error.type === "confirmedpassword" && error.open === true
+  //                   }
+  //                   autoFocus={false}
+  //                   password={true}
+  //                   showPassword={showConfirmedPassword}
+  //                   enterFunction={(e) => {
+  //                     if (e.key === "Enter") {
+  //                       handlePasswordUpdate();
+  //                     }
+  //                   }}
+  //                   handleClick={handleClickShowConfirmedPassword}
+  //                   handleShow={handleMouseDownPassword}
+  //                   maxLength={50}
+  //                 />
+  //               </Stack>
+  //               <div
+  //                 style={{
+  //                   display: "flex",
+  //                   justifyContent: "center",
+  //                   gap: "10px",
+  //                   marginTop: "20px",
+  //                 }}
+  //               >
+  //                 <Button
+  //                   variant="contained"
+  //                   color="secondary"
+  //                   sx={{
+  //                     backgroundColor: "gray",
+  //                     width: "40%",
+  //                     padding: "10px",
+  //                   }}
+  //                   onClick={() => resetView()}
+  //                 >
+  //                   Back
+  //                 </Button>
+  //                 <Button
+  //                   variant="contained"
+  //                   color="secondary"
+  //                   sx={{ width: "40%", padding: "10px" }}
+  //                   onClick={handlePasswordUpdate}
+  //                   disabled={
+  //                     password.trim() === "" || confirmedpassword.trim() === ""
+  //                   }
+  //                 >
+  //                   Update
+  //                 </Button>
+  //               </div>
+  //             </Box>
+  //           ) : (
+  //             <Box sx={style}>
+  //               <Typography id="modal-modal-title" variant="h6" component="h2">
+  //                 Confirm Current Password
+  //               </Typography>
+  //               {error.open === true && (
+  //                 <BodyText
+  //                   text={error.message}
+  //                   variant={"body2"}
+  //                   color={"red"}
+  //                   textalign={"center"}
+  //                 />
+  //               )}
+  //               <CustomTextField
+  //                 label="Current Password"
+  //                 id={"current-password"}
+  //                 onChange={(e) => {
+  //                   setUserPassword(e.target.value);
+  //                   setError({ open: false, message: "", type: "" });
+  //                 }}
+  //                 value={userPassword}
+  //                 error={error.type === "userpassword" && error.open === true}
+  //                 autoFocus={false}
+  //                 password={true}
+  //                 showPassword={showPassword}
+  //                 enterFunction={(e) => {
+  //                   if (e.key === "Enter") {
+  //                     handlePasswordVerify();
+  //                   }
+  //                 }}
+  //                 handleClick={handleClickShowPassword}
+  //                 handleShow={handleMouseDownPassword}
+  //                 maxLength={50}
+  //               />
+  //               <div
+  //                 style={{
+  //                   display: "flex",
+  //                   justifyContent: "center",
+  //                   gap: "10px",
+  //                   marginTop: "20px",
+  //                 }}
+  //               >
+  //                 <Button
+  //                   variant="contained"
+  //                   color="secondary"
+  //                   sx={{
+  //                     backgroundColor: "gray",
+  //                     width: "40%",
+  //                     padding: "10px",
+  //                   }}
+  //                   onClick={() => resetView()}
+  //                 >
+  //                   Back
+  //                 </Button>
+  //                 <Button
+  //                   variant="contained"
+  //                   color="secondary"
+  //                   sx={{ width: "40%", padding: "10px" }}
+  //                   onClick={handlePasswordVerify}
+  //                   disabled={userPassword.trim() === ""}
+  //                 >
+  //                   Confirm
+  //                 </Button>
+  //               </div>
+  //             </Box>
+  //           )}
+  //         </Modal>
+  //         <div className={`px-8 py-5 md:px-[200px] ${classes.container}`}>
+  //           <div className={classes.profile}>
+  //             <Stack spacing={2}>
+  //               <HeaderText
+  //                 fontsize={"20px"}
+  //                 text="Your Profile"
+  //                 textalign={"left"}
+  //               />
+  //               {error.open === true && !error.type.includes("password") && (
+  //                 <BodyText
+  //                   text={error.message}
+  //                   variant={"body2"}
+  //                   color={"red"}
+  //                   textalign={"center"}
+  //                 />
+  //               )}
+  //               <div className={classes.line}>
+  //                 <CustomTextField
+  //                   label="Username"
+  //                   id={"username"}
+  //                   onChange={(e) => {
+  //                     setUsername(e.target.value);
+  //                     setError({ open: false, message: "", type: "" });
+  //                   }}
+  //                   value={username}
+  //                   error={error.type === "username" && error.open === true}
+  //                   autoFocus={false}
+  //                   password={false}
+  //                   showPassword={null}
+  //                   enterFunction={(e) => {
+  //                     if (e.key === "Enter") {
+  //                       handleUserUpdate();
+  //                     }
+  //                   }}
+  //                   handleClick={null}
+  //                   handleShow={null}
+  //                   maxLength={50}
+  //                   disabled={
+  //                     editing.editing === false || editing.type !== "username"
+  //                   }
+  //                 />
+  //                 {editing.editing === true && editing.type === "username" ? (
+  //                   <div
+  //                     style={{
+  //                       display: "flex",
+  //                       justifyContent: "center",
+  //                       gap: "10px",
+  //                       marginTop: "25px",
+  //                     }}
+  //                   >
+  //                     <Button
+  //                       variant="contained"
+  //                       color="secondary"
+  //                       sx={{
+  //                         backgroundColor: "gray",
+  //                         width: "50%",
+  //                         padding: "10px",
+  //                       }}
+  //                       onClick={() => window.location.reload()}
+  //                     >
+  //                       Cancel
+  //                     </Button>
+  //                     <Button
+  //                       variant="contained"
+  //                       color="secondary"
+  //                       sx={{ width: "50%", padding: "10px" }}
+  //                       onClick={handleUserUpdate}
+  //                     >
+  //                       Update
+  //                     </Button>
+  //                   </div>
+  //                 ) : (
+  //                   <IconButton
+  //                     onClick={() =>
+  //                       setEditing({
+  //                         editing: true,
+  //                         type: "username",
+  //                       })
+  //                     }
+  //                     sx={{ marginTop: "25px" }}
+  //                   >
+  //                     <EditIcon />
+  //                   </IconButton>
+  //                 )}
+  //               </div>
+  //               <div className={classes.line}>
+  //                 <CustomTextField
+  //                   label="Email"
+  //                   id={"email"}
+  //                   onChange={(e) => {
+  //                     setEmail(e.target.value);
+  //                     setError({ open: false, message: "", type: "" });
+  //                   }}
+  //                   value={email}
+  //                   error={error.type === "email" && error.open === true}
+  //                   autoFocus={false}
+  //                   password={false}
+  //                   showPassword={null}
+  //                   enterFunction={(e) => {
+  //                     if (e.key === "Enter") {
+  //                       handleUserUpdate();
+  //                     }
+  //                   }}
+  //                   handleClick={null}
+  //                   handleShow={null}
+  //                   maxLength={50}
+  //                   disabled={
+  //                     editing.editing === false || editing.type !== "email"
+  //                   }
+  //                 />
+  //                 {editing.editing === true && editing.type === "email" ? (
+  //                   <div
+  //                     style={{
+  //                       display: "flex",
+  //                       justifyContent: "center",
+  //                       gap: "10px",
+  //                       marginTop: "25px",
+  //                     }}
+  //                   >
+  //                     <Button
+  //                       variant="contained"
+  //                       color="secondary"
+  //                       sx={{
+  //                         backgroundColor: "gray",
+  //                         width: "50%",
+  //                         padding: "10px",
+  //                       }}
+  //                       onClick={() => window.location.reload()}
+  //                     >
+  //                       Cancel
+  //                     </Button>
+  //                     <Button
+  //                       variant="contained"
+  //                       color="secondary"
+  //                       sx={{ width: "50%", padding: "10px" }}
+  //                       onClick={handleUserUpdate}
+  //                     >
+  //                       Update
+  //                     </Button>
+  //                   </div>
+  //                 ) : (
+  //                   <IconButton
+  //                     onClick={() =>
+  //                       setEditing({
+  //                         editing: true,
+  //                         type: "email",
+  //                       })
+  //                     }
+  //                     sx={{ marginTop: "25px" }}
+  //                   >
+  //                     <EditIcon />
+  //                   </IconButton>
+  //                 )}
+  //               </div>
+  //               <div className={classes.line}>
+  //                 <Button
+  //                   variant="contained"
+  //                   color="secondary"
+  //                   sx={{ padding: "10px" }}
+  //                   onClick={() => setOpen(true)}
+  //                 >
+  //                   Change Password
+  //                 </Button>
+  //               </div>
+  //             </Stack>
+  //             <div className="mb-5" />
+  //           </div>
+  //         </div>
+  //       </>
+  //     )}
+  //   </div>
+  // );
+
   return (
-    <div>
+    <>
       <Navbar query={""} />
-      {visitor ? (
-        <div className={`px-8 py-5 md:px-[200px] ${classes.container}`}>
-          <div className={classes.profile}>
-            <Stack spacing={2}>
-              <HeaderText
-                fontsize={"20px"}
-                text={`${username}'s Profile`}
-                textalign={"left"}
-              />
-            </Stack>
-            <div className="mb-5" />
-          </div>
-          <div className={classes.posts}>
-            <Stack spacing={2}>
-              <HeaderText
-                fontsize={"20px"}
-                text={`${username}'s Posts`}
-                textalign={"left"}
-              />
-              <div>
-                {loadingPosts ? (
-                  <ProfileLoader />
-                ) : posts.length === 0 ? (
-                  <h3 className="text-center font-bold mt-16">
-                    No posts available
-                  </h3>
-                ) : (
-                  currentPosts.map((post) => (
-                    <Link to={`/posts/post/${post._id}`} key={post._id}>
-                      <ProfilePosts key={post._id} post={post} />
-                    </Link>
-                  ))
-                )}
-              </div>
-              {/* Pagination */}
-              <CustomPagination
-                posts={posts}
-                postsPerPage={postsPerPage}
-                page={page}
-                handleChange={handleChange}
-              />
-            </Stack>
-          </div>
-        </div>
-      ) : (
-        <>
-          <Modal
-            open={open}
-            onClose={() => setOpen(false)}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            {authenticated ? (
-              <Box sx={style}>
-                <Stack spacing={2} sx={{ width: "100%" }}>
-                  <Typography
-                    id="modal-modal-title"
-                    variant="h6"
-                    component="h2"
-                  >
-                    Change Password
-                  </Typography>
-                  {error.open === true && (
-                    <BodyText
-                      text={error.message}
-                      variant={"body2"}
-                      color={"red"}
-                      textalign={"center"}
-                    />
-                  )}
-                  <CustomTextField
-                    label="New Password"
-                    id={"new-password"}
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                      setError({ open: false, message: "", type: "" });
-                    }}
-                    value={password}
-                    error={error.type === "password" && error.open === true}
-                    autoFocus={false}
-                    password={true}
-                    showPassword={showPassword}
-                    enterFunction={null}
-                    handleClick={handleClickShowPassword}
-                    handleShow={handleMouseDownPassword}
-                    maxLength={50}
-                  />
-                  <CustomTextField
-                    label="Confirm Password"
-                    id={"confirm-password"}
-                    onChange={(e) => {
-                      setConfirmedPassword(e.target.value);
-                      setError({ open: false, message: "", type: "" });
-                    }}
-                    value={confirmedpassword}
-                    error={
-                      error.type === "confirmedpassword" && error.open === true
-                    }
-                    autoFocus={false}
-                    password={true}
-                    showPassword={showConfirmedPassword}
-                    enterFunction={(e) => {
-                      if (e.key === "Enter") {
-                        handlePasswordUpdate();
-                      }
-                    }}
-                    handleClick={handleClickShowConfirmedPassword}
-                    handleShow={handleMouseDownPassword}
-                    maxLength={50}
-                  />
-                </Stack>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                    marginTop: "20px",
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    sx={{
-                      backgroundColor: "gray",
-                      width: "40%",
-                      padding: "10px",
-                    }}
-                    onClick={() => resetView()}
-                  >
-                    Back
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    sx={{ width: "40%", padding: "10px" }}
-                    onClick={handlePasswordUpdate}
-                    disabled={
-                      password.trim() === "" || confirmedpassword.trim() === ""
-                    }
-                  >
-                    Update
-                  </Button>
-                </div>
-              </Box>
-            ) : (
-              <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  Confirm Current Password
-                </Typography>
-                {error.open === true && (
-                  <BodyText
-                    text={error.message}
-                    variant={"body2"}
-                    color={"red"}
-                    textalign={"center"}
-                  />
-                )}
-                <CustomTextField
-                  label="Current Password"
-                  id={"current-password"}
-                  onChange={(e) => {
-                    setUserPassword(e.target.value);
-                    setError({ open: false, message: "", type: "" });
-                  }}
-                  value={userPassword}
-                  error={error.type === "userpassword" && error.open === true}
-                  autoFocus={false}
-                  password={true}
-                  showPassword={showPassword}
-                  enterFunction={(e) => {
-                    if (e.key === "Enter") {
-                      handlePasswordVerify();
-                    }
-                  }}
-                  handleClick={handleClickShowPassword}
-                  handleShow={handleMouseDownPassword}
-                  maxLength={50}
-                />
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                    marginTop: "20px",
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    sx={{
-                      backgroundColor: "gray",
-                      width: "40%",
-                      padding: "10px",
-                    }}
-                    onClick={() => resetView()}
-                  >
-                    Back
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    sx={{ width: "40%", padding: "10px" }}
-                    onClick={handlePasswordVerify}
-                    disabled={userPassword.trim() === ""}
-                  >
-                    Confirm
-                  </Button>
-                </div>
-              </Box>
-            )}
-          </Modal>
-          <div className={`px-8 py-5 md:px-[200px] ${classes.container}`}>
-            <div className={classes.profile}>
-              <Stack spacing={2}>
-                <HeaderText
-                  fontsize={"20px"}
-                  text="Your Profile"
-                  textalign={"left"}
-                />
-                {error.open === true && !error.type.includes("password") && (
-                  <BodyText
-                    text={error.message}
-                    variant={"body2"}
-                    color={"red"}
-                    textalign={"center"}
-                  />
-                )}
-                <div className={classes.line}>
-                  <CustomTextField
-                    label="Username"
-                    id={"username"}
-                    onChange={(e) => {
-                      setUsername(e.target.value);
-                      setError({ open: false, message: "", type: "" });
-                    }}
-                    value={username}
-                    error={error.type === "username" && error.open === true}
-                    autoFocus={false}
-                    password={false}
-                    showPassword={null}
-                    enterFunction={(e) => {
-                      if (e.key === "Enter") {
-                        handleUserUpdate();
-                      }
-                    }}
-                    handleClick={null}
-                    handleShow={null}
-                    maxLength={50}
-                    disabled={
-                      editing.editing === false || editing.type !== "username"
-                    }
-                  />
-                  {editing.editing === true && editing.type === "username" ? (
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        gap: "10px",
-                        marginTop: "25px",
-                      }}
-                    >
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        sx={{
-                          backgroundColor: "gray",
-                          width: "50%",
-                          padding: "10px",
-                        }}
-                        onClick={() => window.location.reload()}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        sx={{ width: "50%", padding: "10px" }}
-                        onClick={handleUserUpdate}
-                      >
-                        Update
-                      </Button>
-                    </div>
-                  ) : (
-                    <IconButton
-                      onClick={() =>
-                        setEditing({
-                          editing: true,
-                          type: "username",
-                        })
-                      }
-                      sx={{ marginTop: "25px" }}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  )}
-                </div>
-                <div className={classes.line}>
-                  <CustomTextField
-                    label="Email"
-                    id={"email"}
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                      setError({ open: false, message: "", type: "" });
-                    }}
-                    value={email}
-                    error={error.type === "email" && error.open === true}
-                    autoFocus={false}
-                    password={false}
-                    showPassword={null}
-                    enterFunction={(e) => {
-                      if (e.key === "Enter") {
-                        handleUserUpdate();
-                      }
-                    }}
-                    handleClick={null}
-                    handleShow={null}
-                    maxLength={50}
-                    disabled={
-                      editing.editing === false || editing.type !== "email"
-                    }
-                  />
-                  {editing.editing === true && editing.type === "email" ? (
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        gap: "10px",
-                        marginTop: "25px",
-                      }}
-                    >
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        sx={{
-                          backgroundColor: "gray",
-                          width: "50%",
-                          padding: "10px",
-                        }}
-                        onClick={() => window.location.reload()}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        sx={{ width: "50%", padding: "10px" }}
-                        onClick={handleUserUpdate}
-                      >
-                        Update
-                      </Button>
-                    </div>
-                  ) : (
-                    <IconButton
-                      onClick={() =>
-                        setEditing({
-                          editing: true,
-                          type: "email",
-                        })
-                      }
-                      sx={{ marginTop: "25px" }}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  )}
-                </div>
-                <div className={classes.line}>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    sx={{ padding: "10px" }}
-                    onClick={() => setOpen(true)}
-                  >
-                    Change Password
-                  </Button>
-                </div>
-              </Stack>
-              <div className="mb-5" />
-            </div>
-          </div>
-          <PostRenderer
-            route={"/api/posts/user/" + user._id}
-            headerText={"Your Posts"}
-            altText={"You don't have any posts"}
-            sortable={false}
-            searchable={false}
-            searchquery={""}
-          />
-        </>
-      )}
-    </div>
+      <ProfileRenderer />
+    </>
   );
 };
 

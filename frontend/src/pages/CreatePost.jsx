@@ -166,12 +166,12 @@ const CreatePost = () => {
     <>
       <CustomModal
         open={open}
-        onclose={() => setOpen(false)}
+        onClose={() => setOpen(false)}
         title={`Are you sure you want to delete your draft?`}
-        leftbuttontext="Back"
-        leftbuttonclick={() => setOpen(false)}
-        rightbuttontext="Delete"
-        rightbuttonclick={() => navigate("/")}
+        leftButtonText="Back"
+        leftButtonClick={() => setOpen(false)}
+        rightButtonText="Delete"
+        rightButtonClick={() => navigate("/")}
       />
       <div className="px-6 md:px-[200px] mt-8">
         <Button

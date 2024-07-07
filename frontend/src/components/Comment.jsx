@@ -72,12 +72,12 @@ const Comment = ({ c, post }) => {
     <>
       <CustomModal
         open={open}
-        onclose={() => setOpen(false)}
+        onClose={() => setOpen(false)}
         title={"Are you sure you want to delete your comment?"}
-        leftbuttontext="Back"
-        leftbuttonclick={() => setOpen(false)}
-        rightbuttontext="Delete"
-        rightbuttonclick={() => deleteComment(commentId)}
+        leftButtonText="Back"
+        leftButtonClick={() => setOpen(false)}
+        rightButtonText="Delete"
+        rightButtonClick={() => deleteComment(commentId)}
       />
       <Card sx={{ padding: "10px", marginTop: "10px" }}>
         <div className="flex items-center justify-between">

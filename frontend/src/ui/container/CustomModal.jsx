@@ -16,15 +16,15 @@ const style = {
 
 const CustomModal = ({
   open,
-  onclose,
+  onClose,
   title,
-  leftbuttonclick,
-  leftbuttontext,
-  rightbuttonclick,
-  rightbuttontext,
+  leftButtonClick,
+  leftButtonText,
+  rightButtonClick,
+  rightButtonText,
 }) => {
   return (
-    <Modal open={open} onClose={onclose}>
+    <Modal open={open} onClose={onClose}>
       <Box sx={style}>
         <Typography
           id="modal-modal-title"
@@ -50,17 +50,17 @@ const CustomModal = ({
               width: "40%",
               padding: "10px",
             }}
-            onClick={leftbuttonclick}
+            onClick={leftButtonClick}
           >
-            {leftbuttontext}
+            {leftButtonText}
           </Button>
           <Button
             variant="contained"
             color="secondary"
             sx={{ width: "40%", padding: "10px" }}
-            onClick={rightbuttonclick}
+            onClick={rightButtonClick}
           >
-            {rightbuttontext}
+            {rightButtonText}
           </Button>
         </div>
       </Box>
