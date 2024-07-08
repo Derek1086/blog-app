@@ -156,4 +156,26 @@ router.get("/:id/history", async (req, res) => {
   }
 });
 
+// DELETE User History
+router.delete("/:id/history", verifyToken, async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      console.log("User not found with ID:", userId);
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    user.posthistory = [];
+    await user.save();
+
+    console.log("User's post history has been cleared!");
+    res.status(200).json({ message: "Post history cleared successfully" });
+  } catch (err) {
+    console.error("Error clearing user's post history:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 module.exports = router;

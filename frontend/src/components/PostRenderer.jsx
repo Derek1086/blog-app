@@ -77,7 +77,6 @@ const PostRenderer = ({
       setPosts(sortedPosts);
       setNoResults(sortedPosts.length === 0);
       setLoading(false);
-      console.log(res.data);
     } catch (err) {
       console.log(err);
       setLoading(true);

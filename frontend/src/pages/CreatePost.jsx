@@ -167,7 +167,7 @@ const CreatePost = () => {
       <CustomModal
         open={open}
         onClose={() => setOpen(false)}
-        title={`Are you sure you want to delete your draft?`}
+        title={"Are you sure you want to delete your draft?"}
         leftButtonText="Back"
         leftButtonClick={() => setOpen(false)}
         rightButtonText="Delete"
