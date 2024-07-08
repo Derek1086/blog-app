@@ -8,8 +8,10 @@ import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PostContainer from "../ui/container/PostContainer";
 import CustomModal from "../ui/container/CustomModal";
+import AlertMessage from "../components/AlertMessage";
+import BodyText from "../ui/text/BodyText";
 
-const MyHistory = () => {
+const MyHistory = ({ alert, setAlert }) => {
   const { user } = useContext(UserContext);
   const [history, setHistory] = useState([]);
   const [open, setOpen] = useState(false);
@@ -50,15 +52,17 @@ const MyHistory = () => {
         );
 
         if (response.status === 200) {
-          console.log("History cleared successfully");
           setHistory([]);
-          window.location.reload();
+          setAlert({
+            open: true,
+            message: "History cleared successfully",
+            type: "history",
+          });
         } else {
           console.log("Failed to clear history");
         }
       } catch (error) {
         console.error("Error clearing history:", error);
-        console.log("Error clearing history");
       }
     }
   };
@@ -66,11 +70,14 @@ const MyHistory = () => {
   return (
     <>
       <Navbar query={""} />
+      {alert && alert.open === true && alert.type === "history" && (
+        <AlertMessage message={alert.message} setAlert={setAlert} />
+      )}
       {!user ? (
         <></>
       ) : (
         <>
-          {history && history.length > 0 && (
+          {history && history.length > 0 ? (
             <>
               <CustomModal
                 open={open}
@@ -78,7 +85,7 @@ const MyHistory = () => {
                 title={"Are you sure you want to clear your history?"}
                 leftButtonText="Back"
                 leftButtonClick={() => setOpen(false)}
-                rightButtonText="Delete"
+                rightButtonText="Clear"
                 rightButtonClick={clearHistory}
               />
               <PostContainer>
@@ -91,16 +98,25 @@ const MyHistory = () => {
                   Clear History
                 </Button>
               </PostContainer>
+              <PostRenderer
+                route={"/api/users/" + user._id + "/history"}
+                headerText={"Your History"}
+                altText={"No history available"}
+                sortable={false}
+                searchable={false}
+                searchquery={""}
+              />
             </>
+          ) : (
+            <PostContainer>
+              <BodyText
+                text={"No history available"}
+                variant={"body1"}
+                color={"white"}
+                textalign={"center"}
+              />
+            </PostContainer>
           )}
-          <PostRenderer
-            route={"/api/users/" + user._id + "/history"}
-            headerText={"Your History"}
-            altText={"No history available"}
-            sortable={false}
-            searchable={false}
-            searchquery={""}
-          />
         </>
       )}
     </>

@@ -11,7 +11,7 @@ import EditProfile from "./EditProfile";
 
 import classes from "./ProfileSection.module.css";
 
-const ProfileSection = ({ username, visitor, posts }) => {
+const ProfileSection = ({ username, visitor, posts, setAlert }) => {
   const [editing, setEditing] = useState(false);
 
   /**
@@ -121,7 +121,7 @@ const ProfileSection = ({ username, visitor, posts }) => {
         </div>
       ) : (
         <div className={classes.info}>
-          <EditProfile />
+          <EditProfile setAlert={setAlert} setProfileEditing={setEditing} />
         </div>
       )}
     </>

@@ -5,8 +5,9 @@ import { URL } from "../url";
 import { UserContext } from "../context/UserContext";
 import { useParams } from "react-router-dom";
 import ProfileRenderer from "../components/profile/ProfileRenderer";
+import AlertMessage from "../components/AlertMessage";
 
-const Profile = () => {
+const Profile = ({ alert, setAlert }) => {
   // State variables
   const param = useParams().id; // USER ID
   const [username, setUsername] = useState("");
@@ -76,6 +77,9 @@ const Profile = () => {
   return (
     <>
       <Navbar query={""} />
+      {alert && alert.open === true && alert.type === "profile" && (
+        <AlertMessage message={alert.message} setAlert={setAlert} />
+      )}
       <ProfileRenderer
         loading={loading}
         visitor={visitor}
@@ -83,6 +87,7 @@ const Profile = () => {
         param={param}
         user={user}
         posts={posts}
+        setAlert={setAlert}
       />
     </>
   );

@@ -16,7 +16,7 @@ import Button from "@mui/material/Button";
  * If registration is successful, user is redirected to login page.
  * If registration fails, error message is displayed.
  */
-const Register = () => {
+const Register = ({ alert, setAlert }) => {
   // State variables for user input
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -123,26 +123,26 @@ const Register = () => {
     }
 
     try {
-      // Send post request to server for registration
       const res = await axios.post(URL + "/api/auth/register", {
         username,
         email,
         password,
       });
 
-      // Update state variables with registration data
       setUsername(res.data.username);
       setEmail(res.data.email);
       setPassword(res.data.password);
 
-      // Reset error state
       setError({
         open: false,
         message: "",
         type: "",
       });
-
-      // Redirect to login page
+      setAlert({
+        open: true,
+        message: "Account created successfully",
+        type: "register",
+      });
       navigate("/login");
     } catch (err) {
       // Handle duplicate username or email error

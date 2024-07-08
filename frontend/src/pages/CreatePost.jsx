@@ -10,7 +10,7 @@ import PostForm from "../components/PostForm";
  * *CreatePost component for creating new posts.
  * @returns {JSX.Element} The CreatePost component.
  */
-const CreatePost = () => {
+const CreatePost = ({ setAlert }) => {
   // State variables
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
@@ -131,6 +131,11 @@ const CreatePost = () => {
     try {
       const res = await axios.post(URL + "/api/posts/create", post, {
         withCredentials: true,
+      });
+      setAlert({
+        open: true,
+        message: "Post created",
+        type: "post",
       });
       navigate("/posts/post/" + res.data._id);
       setError({ open: false, message: "", type: "" });

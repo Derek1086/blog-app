@@ -12,7 +12,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import BodyText from "../ui/text/BodyText";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, set } from "date-fns";
 import Stack from "@mui/material/Stack";
 import CustomModal from "../ui/container/CustomModal";
 import CustomTextField from "../ui/input/CustomTextField";
@@ -21,12 +21,13 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Divider from "@mui/material/Divider";
 import PostContainer from "../ui/container/PostContainer";
 import Category from "../components/Category";
+import AlertMessage from "../components/AlertMessage";
 
 /**
  * Component for displaying detailed information of a single post.
  * Allows viewing, editing, deleting, and commenting on the post.
  */
-const PostDetails = () => {
+const PostDetails = ({ alert, setAlert }) => {
   // State Variables
   const postId = useParams().id;
   const [post, setPost] = useState(null);
@@ -67,6 +68,11 @@ const PostDetails = () => {
         withCredentials: true,
       });
       console.log(res.data);
+      setAlert({
+        open: true,
+        message: "Post deleted",
+        type: "delete",
+      });
       navigate("/");
     } catch (err) {
       console.log(err);
@@ -165,6 +171,9 @@ const PostDetails = () => {
   return (
     <div>
       <Navbar query={""} />
+      {alert && alert.open === true && alert.type === "post" && (
+        <AlertMessage message={alert.message} setAlert={setAlert} />
+      )}
       <CustomModal
         open={open}
         onClose={() => setOpen(false)}

@@ -10,6 +10,7 @@ const ProfileRenderer = ({
   param,
   user,
   posts,
+  setAlert,
 }) => {
   return (
     <>
@@ -44,6 +45,7 @@ const ProfileRenderer = ({
                   username={"Your Profile"}
                   visitor={visitor}
                   posts={posts}
+                  setAlert={setAlert}
                 />
               </PostContainer>
               <PostRenderer

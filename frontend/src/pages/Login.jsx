@@ -9,6 +9,7 @@ import MainContainer from "../ui/container/MainContainer";
 import Stack from "@mui/material/Stack";
 import CustomTextField from "../ui/input/CustomTextField";
 import Button from "@mui/material/Button";
+import AlertMessage from "../components/AlertMessage";
 
 /**
  * Login component for user authentication.
@@ -18,7 +19,7 @@ import Button from "@mui/material/Button";
  *
  * @returns {JSX.Element} Login component
  */
-const Login = () => {
+const Login = ({ alert, setAlert }) => {
   // State variables
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -92,6 +93,11 @@ const Login = () => {
         message: "",
         type: "",
       });
+      setAlert({
+        open: true,
+        message: "Welcome " + res.data.username,
+        type: "login",
+      });
       navigate("/");
     } catch (err) {
       // Set error message and log error
@@ -105,92 +111,97 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full flex justify-center items-center mt-10">
-      <div className="flex flex-col justify-center items-center space-y-4 w-[80%] md:w-[25%]">
-        <Stack spacing={2} sx={{ width: "100%" }}>
-          <HeaderText fontsize={"22px"} text="Login" textalign={"center"} />
-          {error.open === true && (
-            <BodyText
-              text={error.message}
-              variant={"body2"}
-              color={"red"}
-              textalign={"center"}
-            />
-          )}
-          <CustomTextField
-            label="Email or Username"
-            id={"email"}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setError({ open: false, message: "", type: "" });
-            }}
-            value={email}
-            error={
-              error.type === "login" ||
-              (error.type === "email" && error.open === true)
-            }
-            autoFocus={true}
-            password={false}
-            showPassword={null}
-            enterFunction={null}
-            handleClick={null}
-            handleShow={null}
-            maxLength={50}
-          />
-          <CustomTextField
-            label="Password"
-            id={"password"}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setError({ open: false, message: "", type: "" });
-            }}
-            value={password}
-            error={
-              error.type === "login" ||
-              (error.type === "password" && error.open === true)
-            }
-            autoFocus={false}
-            password={true}
-            showPassword={showPassword}
-            enterFunction={(e) => {
-              if (e.key === "Enter") {
-                handleLogin();
-              }
-            }}
-            handleClick={handleClickShowPassword}
-            handleShow={handleMouseDownPassword}
-            maxLength={50}
-          />
-          <Button
-            onClick={handleLogin}
-            variant="contained"
-            color="secondary"
-            style={{ width: "100%", padding: "10px" }}
-            disabled={disabled}
-          >
-            Log in
-          </Button>
-          <MainContainer justifyContent={"center"}>
-            <BodyText text="New here?" variant={"body2"} color={"white"} />
-            <Link to="/register">
+    <>
+      {alert && alert.open === true && alert.type === "register" && (
+        <AlertMessage message={alert.message} setAlert={setAlert} />
+      )}
+      <div className="w-full flex justify-center items-center mt-10">
+        <div className="flex flex-col justify-center items-center space-y-4 w-[80%] md:w-[25%]">
+          <Stack spacing={2} sx={{ width: "100%" }}>
+            <HeaderText fontsize={"22px"} text="Login" textalign={"center"} />
+            {error.open === true && (
               <BodyText
-                text="Register"
+                text={error.message}
                 variant={"body2"}
-                color={"text.secondary"}
+                color={"red"}
+                textalign={"center"}
               />
-            </Link>
-          </MainContainer>
-          <Button
-            onClick={() => navigate("/")}
-            variant="contained"
-            color="secondary"
-            style={{ width: "100%", padding: "10px" }}
-          >
-            Continue as Guest
-          </Button>
-        </Stack>
+            )}
+            <CustomTextField
+              label="Email or Username"
+              id={"email"}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setError({ open: false, message: "", type: "" });
+              }}
+              value={email}
+              error={
+                error.type === "login" ||
+                (error.type === "email" && error.open === true)
+              }
+              autoFocus={true}
+              password={false}
+              showPassword={null}
+              enterFunction={null}
+              handleClick={null}
+              handleShow={null}
+              maxLength={50}
+            />
+            <CustomTextField
+              label="Password"
+              id={"password"}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setError({ open: false, message: "", type: "" });
+              }}
+              value={password}
+              error={
+                error.type === "login" ||
+                (error.type === "password" && error.open === true)
+              }
+              autoFocus={false}
+              password={true}
+              showPassword={showPassword}
+              enterFunction={(e) => {
+                if (e.key === "Enter") {
+                  handleLogin();
+                }
+              }}
+              handleClick={handleClickShowPassword}
+              handleShow={handleMouseDownPassword}
+              maxLength={50}
+            />
+            <Button
+              onClick={handleLogin}
+              variant="contained"
+              color="secondary"
+              style={{ width: "100%", padding: "10px" }}
+              disabled={disabled}
+            >
+              Log in
+            </Button>
+            <MainContainer justifyContent={"center"}>
+              <BodyText text="New here?" variant={"body2"} color={"white"} />
+              <Link to="/register">
+                <BodyText
+                  text="Register"
+                  variant={"body2"}
+                  color={"text.secondary"}
+                />
+              </Link>
+            </MainContainer>
+            <Button
+              onClick={() => navigate("/")}
+              variant="contained"
+              color="secondary"
+              style={{ width: "100%", padding: "10px" }}
+            >
+              Continue as Guest
+            </Button>
+          </Stack>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

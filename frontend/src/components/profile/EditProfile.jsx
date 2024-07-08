@@ -10,7 +10,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import InputAdornment from "@mui/material/InputAdornment";
 import PasswordModal from "./PasswordModal";
 
-const EditProfile = () => {
+const EditProfile = ({ setAlert, setProfileEditing }) => {
   // State variables
   const { user } = useContext(UserContext);
   const [username, setUsername] = useState("");
@@ -107,7 +107,12 @@ const EditProfile = () => {
       );
       setOpen(false);
       setError({ open: false, message: "", type: "" });
-      window.location.reload();
+      setAlert({
+        open: true,
+        message: "Profile updated successfully",
+        type: "profile",
+      });
+      setProfileEditing(false);
     } catch (err) {
       // Handle duplicate username or email error
       if (err.response && err.response.status === 400) {
@@ -163,6 +168,14 @@ const EditProfile = () => {
       });
       return;
     }
+    if (password === currentPassword) {
+      setError({
+        open: true,
+        message: "New password cannot be same as old password",
+        type: "password",
+      });
+      return;
+    }
 
     try {
       const res = await axios.put(
@@ -170,10 +183,13 @@ const EditProfile = () => {
         { password },
         { withCredentials: true }
       );
-      setOpen(false);
-      setError({ open: false, message: "", type: "" });
-      setAuthenticated(false);
-      window.location.reload();
+      resetView();
+      setAlert({
+        open: true,
+        message: "Password updated successfully",
+        type: "profile",
+      });
+      setProfileEditing(false);
     } catch (err) {
       // Set general error message and log error
       setError({

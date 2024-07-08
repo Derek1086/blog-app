@@ -3,38 +3,14 @@ import axios from "axios";
 import { URL } from "../url";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CloseIcon from "@mui/icons-material/Close";
-import IconButton from "@mui/material/IconButton";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { styled } from "@mui/material/styles";
-import Stack from "@mui/material/Stack";
-import CustomTextField from "../ui/input/CustomTextField";
-import HeaderText from "../ui/text/HeaderText";
-import BodyText from "../ui/text/BodyText";
 import CustomModal from "../ui/container/CustomModal";
 import PostForm from "../components/PostForm";
-
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
 
 /**
  * *EditPost component for editing new posts.
  * @returns {JSX.Element} The EditPost component.
  */
-const EditPost = () => {
+const EditPost = ({ setAlert }) => {
   // State variables
   const postId = useParams().id;
   const { user } = useContext(UserContext);
@@ -129,6 +105,11 @@ const EditPost = () => {
     try {
       const res = await axios.put(URL + "/api/posts/" + postId, post, {
         withCredentials: true,
+      });
+      setAlert({
+        open: true,
+        message: "Post updated",
+        type: "post",
       });
       navigate("/posts/post/" + res.data._id);
     } catch (err) {
