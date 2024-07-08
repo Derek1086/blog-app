@@ -5,7 +5,7 @@ import axios from "axios";
 import { URL, IF } from "../url";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
-import PostLoader from "../ui/loaders/PostLoader";
+import DetailsLoader from "../ui/loaders/DetailsLoader";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -18,6 +18,8 @@ import CustomModal from "../ui/container/CustomModal";
 import CustomTextField from "../ui/input/CustomTextField";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import Divider from "@mui/material/Divider";
+import PostContainer from "../ui/container/PostContainer";
 
 /**
  * Component for displaying detailed information of a single post.
@@ -172,12 +174,12 @@ const PostDetails = () => {
         rightButtonClick={handleDeletePost}
       />
       {loader || !post ? (
-        <div className="h-[80vh] flex justify-center items-center w-full">
-          <PostLoader />
-        </div>
+        <PostContainer>
+          <DetailsLoader />
+        </PostContainer>
       ) : (
-        <Stack spacing={2} style={{ marginTop: "10px" }}>
-          <div className="px-8 md:px-[200px]">
+        <PostContainer>
+          <Stack spacing={2} style={{ marginTop: "10px" }}>
             <div className="flex justify-between items-center">
               <p
                 style={{
@@ -210,37 +212,39 @@ const PostDetails = () => {
                 )}
               </div>
             </div>
-            <div className="flex items-center text-gray-500 justify-between md:mt-2">
-              <Link to={"/profile/" + post.userId}>
-                <BodyText
-                  text={post.username}
-                  variant={"body1"}
-                  color={"text.secondary"}
-                />
-              </Link>
+            <div className="flex">
               <div style={{ display: "flex", gap: "10px" }}>
+                <Link to={"/profile/" + post.userId}>
+                  <BodyText
+                    text={post.username}
+                    variant={"body1"}
+                    color={"text.secondary"}
+                  />
+                </Link>
+                <Divider sx={{ height: 20 }} orientation="vertical" />
+                {post.viewCount !== 1 ? (
+                  <BodyText
+                    text={formatViewCount(post.viewCount) + " views"}
+                    variant={"body1"}
+                    color={"text.secondary"}
+                  />
+                ) : (
+                  <BodyText
+                    text={post.viewCount + " view"}
+                    variant={"body1"}
+                    color={"text.secondary"}
+                  />
+                )}
+                <Divider sx={{ height: 20 }} orientation="vertical" />
                 <BodyText
                   text={formatDistanceToNow(new Date(post.createdAt), {
                     addSuffix: true,
                   })}
-                  variant={"body2"}
+                  variant={"body1"}
                   color={"text.secondary"}
                 />
               </div>
             </div>
-            {post.viewCount !== 1 ? (
-              <BodyText
-                text={formatViewCount(post.viewCount) + " views"}
-                variant={"body2"}
-                color={"text.secondary"}
-              />
-            ) : (
-              <BodyText
-                text={post.viewCount + " view"}
-                variant={"body2"}
-                color={"text.secondary"}
-              />
-            )}
             <div className="flex items-center space-x-4 font-semibold mt-2">
               <BodyText
                 text={"Categories: "}
@@ -268,7 +272,7 @@ const PostDetails = () => {
                 marginTop: "10px",
               }}
             >
-              <img src={IF + post.photo} className="w-3/4  mx-auto" alt="" />
+              <img src={IF + post.photo} className="w-3/4 mx-auto" alt="" />
             </div>
             {post.desc && (
               <div className="mt-4">
@@ -357,8 +361,8 @@ const PostDetails = () => {
                 ))}
               </div>
             </>
-          </div>
-        </Stack>
+          </Stack>
+        </PostContainer>
       )}
       <div style={{ height: "400px" }} />
     </div>

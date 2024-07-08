@@ -44,7 +44,7 @@ const HomePosts = ({ post }) => {
         />
         <div style={{ display: "flex", gap: "10px" }}>
           <BodyText
-            text={formatDistanceToNow(new Date(post.updatedAt), {
+            text={formatDistanceToNow(new Date(post.createdAt), {
               addSuffix: true,
             })}
             variant={"body2"}

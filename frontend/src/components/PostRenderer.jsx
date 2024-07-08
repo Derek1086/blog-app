@@ -59,7 +59,6 @@ const PostRenderer = ({
     try {
       const res = await axios.get(URL + route);
       if (searchable) {
-        console.log("FETCHING AND SORTING");
         const sortedPosts = res.data.filter(
           (post) =>
             post.title
