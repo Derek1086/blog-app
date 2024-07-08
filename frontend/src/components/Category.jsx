@@ -3,7 +3,7 @@ import BodyText from "../ui/text/BodyText";
 
 const Category = ({ text }) => {
   return (
-    <Card sx={{ padding: "10px", mt: 1 }}>
+    <Card sx={{ padding: "10px" }}>
       <BodyText text={text} variant={"body2"} color={"white"} />
     </Card>
   );

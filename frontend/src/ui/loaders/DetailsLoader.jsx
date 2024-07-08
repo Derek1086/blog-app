@@ -5,7 +5,7 @@ const DetailsLoader = () => {
     <>
       <Skeleton variant="text" sx={{ fontSize: "28px" }} width={"100%"} />
       <Skeleton variant="text" sx={{ fontSize: "28px" }} width={"100%"} />
-      <Skeleton variant="text" sx={{ fontSize: "24px" }} width={"100%"} />
+      <Skeleton variant="text" sx={{ fontSize: "34px" }} width={"100%"} />
       <Skeleton variant="rounded" height={800} width={"100%"} />
     </>
   );
