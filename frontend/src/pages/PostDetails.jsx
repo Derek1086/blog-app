@@ -20,6 +20,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Divider from "@mui/material/Divider";
 import PostContainer from "../ui/container/PostContainer";
+import Category from "../components/Category";
 
 /**
  * Component for displaying detailed information of a single post.
@@ -253,11 +254,7 @@ const PostDetails = () => {
               />
               <div className="flex space-x-2 flex-wrap">
                 {post.categories && post.categories.length > 0 ? (
-                  post.categories.map((c, i) => (
-                    <Card sx={{ padding: "10px", mt: 1 }} key={i}>
-                      <BodyText text={c} variant={"body2"} color={"white"} />
-                    </Card>
-                  ))
+                  post.categories.map((c, i) => <Category text={c} key={i} />)
                 ) : (
                   <BodyText text={"None"} variant={"body1"} color={"white"} />
                 )}

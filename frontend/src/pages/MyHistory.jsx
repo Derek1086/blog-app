@@ -14,6 +14,10 @@ const MyHistory = () => {
   const [history, setHistory] = useState([]);
   const [open, setOpen] = useState(false);
 
+  /**
+   * Fetches the user's post history from the server and updates the state.
+   * This effect runs when the component mounts or the `user` changes.
+   */
   useEffect(() => {
     const fetchHistory = async () => {
       if (user) {
@@ -31,6 +35,10 @@ const MyHistory = () => {
     fetchHistory();
   }, [user]);
 
+  /**
+   * Clears the user's post history by sending a DELETE request to the server.
+   * Updates the state and reloads the page upon successful deletion.
+   */
   const clearHistory = async () => {
     if (user) {
       try {

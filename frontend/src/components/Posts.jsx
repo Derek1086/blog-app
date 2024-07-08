@@ -9,6 +9,12 @@ import Divider from "@mui/material/Divider";
 import classes from "./Posts.module.css";
 
 const HomePosts = ({ post }) => {
+  /**
+   * Formats the view count number to a human-readable string.
+   * Displays counts in k (thousands) and M (millions) format.
+   * @param {number} count - The view count number to format.
+   * @returns {string} - The formatted view count string.
+   */
   const formatViewCount = (count) => {
     if (count < 1000) {
       return count.toString();

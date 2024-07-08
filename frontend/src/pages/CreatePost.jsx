@@ -62,16 +62,6 @@ const CreatePost = () => {
   };
 
   /**
-   * Deletes a category.
-   * @param {number} i - The index of the category to delete.
-   */
-  const deleteCategory = (i) => {
-    let updatedCats = [...cats];
-    updatedCats.splice(i, 1);
-    setCats(updatedCats);
-  };
-
-  /**
    * Adds a category.
    */
   const addCategory = () => {
@@ -93,6 +83,16 @@ const CreatePost = () => {
       setCats(updatedCats);
       setError({ open: false, message: "", type: "" });
     }
+  };
+
+  /**
+   * Deletes a category.
+   * @param {number} i - The index of the category to delete.
+   */
+  const deleteCategory = (i) => {
+    let updatedCats = [...cats];
+    updatedCats.splice(i, 1);
+    setCats(updatedCats);
   };
 
   /**
