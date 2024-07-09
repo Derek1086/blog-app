@@ -7,6 +7,10 @@
   gap: 20%;
 }
 
+.logo {
+  width: 20%;
+}
+
 .search {
   width: 60%;
   display: flex;
@@ -17,6 +21,7 @@
   display: flex;
   gap: 5px;
   justify-content: flex-end;
+  width: 20%;
 }
 
 @media screen and (max-width: 768px) {
@@ -25,7 +30,7 @@
     gap: 0px;
   }
 
-  .title,
+  .logo,
   .actions {
     display: none;
   }

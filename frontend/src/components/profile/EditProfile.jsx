@@ -250,6 +250,24 @@ const EditProfile = ({ setAlert, setProfileEditing }) => {
     setShowConfirmedPassword(false);
   };
 
+  /**
+   * Clears the user's search history by sending a DELETE request to the server.
+   * Updates the state and reloads the page upon successful deletion.
+   */
+  const handleClearHistory = async () => {
+    try {
+      const res = await axios.delete(
+        URL + "/api/users/" + user._id + "/searchhistory",
+        {
+          withCredentials: true,
+        }
+      );
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <>
       <PasswordModal
@@ -439,6 +457,14 @@ const EditProfile = ({ setAlert, setProfileEditing }) => {
           onClick={() => setOpen(true)}
         >
           Change Password
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          sx={{ padding: "10px" }}
+          onClick={handleClearHistory}
+        >
+          Clear Search History
         </Button>
       </Stack>
     </>

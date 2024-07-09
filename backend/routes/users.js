@@ -178,4 +178,78 @@ router.delete("/:id/history", verifyToken, async (req, res) => {
   }
 });
 
+// Add to User Search History
+router.put("/:id/searchhistory", async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { searchQuery } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      console.log("User not found with ID:", userId);
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (!searchQuery) {
+      return res.status(400).json({ error: "Search term is required" });
+    }
+
+    // Remove searchQuery if it already exists in user.searchHistory
+    const index = user.searchHistory.indexOf(searchQuery);
+    if (index !== -1) {
+      user.searchHistory.splice(index, 1);
+    }
+
+    user.searchHistory.push(searchQuery);
+
+    await user.save();
+    res.status(200).json({
+      message: "Search history updated",
+      searchHistory: user.searchHistory,
+    });
+  } catch (err) {
+    console.error("Error updating user's search history:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// GET User Search History
+router.get("/:id/searchhistory", async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      console.log("User not found with ID:", userId);
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const searchHistory = user.searchHistory;
+    res.status(200).json(searchHistory);
+  } catch (err) {
+    console.error("Error fetching user's search history:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// DELETE User Search History
+router.delete("/:id/searchhistory", verifyToken, async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      console.log("User not found with ID:", userId);
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    user.searchHistory = [];
+    await user.save();
+    res.status(200).json({ message: "Search history cleared successfully" });
+  } catch (err) {
+    console.error("Error clearing user's post history:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 module.exports = router;

@@ -103,8 +103,6 @@ const PostRenderer = ({
         return posts.sort((a, b) => b.viewCount - a.viewCount);
       case "Author":
         return posts.sort((a, b) => a.username.localeCompare(b.username));
-      case "Default":
-        return posts.reverse();
       default:
         return posts.reverse();
     }
@@ -112,11 +110,7 @@ const PostRenderer = ({
 
   useEffect(() => {
     fetchPosts();
-  }, [route]);
-
-  useEffect(() => {
-    fetchPosts();
-  }, [filter]);
+  }, [route, filter, searchquery]);
 
   return (
     <PostContainer>
@@ -152,7 +146,6 @@ const PostRenderer = ({
                   filter={filter}
                   handleFilter={handleFilter}
                   filters={[
-                    { value: "default", label: "Default" },
                     { value: "Newest", label: "Newest" },
                     { value: "Oldest", label: "Oldest" },
                     { value: "Author", label: "Author" },
