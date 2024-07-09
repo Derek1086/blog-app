@@ -66,8 +66,6 @@ const Comment = ({ c, post }) => {
     }
   };
 
-  console.log(c.userId);
-
   return (
     <>
       <CustomModal
@@ -80,8 +78,14 @@ const Comment = ({ c, post }) => {
         rightButtonClick={() => deleteComment(commentId)}
       />
       <Card sx={{ padding: "10px", marginTop: "10px" }}>
-        <div className="flex items-center justify-between">
-          <div style={{ display: "flex", gap: "10px" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
             <Link to={"/profile/" + c.userId}>
               <BodyText
                 text={c.author}
@@ -90,10 +94,10 @@ const Comment = ({ c, post }) => {
               />
             </Link>
             <BodyText
-              text={formatDistanceToNow(new Date(c.updatedAt), {
+              text={formatDistanceToNow(new Date(c.createdAt), {
                 addSuffix: true,
               })}
-              variant={"body2"}
+              variant={"caption"}
               color={"text.secondary"}
             />
           </div>

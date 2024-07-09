@@ -9,7 +9,6 @@ const verifyToken = require("../verifyToken");
 // CREATE
 router.post("/create", verifyToken, async (req, res) => {
   try {
-    console.log("Attempting to create a new comment with data:", req.body);
     const newComment = new Comment(req.body);
     const savedComment = await newComment.save();
     console.log("Comment created:", savedComment);
@@ -23,7 +22,6 @@ router.post("/create", verifyToken, async (req, res) => {
 // UPDATE
 router.put("/:id", verifyToken, async (req, res) => {
   try {
-    console.log("Attempting to update comment with ID:", req.params.id);
     const updatedComment = await Comment.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
@@ -40,7 +38,6 @@ router.put("/:id", verifyToken, async (req, res) => {
 // DELETE
 router.delete("/:id", verifyToken, async (req, res) => {
   try {
-    console.log("Attempting to delete comment with ID:", req.params.id);
     await Comment.findByIdAndDelete(req.params.id);
     console.log("Comment has been deleted!");
     res.status(200).json("Comment has been deleted!");
@@ -53,7 +50,6 @@ router.delete("/:id", verifyToken, async (req, res) => {
 // GET POST COMMENTS
 router.get("/post/:postId", async (req, res) => {
   try {
-    console.log("Fetching comments for post with ID:", req.params.postId);
     const comments = await Comment.find({ postId: req.params.postId });
     res.status(200).json(comments);
   } catch (err) {

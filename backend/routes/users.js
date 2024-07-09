@@ -148,8 +148,7 @@ router.get("/:id/history", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const postHistory = await Post.find({ _id: { $in: user.posthistory } });
-    res.status(200).json(postHistory);
+    res.status(200).json(user.posthistory);
   } catch (err) {
     console.error("Error fetching user's post history:", err);
     res.status(500).json({ error: "Server error" });

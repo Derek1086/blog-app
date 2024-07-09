@@ -10,9 +10,9 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
+import CustomSelect from "../ui/input/CustomSelect";
 import BodyText from "../ui/text/BodyText";
-import { formatDistanceToNow, set } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 import Stack from "@mui/material/Stack";
 import CustomModal from "../ui/container/CustomModal";
 import CustomTextField from "../ui/input/CustomTextField";
@@ -35,6 +35,7 @@ const PostDetails = ({ alert, setAlert }) => {
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const [loader, setLoader] = useState(false);
+  const [filter, setFilter] = useState("");
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -92,7 +93,8 @@ const PostDetails = ({ alert, setAlert }) => {
     setLoader(true);
     try {
       const res = await axios.get(URL + "/api/comments/post/" + postId);
-      setComments(res.data);
+      const sortedComments = sortComments(res.data);
+      setComments(sortedComments);
       setLoader(false);
     } catch (err) {
       console.log(err);
@@ -167,6 +169,41 @@ const PostDetails = ({ alert, setAlert }) => {
       return (count / 1000000).toFixed(1) + "M";
     }
   };
+
+  /**
+   * Handles change in filter selection.
+   * Updates the filter state based on user selection.
+   * @param {Object} event - The event object from the filter input/select component.
+   */
+  const handleFilter = (event) => {
+    setFilter(event.target.value);
+  };
+
+  /**
+   * Sorts comments based on the selected filter.
+   * @param {Array} posts - The array of comments to be sorted.
+   * @returns {Array} - The sorted array of comments based on the selected filter.
+   */
+  const sortComments = (comments) => {
+    switch (filter) {
+      case "Newest":
+        return comments.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+      case "Oldest":
+        return comments.sort(
+          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+        );
+      case "Author":
+        return comments.sort((a, b) => a.author.localeCompare(b.author));
+      default:
+        return comments.reverse();
+    }
+  };
+
+  useEffect(() => {
+    fetchPostComments();
+  }, [filter]);
 
   return (
     <div>
@@ -292,21 +329,7 @@ const PostDetails = ({ alert, setAlert }) => {
                 ))}
               </div>
             )}
-            <div className="flex flex-col">
-              {comments.length !== 1 ? (
-                <BodyText
-                  text={`${comments.length} Comments`}
-                  variant={"body1"}
-                  color={"white"}
-                />
-              ) : (
-                <BodyText
-                  text={`${comments.length} Comment`}
-                  variant={"body1"}
-                  color={"white"}
-                />
-              )}
-            </div>
+            <Divider />
             <>
               {user ? (
                 <>
@@ -361,6 +384,37 @@ const PostDetails = ({ alert, setAlert }) => {
                   </Button>
                 </div>
               )}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                {comments.length !== 1 ? (
+                  <BodyText
+                    text={`${comments.length} Comments`}
+                    variant={"body1"}
+                    color={"white"}
+                  />
+                ) : (
+                  <BodyText
+                    text={`${comments.length} Comment`}
+                    variant={"body1"}
+                    color={"white"}
+                  />
+                )}
+                <CustomSelect
+                  filter={filter}
+                  handleFilter={handleFilter}
+                  filters={[
+                    { value: "Newest", label: "Newest" },
+                    { value: "Oldest", label: "Oldest" },
+                    { value: "Author", label: "Author" },
+                  ]}
+                />
+              </div>
               <div className="mt-2 mb-20">
                 {comments?.map((c) => (
                   <Comment key={c._id} c={c} post={post} />
