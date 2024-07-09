@@ -91,6 +91,23 @@ router.delete("/:id", verifyToken, async (req, res) => {
   }
 });
 
+// GET Post Details for guest
+router.get("/:id/guest", async (req, res) => {
+  try {
+    const postId = req.params.id;
+
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    res.status(200).json(post);
+  } catch (err) {
+    console.error("Error fetching post details:", err);
+    res.status(500).json(err);
+  }
+});
+
 // GET Post Details and Update View Count
 router.get("/:id", verifyToken, async (req, res) => {
   try {
@@ -102,9 +119,8 @@ router.get("/:id", verifyToken, async (req, res) => {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    // Add post to user's postHistory
-    const user = await User.findById(userId);
-    if (user) {
+    if (userId) {
+      const user = await User.findById(userId);
       console.log("User ID:", userId, "is viewing post ID:", req.params.id);
       // Update view count and add to user's postHistory
       if (!post.viewedBy.includes(userId)) {

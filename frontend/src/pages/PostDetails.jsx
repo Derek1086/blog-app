@@ -47,11 +47,18 @@ const PostDetails = ({ alert, setAlert }) => {
   const fetchPost = async () => {
     setLoader(true);
     try {
-      const res = await axios.get(URL + "/api/posts/" + postId, {
-        withCredentials: true,
-      });
-      setPost(res.data);
-      setLoader(false);
+      // if guest user
+      if (!user) {
+        const res = await axios.get(URL + "/api/posts/" + postId + "/guest");
+        setPost(res.data);
+        setLoader(false);
+      } else {
+        const res = await axios.get(URL + "/api/posts/" + postId, {
+          withCredentials: true,
+        });
+        setPost(res.data);
+        setLoader(false);
+      }
     } catch (err) {
       console.log(err);
       setLoader(false);
