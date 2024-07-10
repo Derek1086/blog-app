@@ -1,3 +1,17 @@
+# Blog Management System
+
+This is a blog management system that allows users to create and manage their accounts, posts, and comments. It is built using Node.js, Express.js, MongoDB, React and Vite.
+
+The system provides the following functionalities:
+
+- User management: Users can register, login, update their information, and delete their accounts.
+- Post management: Users can create posts, update their posts, delete their posts, and view their post history.
+- Comment management: Users can add comments to posts and manage them by editing/deleting them.
+- Favorites management: Users can mark posts as favorites and view their favorites.
+- Search history management: Users can search for posts, manage their search history and view their search history.
+- Image upload and storage: Users can upload images with their posts.
+- JWT authentication: The system uses JWT tokens for authentication.
+
 # Code Structure
 
 The code is structured into two main directories: backend and frontend.
