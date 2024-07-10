@@ -25,17 +25,6 @@ The frontend is built using React and Vite. The main files are:
   - ui: This directory contains the UI components and styling.
   - url.js: This file contains the URL endpoints for the backend API.
 
-## Installation and Setup
-
-To run the application, follow these steps:
-
-1. Clone the repository.
-2. Install the dependencies by running `npm install` in the backend and frontend directories.
-3. Create a .env file in the backend directory and add the necessary environment variables.
-4. Start the backend server by running `npm start` in the backend directory.
-5. Start the frontend development server by running `npm run dev` in the frontend directory.
-6. Open your browser and go to http://localhost:5173 to access the application.
-
 ## Additional Information
 
 - JWT (JSON Web Tokens) for authentication. The frontend sends the JWT token in the Authorization header of each request. The backend verifies the token and provides access to protected routes and data.
