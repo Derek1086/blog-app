@@ -13,6 +13,22 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 
 import classes from "./BlogPost.module.css";
 
+/**
+ * Formats the view count number to a human-readable string.
+ * Displays counts in k (thousands) and M (millions) format.
+ * @param {number} count - The view count number to format.
+ * @returns {string} - The formatted view count string.
+ */
+export const formatViewCount = (count) => {
+  if (count < 1000) {
+    return count.toString();
+  } else if (count < 1000000) {
+    return (count / 1000).toFixed(1) + "k";
+  } else {
+    return (count / 1000000).toFixed(1) + "M";
+  }
+};
+
 const BlogPost = ({ post }) => {
   const [favoriteCount, setFavoriteCount] = useState(null);
   const [comments, setComments] = useState([]);
@@ -54,22 +70,6 @@ const BlogPost = ({ post }) => {
     }
   }, [post]);
 
-  /**
-   * Formats the view count number to a human-readable string.
-   * Displays counts in k (thousands) and M (millions) format.
-   * @param {number} count - The view count number to format.
-   * @returns {string} - The formatted view count string.
-   */
-  const formatViewCount = (count) => {
-    if (count < 1000) {
-      return count.toString();
-    } else if (count < 1000000) {
-      return (count / 1000).toFixed(1) + "k";
-    } else {
-      return (count / 1000000).toFixed(1) + "M";
-    }
-  };
-
   if (!post) return <></>;
 
   return (
@@ -86,11 +86,7 @@ const BlogPost = ({ post }) => {
         <div>
           <HeaderText fontsize={"18px"} text={post.title} textalign={"left"} />
           <div className="mt-1" />
-          <BodyText
-            text={post.username}
-            variant={"body2"}
-            color={"text.secondary"}
-          />
+          <BodyText text={post.username} variant={"body2"} color={"#ce93d8"} />
           <div className="mt-1" />
           <MainContainer justifyContent={"left"}>
             {post.viewCount !== 1 ? (
@@ -117,13 +113,20 @@ const BlogPost = ({ post }) => {
           </MainContainer>
           <div className="mt-1" />
           <div className={classes.desc}>
-            <p style={{ wordWrap: "break-word", fontSize: "14px" }}>
-              {post.desc
-                .replace(/\n/g, " ")
-                .replace(/\s+/g, " ")
-                .trim()
-                .slice(0, 180) + "..."}
-            </p>
+            {post.desc
+              .slice(0, 160)
+              .split("\\n")
+              .map((paragraph, index, arr) => (
+                <div key={index}>
+                  <p style={{ wordWrap: "break-word" }}>
+                    {paragraph}
+                    {index === arr.length - 1 && post.desc.length > 160
+                      ? "..."
+                      : ""}
+                  </p>
+                  <> </>
+                </div>
+              ))}
           </div>
         </div>
         <Divider sx={{ marginTop: "10px" }} />

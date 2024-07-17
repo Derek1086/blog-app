@@ -38,6 +38,7 @@ const PostForm = ({
   cat,
   setCat,
   cats,
+  setCats,
   addCategory,
   deleteCategory,
   postText,
@@ -89,7 +90,7 @@ const PostForm = ({
           enterFunction={null}
           handleClick={null}
           handleShow={null}
-          maxLength={50}
+          maxLength={100}
         />
         <div>
           <div style={{ marginBottom: "10px" }}>
@@ -135,7 +136,7 @@ const PostForm = ({
           showPassword={null}
           enterFunction={(e) => {
             if (e.key === "Enter") {
-              addCategory();
+              addCategory(cat, cats, setCat, setCats, setError);
             }
           }}
           handleClick={null}
@@ -173,7 +174,7 @@ const PostForm = ({
               key={i}
             >
               {c}
-              <IconButton onClick={() => deleteCategory(i)}>
+              <IconButton onClick={() => deleteCategory(i, cats, setCats)}>
                 <CloseIcon />
               </IconButton>
             </Card>

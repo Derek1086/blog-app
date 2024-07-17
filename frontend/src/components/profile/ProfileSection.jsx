@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { URL } from "../../url";
 import MainContainer from "../../ui/container/MainContainer";
 import IconButton from "@mui/material/IconButton";
 import BodyText from "../../ui/text/BodyText";
@@ -11,8 +13,40 @@ import EditProfile from "./EditProfile";
 
 import classes from "./ProfileSection.module.css";
 
-const ProfileSection = ({ username, visitor, posts, setAlert }) => {
+const ProfileSection = ({ username, visitor, posts, setAlert, user }) => {
   const [editing, setEditing] = useState(false);
+  const [createdAt, setCreatedAt] = useState("");
+
+  /**
+   * Fetches the creation date of the user profile.
+   * @returns {string} The creation date of the user profile.
+   */
+  const findCreatedAt = async () => {
+    try {
+      const response = !user
+        ? await axios.get(`${URL}/api/users/createdAt/${username}`)
+        : await axios.get(`${URL}/api/users/createdAt/${user.username}`);
+
+      return response.data.createdAt;
+    } catch (err) {
+      console.log(err);
+      return "";
+    }
+  };
+
+  /**
+   * Formats a date string into MM-DD-YY format.
+   * @param {string} dateString - The date string to format.
+   * @returns {string} The formatted date.
+   */
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const month = date.getUTCMonth() + 1;
+    const day = date.getUTCDate();
+    const year = date.getUTCFullYear().toString().slice(-2);
+
+    return `${month}-${day}-${year}`;
+  };
 
   /**
    * Calculates the total view count of all posts.
@@ -59,6 +93,16 @@ const ProfileSection = ({ username, visitor, posts, setAlert }) => {
     return count;
   };
 
+  useEffect(() => {
+    const fetchCreatedAt = async () => {
+      const date = await findCreatedAt();
+      if (date) {
+        setCreatedAt(formatDate(date));
+      }
+    };
+    fetchCreatedAt();
+  }, [user, username]);
+
   if (!posts) {
     return <></>;
   }
@@ -87,6 +131,11 @@ const ProfileSection = ({ username, visitor, posts, setAlert }) => {
         <div className={classes.info}>
           <div className={classes.stats}>
             <Stack spacing={2}>
+              <BodyText
+                text={`Join Date: ${createdAt}`}
+                variant={"body2"}
+                color={"text.secondary"}
+              />
               <BodyText
                 text={`Posts created: ${posts.length}`}
                 variant={"body2"}

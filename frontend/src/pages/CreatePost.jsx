@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import CustomModal from "../ui/container/CustomModal";
 import PostForm from "../components/PostForm";
+import { addCategory, deleteCategory } from "../components/Category";
 
 /**
  * *CreatePost component for creating new posts.
@@ -36,40 +37,6 @@ const CreatePost = ({ setAlert }) => {
       setFile(event.target.files[0]);
       setFilename(event.target.files[0].name);
     }
-  };
-
-  /**
-   * Adds a category.
-   */
-  const addCategory = () => {
-    if (cat === "") {
-      return;
-    }
-    if (cats.length >= 5) {
-      setError({
-        open: true,
-        message: "Cannot add more than 5 categories",
-        type: "category",
-      });
-      return;
-    }
-    if (cats.length < 5) {
-      let updatedCats = [...cats];
-      updatedCats.push(cat);
-      setCat("");
-      setCats(updatedCats);
-      setError({ open: false, message: "", type: "" });
-    }
-  };
-
-  /**
-   * Deletes a category.
-   * @param {number} i - The index of the category to delete.
-   */
-  const deleteCategory = (i) => {
-    let updatedCats = [...cats];
-    updatedCats.splice(i, 1);
-    setCats(updatedCats);
   };
 
   /**
@@ -169,6 +136,7 @@ const CreatePost = ({ setAlert }) => {
         cat={cat}
         setCat={setCat}
         cats={cats}
+        setCats={setCats}
         addCategory={addCategory}
         deleteCategory={deleteCategory}
         postText="Create"

@@ -14,7 +14,11 @@ import { formatDistanceToNow } from "date-fns";
 import CustomModal from "../ui/container/CustomModal";
 import CustomTextField from "../ui/input/CustomTextField";
 
-const Comment = ({ c, post }) => {
+/**
+ * Comment component to render and manage individual comments.
+ * @param {Object} c - The comment object.
+ */
+const Comment = ({ c }) => {
   const { user } = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -26,6 +30,10 @@ const Comment = ({ c, post }) => {
     type: "",
   });
 
+  /**
+   * Updates the comment.
+   * Makes an asynchronous PUT request to update the comment.
+   */
   const updateComment = async () => {
     if (comment === "") {
       setError({
@@ -53,6 +61,11 @@ const Comment = ({ c, post }) => {
     }
   };
 
+  /**
+   * Deletes the comment.
+   * Makes an asynchronous DELETE request to delete the comment.
+   * @param {string} id - The ID of the comment to delete.
+   */
   const deleteComment = async (id) => {
     setEditing(false);
     try {

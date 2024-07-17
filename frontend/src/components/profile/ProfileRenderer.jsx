@@ -24,9 +24,10 @@ const ProfileRenderer = ({
             <>
               <PostContainer>
                 <ProfileSection
-                  username={`${username}'s Profile`}
+                  username={username}
                   visitor={visitor}
                   posts={posts}
+                  user={null}
                 />
               </PostContainer>
               <PostRenderer
@@ -46,6 +47,7 @@ const ProfileRenderer = ({
                   visitor={visitor}
                   posts={posts}
                   setAlert={setAlert}
+                  user={user}
                 />
               </PostContainer>
               <PostRenderer

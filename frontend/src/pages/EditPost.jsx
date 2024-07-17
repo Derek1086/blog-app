@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import CustomModal from "../ui/container/CustomModal";
 import PostForm from "../components/PostForm";
+import { addCategory, deleteCategory } from "../components/Category";
 
 /**
  * *EditPost component for editing new posts.
@@ -121,40 +122,6 @@ const EditPost = ({ setAlert }) => {
     fetchPost();
   }, [postId]);
 
-  /**
-   * Adds a category.
-   */
-  const addCategory = () => {
-    if (cat === "") {
-      return;
-    }
-    if (cats.length >= 5) {
-      setError({
-        open: true,
-        message: "Cannot add more than 5 categories",
-        type: "category",
-      });
-      return;
-    }
-    if (cats.length < 5) {
-      let updatedCats = [...cats];
-      updatedCats.push(cat);
-      setCat("");
-      setCats(updatedCats);
-      setError({ open: false, message: "", type: "" });
-    }
-  };
-
-  /**
-   * Deletes a category.
-   * @param {number} i - The index of the category to delete.
-   */
-  const deleteCategory = (i) => {
-    let updatedCats = [...cats];
-    updatedCats.splice(i, 1);
-    setCats(updatedCats);
-  };
-
   return (
     <>
       <CustomModal
@@ -180,6 +147,7 @@ const EditPost = ({ setAlert }) => {
         cat={cat}
         setCat={setCat}
         cats={cats}
+        setCats={setCats}
         addCategory={addCategory}
         deleteCategory={deleteCategory}
         postText="Update"

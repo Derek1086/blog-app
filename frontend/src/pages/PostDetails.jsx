@@ -22,6 +22,7 @@ import Divider from "@mui/material/Divider";
 import PostContainer from "../ui/container/PostContainer";
 import Category from "../components/Category";
 import AlertMessage from "../components/AlertMessage";
+import { formatViewCount } from "../components/BlogPost";
 
 /**
  * Component for displaying detailed information of a single post.
@@ -162,22 +163,6 @@ const PostDetails = ({ alert, setAlert }) => {
   };
 
   /**
-   * Formats the view count number to a human-readable string.
-   * Displays counts in k (thousands) and M (millions) format.
-   * @param {number} count - The view count number to format.
-   * @returns {string} - The formatted view count string.
-   */
-  const formatViewCount = (count) => {
-    if (count < 1000) {
-      return count.toString();
-    } else if (count < 1000000) {
-      return (count / 1000).toFixed(1) + "k";
-    } else {
-      return (count / 1000000).toFixed(1) + "M";
-    }
-  };
-
-  /**
    * Handles change in filter selection.
    * Updates the filter state based on user selection.
    * @param {Object} event - The event object from the filter input/select component.
@@ -272,7 +257,7 @@ const PostDetails = ({ alert, setAlert }) => {
                   <BodyText
                     text={post.username}
                     variant={"body1"}
-                    color={"text.secondary"}
+                    color={"#ce93d8"}
                   />
                 </Link>
                 <Divider sx={{ height: 20 }} orientation="vertical" />
@@ -313,6 +298,7 @@ const PostDetails = ({ alert, setAlert }) => {
                 )}
               </div>
             </div>
+            <Divider />
             <div
               style={{
                 width: "100%",
@@ -424,7 +410,7 @@ const PostDetails = ({ alert, setAlert }) => {
               </div>
               <div className="mt-2 mb-20">
                 {comments?.map((c) => (
-                  <Comment key={c._id} c={c} post={post} />
+                  <Comment key={c._id} c={c} />
                 ))}
               </div>
             </>
