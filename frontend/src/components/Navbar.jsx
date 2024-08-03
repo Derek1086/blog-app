@@ -118,7 +118,6 @@ const Navbar = ({ query }) => {
                   <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
                   <Autocomplete
                     freeSolo
-                    disableClearable
                     sx={{ ml: 1, flex: 1 }}
                     options={searchHistory
                       .slice(0, 6)
@@ -131,7 +130,6 @@ const Navbar = ({ query }) => {
                         onChange={handleSearchInputChange}
                         InputProps={{
                           ...params.InputProps,
-                          type: "search",
                         }}
                         sx={{
                           "& .MuiOutlinedInput-root": {
